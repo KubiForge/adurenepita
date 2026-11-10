@@ -1,0 +1,710 @@
+import React, { useState } from 'react';
+import { WizardAnswers, WizardPurpose, UserSituation, ConcernDuration, CurrentState, SupportPreference } from '../../types/wizard';
+import { PROVINCES_AND_DISTRICTS } from '../../data/sriLankaData';
+import { DRUGS_DATA } from '../../data/drugsData';
+import { Check, Search, AlertCircle, Info, Sparkles, MapPin } from 'lucide-react';
+
+interface WizardStepRendererProps {
+  currentStep: number;
+  answers: WizardAnswers;
+  onChange: (updated: Partial<WizardAnswers>) => void;
+  onEmergencyTrigger: (reason: string) => void;
+  onEditStep: (stepNumber: number) => void;
+}
+
+export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
+  currentStep,
+  answers,
+  onChange,
+  onEmergencyTrigger,
+  onEditStep,
+}) => {
+  const [substanceSearch, setSubstanceSearch] = useState('');
+
+  // STEP 01 - PURPOSE
+  if (currentStep === 1) {
+    const purposeOptions: { id: WizardPurpose; title: string; titleSi: string; desc: string }[] = [
+      {
+        id: 'stop_using',
+        title: 'I want to stop using substances',
+        titleSi: 'මට මත්ද්‍රව්‍ය භාවිතයෙන් ඉවත්වීමට අවශ්‍යයි',
+        desc: 'Compassionate, non-judgmental guidance and safe medical withdrawal navigation.',
+      },
+      {
+        id: 'drug_info',
+        title: 'I want information about drugs',
+        titleSi: 'මට මත්ද්‍රව්‍ය පිළිබඳ නිවැරදි තොරතුරු අවශ්‍යයි',
+        desc: 'Evidence-based pharmacology, risks, warning signs, and facts.',
+      },
+      {
+        id: 'worried_about_someone',
+        title: 'I am worried about someone',
+        titleSi: 'මගේ මිතුරෙකු හෝ පවුලේ අයෙකු ගැන මම කනස්සල්ලෙන් පසුවෙමි',
+        desc: 'Advice on compassionate communication, boundary setting, and family support.',
+      },
+      {
+        id: 'health_concern',
+        title: 'I have health concerns',
+        titleSi: 'මට සෞඛ්‍යමය හෝ ශාරීරික ගැටලු පවතී',
+        desc: 'Recognizing urgent medical signs, toxicity, and clinical care direction.',
+      },
+      {
+        id: 'professional_support',
+        title: 'I need professional support',
+        titleSi: 'මට වෘත්තීය වෛද්‍ය හෝ පුනරුත්ථාපන සහය අවශ්‍යයි',
+        desc: 'Connecting with certified Sri Lankan counseling and rehabilitation facilities.',
+      },
+      {
+        id: 'prevention_info',
+        title: 'I want prevention education',
+        titleSi: 'මට නිවාරණ අධ්‍යාපනය සහ සමාජ දැනුවත්භාවය අවශ්‍යයි',
+        desc: 'Resources for university students, educators, schools, and communities.',
+      },
+    ];
+
+    return (
+      <div className="space-y-4">
+        <div className="text-center mb-6">
+          <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 01 of 10</span>
+          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">What brings you here today?</h2>
+          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">අද ඔබ මෙහි පැමිණීමට හේතුව කුමක්ද?</p>
+          <p className="text-xs text-ivory/60 mt-2 max-w-md mx-auto">
+            Select the statement that best matches your current focus. Your answers are private and anonymous.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {purposeOptions.map((opt) => {
+            const isSelected = answers.purpose === opt.id;
+            return (
+              <button
+                key={opt.id}
+                onClick={() => onChange({ purpose: opt.id })}
+                className={`p-4 rounded-xl text-left border transition-all relative flex flex-col justify-between group ${
+                  isSelected
+                    ? 'bg-charcoal border-gold shadow-gold-subtle ring-1 ring-gold'
+                    : 'bg-midnight/70 border-charcoal-light hover:border-gold/40 hover:bg-charcoal/50'
+                }`}
+              >
+                <div>
+                  <div className="flex items-start justify-between">
+                    <h3 className="font-bold text-sm text-ivory group-hover:text-champagne transition-colors">
+                      {opt.title}
+                    </h3>
+                    <div
+                      className={`w-5 h-5 rounded-full border flex items-center justify-center flex-shrink-0 ml-2 ${
+                        isSelected ? 'border-gold bg-gold text-midnight' : 'border-charcoal-light'
+                      }`}
+                    >
+                      {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                    </div>
+                  </div>
+                  <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">{opt.titleSi}</p>
+                  <p className="text-xs text-ivory/60 mt-1.5 leading-snug">{opt.desc}</p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // STEP 02 - SITUATION
+  if (currentStep === 2) {
+    const situationOptions: { id: UserSituation; label: string; labelSi: string }[] = [
+      { id: 'currently_using', label: 'Currently using regularly', labelSi: 'දැනට නිරන්තරයෙන් භාවිතා කරමි' },
+      { id: 'recently_stopped', label: 'Recently stopped / in early recovery', labelSi: 'මෑතකදී භාවිතය නැවැත්වූවෙමි' },
+      { id: 'trying_to_reduce', label: 'Trying to reduce or cut down', labelSi: 'භාවිතය අඩුකර ගැනීමට උත්සාහ කරමි' },
+      { id: 'difficult_to_stay_away', label: 'Finding it difficult to stay away (cravings)', labelSi: 'නැවත භාවිතා කිරීමට සිතුවිලි ඇතිවේ' },
+      { id: 'considering_help', label: 'Considering professional help for the first time', labelSi: 'පළමු වරට වෘත්තීය සහය සෙවීම ගැන සිතමි' },
+      { id: 'unsure', label: 'Unsure / Exploring options quietly', labelSi: 'තවමත් අවිනිශ්චිතය / තොරතුරු පමණක් සොයමි' },
+    ];
+
+    return (
+      <div className="space-y-4">
+        <div className="text-center mb-6">
+          <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 02 of 10</span>
+          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Which best describes your current situation?</h2>
+          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබේ වර්තමාන තත්ත්වය වඩාත්ම නිරූපණය කරන්නේ කුමක්ද?</p>
+        </div>
+
+        <div className="space-y-2.5 max-w-xl mx-auto">
+          {situationOptions.map((opt) => {
+            const isSelected = answers.situation === opt.id;
+            return (
+              <button
+                key={opt.id}
+                onClick={() => onChange({ situation: opt.id })}
+                className={`w-full p-4 rounded-xl text-left border transition-all flex items-center justify-between ${
+                  isSelected
+                    ? 'bg-charcoal border-gold shadow-gold-subtle'
+                    : 'bg-midnight/70 border-charcoal-light hover:border-gold/40'
+                }`}
+              >
+                <div>
+                  <span className="font-semibold text-sm text-ivory block">{opt.label}</span>
+                  <span className="text-xs text-gold/80 font-sinhalaSerif">{opt.labelSi}</span>
+                </div>
+                <div
+                  className={`w-5 h-5 rounded-full border flex items-center justify-center flex-shrink-0 ${
+                    isSelected ? 'border-gold bg-gold text-midnight' : 'border-charcoal-light'
+                  }`}
+                >
+                  {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // STEP 03 - SUBSTANCE (Searchable Multi-Select)
+  if (currentStep === 3) {
+    const allSubstances = [
+      { id: 'methamphetamine', label: 'Methamphetamine (Crystal Meth / ICE)', labelSi: 'මෙතැම්ෆෙටමින් (අයිස්)' },
+      { id: 'heroin', label: 'Heroin (Brown Sugar / Kudu)', labelSi: 'හෙරොයින් (කුඩු / බ්‍රවුන් ෂුගර්)' },
+      { id: 'alcohol', label: 'Alcohol (Arrack / Beer / Spirits)', labelSi: 'මත්පැන් (ඇල්කොහොල්)' },
+      { id: 'cannabis', label: 'Cannabis (Ganja / KG / Weed)', labelSi: 'ගංජා (කැනබිස් / කේ.ජී)' },
+      { id: 'prescription_drugs', label: 'Prescription Medication Misuse (Benzos, Tramadol, Pregabalin)', labelSi: 'වෙද වට්ටෝරු පෙති (ට්‍රැමඩෝල්, ප්‍රෙගබලින්)' },
+      { id: 'tobacco', label: 'Tobacco & Nicotine (Cigarettes, Vapes)', labelSi: 'දුම්කොළ සහ නිකොටින් (දුම්වැටි / වේප්ස්)' },
+      { id: 'cocaine', label: 'Cocaine & Crack', labelSi: 'කොකේන් (ක්‍රැක්)' },
+      { id: 'other', label: 'Other synthetic or unknown substance', labelSi: 'වෙනත් නොදන්නා රසායනික ද්‍රව්‍යයක්' },
+      { id: 'not_sure', label: "I'm not sure", labelSi: 'මට නිශ්චිතවම විශ්වාස නැත' },
+      { id: 'prefer_not_to_say', label: 'Prefer not to say', labelSi: 'පැවසීමට අකමැතිය' },
+    ];
+
+    const filtered = allSubstances.filter(
+      (s) =>
+        s.label.toLowerCase().includes(substanceSearch.toLowerCase()) ||
+        s.labelSi.includes(substanceSearch)
+    );
+
+    const toggleSubstance = (id: string) => {
+      let current = [...answers.substances];
+      if (id === 'prefer_not_to_say' || id === 'not_sure') {
+        current = [id];
+      } else {
+        current = current.filter((x) => x !== 'prefer_not_to_say' && x !== 'not_sure');
+        if (current.includes(id)) {
+          current = current.filter((x) => x !== id);
+        } else {
+          current.push(id);
+        }
+      }
+      onChange({ substances: current });
+    };
+
+    return (
+      <div className="space-y-4">
+        <div className="text-center mb-6">
+          <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 03 of 10</span>
+          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Which substance are you concerned about?</h2>
+          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබ වඩාත්ම අවධානය යොමුකරන මත්ද්‍රව්‍යය කුමක්ද?</p>
+          <p className="text-xs text-ivory/60 mt-1">Select all that apply. Search by common or local names.</p>
+        </div>
+
+        {/* Search bar */}
+        <div className="relative max-w-md mx-auto mb-4">
+          <Search className="w-4 h-4 text-ivory/40 absolute left-3.5 top-3.5" />
+          <input
+            type="text"
+            placeholder="Search substance (e.g. ICE, Alcohol, Tramadol)..."
+            value={substanceSearch}
+            onChange={(e) => setSubstanceSearch(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-midnight border border-charcoal-light text-ivory text-sm focus:outline-none focus:border-gold"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-2xl mx-auto">
+          {filtered.map((s) => {
+            const isSelected = answers.substances.includes(s.id);
+            return (
+              <button
+                key={s.id}
+                onClick={() => toggleSubstance(s.id)}
+                className={`p-3.5 rounded-xl text-left border transition-all flex items-center justify-between ${
+                  isSelected
+                    ? 'bg-charcoal border-gold shadow-gold-subtle'
+                    : 'bg-midnight/70 border-charcoal-light hover:border-gold/30'
+                }`}
+              >
+                <div>
+                  <span className="font-semibold text-xs text-ivory block">{s.label}</span>
+                  <span className="text-[11px] text-gold/80 font-sinhalaSerif">{s.labelSi}</span>
+                </div>
+                <div
+                  className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ml-2 ${
+                    isSelected ? 'border-gold bg-gold text-midnight' : 'border-charcoal-light'
+                  }`}
+                >
+                  {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // STEP 04 - DURATION
+  if (currentStep === 4) {
+    const durations: { id: ConcernDuration; label: string; labelSi: string }[] = [
+      { id: 'less_than_1_month', label: 'Less than one month', labelSi: 'මසකට අඩු කාලයක්' },
+      { id: '1_to_6_months', label: '1 to 6 months', labelSi: 'මාස 1 සිට 6 දක්වා' },
+      { id: '6_to_12_months', label: '6 to 12 months', labelSi: 'මාස 6 සිට වසර 1 දක්වා' },
+      { id: '1_to_3_years', label: '1 to 3 years', labelSi: 'වසර 1 සිට 3 දක්වා' },
+      { id: 'more_than_3_years', label: 'More than 3 years', labelSi: 'වසර 3කට වඩා වැඩි කාලයක්' },
+      { id: 'not_sure', label: "I'm not sure", labelSi: 'නිශ්චිතවම පැවසිය නොහැක' },
+      { id: 'prefer_not_to_say', label: 'Prefer not to say', labelSi: 'පැවසීමට අකමැතිය' },
+    ];
+
+    return (
+      <div className="space-y-4">
+        <div className="text-center mb-6">
+          <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 04 of 10</span>
+          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">How long has this been a concern?</h2>
+          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">මෙම තත්ත්වය කොපමණ කාලයක සිට පවතීද?</p>
+          <p className="text-xs text-ivory/60 mt-1">This helps tailor support pathways; it is not a diagnostic score.</p>
+        </div>
+
+        <div className="space-y-2.5 max-w-md mx-auto">
+          {durations.map((d) => {
+            const isSelected = answers.duration === d.id;
+            return (
+              <button
+                key={d.id}
+                onClick={() => onChange({ duration: d.id })}
+                className={`w-full p-3.5 rounded-xl text-left border transition-all flex items-center justify-between ${
+                  isSelected
+                    ? 'bg-charcoal border-gold shadow-gold-subtle'
+                    : 'bg-midnight/70 border-charcoal-light hover:border-gold/30'
+                }`}
+              >
+                <div>
+                  <span className="font-semibold text-sm text-ivory block">{d.label}</span>
+                  <span className="text-xs text-gold/80 font-sinhalaSerif">{d.labelSi}</span>
+                </div>
+                <div
+                  className={`w-5 h-5 rounded-full border flex items-center justify-center flex-shrink-0 ${
+                    isSelected ? 'border-gold bg-gold text-midnight' : 'border-charcoal-light'
+                  }`}
+                >
+                  {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // STEP 05 - CURRENT STATE (Checks for urgent symptoms)
+  if (currentStep === 5) {
+    const stateOptions: { id: CurrentState; label: string; labelSi: string; isUrgent?: boolean }[] = [
+      { id: 'using_regularly', label: 'Using regularly / daily', labelSi: 'දිනපතා හෝ නිරන්තරයෙන් භාවිතා කරමි' },
+      { id: 'using_occasionally', label: 'Using occasionally / on weekends', labelSi: 'වරින් වර / සති අන්තවල පමණක් භාවිතා කරමි' },
+      { id: 'recently_stopped', label: 'Recently stopped / in initial recovery', labelSi: 'මෑතකදී නැවැත්වූවෙමි' },
+      { id: 'experiencing_cravings', label: 'Experiencing intense cravings or urge to reuse', labelSi: 'නැවත භාවිතා කිරීමට දැඩි පෙළඹවීමක් දැනේ' },
+      {
+        id: 'possible_withdrawal',
+        label: 'Experiencing acute withdrawal symptoms (shakes, seizures, extreme confusion)',
+        labelSi: 'දැඩි අතුරු ආබාධ පවතී (වෙව්ලීම, සිහිවිකල් බව, වලිප්පුව)',
+        isUrgent: true,
+      },
+      { id: 'not_currently_using', label: 'Not currently using (seeking info or helping someone)', labelSi: 'දැනට භාවිතා නොකරමි (තොරතුරු පමණක් සොයමි)' },
+      { id: 'prefer_not_to_say', label: 'Prefer not to say', labelSi: 'පැවසීමට අකමැතිය' },
+    ];
+
+    return (
+      <div className="space-y-4">
+        <div className="text-center mb-6">
+          <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 05 of 10</span>
+          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Which statement best describes things right now?</h2>
+          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">දැනට පවතින තත්ත්වය වඩාත්ම පැහැදිලි කරන්නේ කුමක්ද?</p>
+        </div>
+
+        <div className="space-y-2.5 max-w-xl mx-auto">
+          {stateOptions.map((opt) => {
+            const isSelected = answers.currentState === opt.id;
+            return (
+              <button
+                key={opt.id}
+                onClick={() => {
+                  onChange({ currentState: opt.id });
+                  if (opt.isUrgent) {
+                    onEmergencyTrigger(
+                      'Potential severe withdrawal symptoms detected during guided intake. Immediate medical evaluation is required.'
+                    );
+                  }
+                }}
+                className={`w-full p-4 rounded-xl text-left border transition-all flex items-center justify-between ${
+                  opt.isUrgent
+                    ? 'border-red-500/40 bg-red-950/20 hover:bg-red-950/40'
+                    : isSelected
+                    ? 'bg-charcoal border-gold shadow-gold-subtle'
+                    : 'bg-midnight/70 border-charcoal-light hover:border-gold/30'
+                }`}
+              >
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-sm text-ivory">{opt.label}</span>
+                    {opt.isUrgent && (
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30">
+                        Urgent Medical Attention
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-xs text-gold/80 font-sinhalaSerif block mt-0.5">{opt.labelSi}</span>
+                </div>
+                <div
+                  className={`w-5 h-5 rounded-full border flex items-center justify-center flex-shrink-0 ${
+                    isSelected ? 'border-gold bg-gold text-midnight' : 'border-charcoal-light'
+                  }`}
+                >
+                  {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // STEP 06 - MAIN CONCERNS (Multi-Select)
+  if (currentStep === 6) {
+    const concernOptions = [
+      { id: 'physical_health', label: 'Physical health & organ damage', labelSi: 'ශාරීරික සෞඛ්‍යය හා අවයව ආශ්‍රිත හානි' },
+      { id: 'mental_wellbeing', label: 'Mental wellbeing & depression/anxiety', labelSi: 'මානසික සුවතාවය, කාංසාව හෝ විෂාදය' },
+      { id: 'family_relationships', label: 'Family relationships & trust', labelSi: 'පවුල් සබඳතා සහ විශ්වාසය බිඳවැටීම' },
+      { id: 'education_academics', label: 'University / school studies', labelSi: 'විශ්වවිද්‍යාල හෝ පාසල් අධ්‍යාපනය' },
+      { id: 'employment_career', label: 'Job & employment stability', labelSi: 'රැකියාව සහ ආර්ථික ස්ථාවරත්වය' },
+      { id: 'financial_strain', label: 'Financial debt or money problems', labelSi: 'මූල්‍යමය ණයගැතිභාවය හෝ මුදල් ගැටලු' },
+      { id: 'difficulty_stopping', label: 'Difficulty stopping once started', labelSi: 'නැවැත්වීමේ අපහසුතාවය' },
+      { id: 'fear_of_withdrawal', label: 'Fear of withdrawal sickness', labelSi: 'නැවැත්වූ පසු ඇතිවන වේදනාවට ඇති බිය' },
+    ];
+
+    const toggleConcern = (id: string) => {
+      const current = answers.concerns.includes(id)
+        ? answers.concerns.filter((c) => c !== id)
+        : [...answers.concerns, id];
+      onChange({ concerns: current });
+    };
+
+    return (
+      <div className="space-y-4">
+        <div className="text-center mb-6">
+          <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 06 of 10</span>
+          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">What are you most concerned about?</h2>
+          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබ වඩාත්ම කනස්සල්ලට පත්වන කරුණු මොනවාද?</p>
+          <p className="text-xs text-ivory/60 mt-1">Select all areas where you are feeling strain.</p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
+          {concernOptions.map((opt) => {
+            const isSelected = answers.concerns.includes(opt.id);
+            return (
+              <button
+                key={opt.id}
+                onClick={() => toggleConcern(opt.id)}
+                className={`p-3.5 rounded-xl text-left border transition-all flex items-center justify-between ${
+                  isSelected
+                    ? 'bg-charcoal border-gold shadow-gold-subtle'
+                    : 'bg-midnight/70 border-charcoal-light hover:border-gold/30'
+                }`}
+              >
+                <div>
+                  <span className="font-semibold text-xs text-ivory block">{opt.label}</span>
+                  <span className="text-[11px] text-gold/80 font-sinhalaSerif">{opt.labelSi}</span>
+                </div>
+                <div
+                  className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ml-2 ${
+                    isSelected ? 'border-gold bg-gold text-midnight' : 'border-charcoal-light'
+                  }`}
+                >
+                  {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // STEP 07 - SUPPORT PREFERENCE
+  if (currentStep === 7) {
+    const preferences: { id: SupportPreference; label: string; labelSi: string; desc: string }[] = [
+      {
+        id: 'educational_info',
+        label: 'Educational Information & Science',
+        labelSi: 'විද්‍යාත්මක දැනුම හා අධ්‍යාපනික තොරතුරු',
+        desc: 'Understand the biological and psychological aspects of substances.',
+      },
+      {
+        id: 'ai_guided_support',
+        label: 'Confidential AI-Guided Support',
+        labelSi: 'රහසිගත AI සහයකයා සමඟ සංවාද පැවැත්වීම',
+        desc: 'Have anonymous, private conversations at your own pace.',
+      },
+      {
+        id: 'professional_counseling',
+        label: 'Professional One-on-One Counseling',
+        labelSi: 'වෘත්තීය මනෝවිද්‍යා උපදේශනය',
+        desc: 'Connect with certified clinical psychologists or centers like Mel Medura.',
+      },
+      {
+        id: 'rehabilitation_info',
+        label: 'Inpatient Rehabilitation Facilities',
+        labelSi: 'නේවාසික පුනරුත්ථාපන මධ්‍යස්ථාන',
+        desc: 'Information regarding state and accredited residential recovery centers.',
+      },
+      {
+        id: 'family_support',
+        label: 'Family & Loved One Guidance',
+        labelSi: 'පවුලේ සාමාජිකයන් සඳහා මඟපෙන්වීම්',
+        desc: 'Strategies for parents, siblings, and partners supporting someone.',
+      },
+      {
+        id: 'not_sure',
+        label: "I'm not sure yet",
+        labelSi: 'තවමත් තීරණය කර නැත',
+        desc: 'Explore all available pathways quietly without obligation.',
+      },
+    ];
+
+    return (
+      <div className="space-y-4">
+        <div className="text-center mb-6">
+          <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 07 of 10</span>
+          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">What type of help would you prefer?</h2>
+          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබ වඩාත් කැමති සහයෝගීතා ක්‍රමය කුමක්ද?</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl mx-auto">
+          {preferences.map((p) => {
+            const isSelected = answers.supportPreference === p.id;
+            return (
+              <button
+                key={p.id}
+                onClick={() => onChange({ supportPreference: p.id })}
+                className={`p-4 rounded-xl text-left border transition-all flex flex-col justify-between ${
+                  isSelected
+                    ? 'bg-charcoal border-gold shadow-gold-subtle'
+                    : 'bg-midnight/70 border-charcoal-light hover:border-gold/30'
+                }`}
+              >
+                <div>
+                  <div className="flex items-start justify-between">
+                    <span className="font-bold text-sm text-ivory">{p.label}</span>
+                    <div
+                      className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 ml-2 ${
+                        isSelected ? 'border-gold bg-gold text-midnight' : 'border-charcoal-light'
+                      }`}
+                    >
+                      {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                    </div>
+                  </div>
+                  <span className="text-xs text-gold/80 font-sinhalaSerif block mt-0.5">{p.labelSi}</span>
+                  <p className="text-xs text-ivory/60 mt-1">{p.desc}</p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // STEP 08 - LOCATION (Province -> District)
+  if (currentStep === 8) {
+    const selectedProvinceObj = PROVINCES_AND_DISTRICTS.find((p) => p.name === answers.province);
+
+    return (
+      <div className="space-y-5 max-w-xl mx-auto">
+        <div className="text-center mb-6">
+          <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 08 of 10</span>
+          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Where would you prefer to find support?</h2>
+          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබ සහය සෙවීමට බලාපොරොත්තු වන ප්‍රදේශය කුමක්ද?</p>
+          <p className="text-xs text-ivory/60 mt-1">
+            Optional: Selecting your province and district narrows down certified local hospital units.
+          </p>
+        </div>
+
+        {/* Province Select */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-gold mb-1.5">
+            Select Province (පළාත තෝරන්න)
+          </label>
+          <select
+            value={answers.province || ''}
+            onChange={(e) => onChange({ province: e.target.value, district: '' })}
+            className="w-full p-3.5 rounded-xl bg-midnight border border-charcoal-light text-ivory text-sm focus:outline-none focus:border-gold"
+          >
+            <option value="">-- Choose Province --</option>
+            {PROVINCES_AND_DISTRICTS.map((p) => (
+              <option key={p.id} value={p.name}>
+                {p.name} ({p.nameSi})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Dependent District Select */}
+        {selectedProvinceObj && (
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-gold mb-1.5">
+              Select District in {selectedProvinceObj.name} (දිස්ත්‍රික්කය තෝරන්න)
+            </label>
+            <select
+              value={answers.district || ''}
+              onChange={(e) => onChange({ district: e.target.value })}
+              className="w-full p-3.5 rounded-xl bg-midnight border border-charcoal-light text-ivory text-sm focus:outline-none focus:border-gold"
+            >
+              <option value="">-- Choose District --</option>
+              {selectedProvinceObj.districts.map((d) => (
+                <option key={d.id} value={d.name}>
+                  {d.name} ({d.nameSi})
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Optional Locality / Town */}
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-ivory/70 mb-1.5">
+            Nearest Town / Locality (Optional)
+          </label>
+          <input
+            type="text"
+            placeholder="e.g. Nugegoda, Kandy Town, Maharagama..."
+            value={answers.locality || ''}
+            onChange={(e) => onChange({ locality: e.target.value })}
+            className="w-full p-3.5 rounded-xl bg-midnight border border-charcoal-light text-ivory text-sm focus:outline-none focus:border-gold"
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // STEP 09 - ADDITIONAL CONTEXT
+  if (currentStep === 9) {
+    return (
+      <div className="space-y-4 max-w-xl mx-auto">
+        <div className="text-center mb-6">
+          <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 09 of 10</span>
+          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Is there anything else you would like us to know?</h2>
+          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබට අප වෙත පැවසීමට වෙනත් යමක් තිබේද?</p>
+          <p className="text-xs text-ivory/60 mt-1">Optional. Write whatever feels comfortable.</p>
+        </div>
+
+        <div className="p-3 rounded-lg bg-charcoal border border-gold/20 text-xs text-ivory/70 flex items-start gap-2 mb-2">
+          <Info className="w-4 h-4 text-gold flex-shrink-0 mt-0.5" />
+          <span>
+            <strong>Privacy Reminder:</strong> Do not include unnecessary personal identifiers such as your full legal name, national identity card number, or home address.
+          </span>
+        </div>
+
+        <textarea
+          rows={5}
+          placeholder="Feel free to express your thoughts, questions, or specific circumstances here..."
+          value={answers.additionalContext || ''}
+          onChange={(e) => onChange({ additionalContext: e.target.value })}
+          className="w-full p-4 rounded-xl bg-midnight border border-charcoal-light text-ivory text-sm focus:outline-none focus:border-gold leading-relaxed"
+        />
+      </div>
+    );
+  }
+
+  // STEP 10 - REVIEW & EXPLICIT CONSENT
+  if (currentStep === 10) {
+    return (
+      <div className="space-y-6 max-w-2xl mx-auto">
+        <div className="text-center mb-6">
+          <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 10 of 10</span>
+          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Review Your Preferences</h2>
+          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබ ලබාදුන් තොරතුරු සමාලෝචනය කරන්න</p>
+          <p className="text-xs text-ivory/60 mt-1">
+            Check your choices before generating your personalized navigation pathway.
+          </p>
+        </div>
+
+        <div className="charcoal-card divide-y divide-charcoal-light">
+          {/* Summary Row 1: Purpose */}
+          <div className="p-4 flex items-center justify-between">
+            <div>
+              <span className="text-xs text-gold uppercase tracking-wider font-semibold block">Primary Goal</span>
+              <span className="text-sm font-bold text-ivory capitalize">
+                {answers.purpose?.replace(/_/g, ' ') || 'Not specified'}
+              </span>
+            </div>
+            <button
+              onClick={() => onEditStep(1)}
+              className="text-xs text-gold underline hover:text-champagne font-medium"
+            >
+              Edit
+            </button>
+          </div>
+
+          {/* Summary Row 2: Substances */}
+          <div className="p-4 flex items-center justify-between">
+            <div>
+              <span className="text-xs text-gold uppercase tracking-wider font-semibold block">Substance(s) of Focus</span>
+              <span className="text-sm font-medium text-ivory">
+                {answers.substances.length > 0
+                  ? answers.substances.map((s) => s.replace(/_/g, ' ')).join(', ')
+                  : 'None selected'}
+              </span>
+            </div>
+            <button
+              onClick={() => onEditStep(3)}
+              className="text-xs text-gold underline hover:text-champagne font-medium"
+            >
+              Edit
+            </button>
+          </div>
+
+          {/* Summary Row 3: Support & Location */}
+          <div className="p-4 flex items-center justify-between">
+            <div>
+              <span className="text-xs text-gold uppercase tracking-wider font-semibold block">Preferred Support & Area</span>
+              <span className="text-sm font-medium text-ivory">
+                {answers.supportPreference?.replace(/_/g, ' ') || 'General'}{' '}
+                {answers.district ? `• ${answers.district} District` : ''}
+              </span>
+            </div>
+            <button
+              onClick={() => onEditStep(7)}
+              className="text-xs text-gold underline hover:text-champagne font-medium"
+            >
+              Edit
+            </button>
+          </div>
+        </div>
+
+        {/* Consent Checkbox */}
+        <div className="p-4 rounded-xl bg-charcoal border border-gold/30 space-y-3">
+          <label className="flex items-start gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={answers.consentedToReferral || false}
+              onChange={(e) => onChange({ consentedToReferral: e.target.checked })}
+              className="mt-1 h-4 w-4 rounded border-charcoal-light text-gold focus:ring-gold bg-midnight"
+            />
+            <span className="text-xs text-ivory/90 leading-relaxed">
+              I understand that <strong>Beyond the Darkness – අඳුරෙන් එළියට</strong> is an educational navigation platform and does not replace medical advice. I consent to receiving personalized suggestions based on these responses. My data remains anonymous.
+            </span>
+          </label>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+};
