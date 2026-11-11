@@ -16,6 +16,7 @@ export const ASSETS = {
   leoLogoPlaceholder: '/logo-icon.svg',
   
   // Hero Visuals
+  heroVideo: '/assets/video/hero%20background%20video.mp4',
   heroAtmosphere: {
     darknessGradient: 'linear-gradient(180deg, rgba(16, 17, 19, 0.95) 0%, rgba(36, 36, 38, 0.85) 100%)',
     goldGlow: 'radial-gradient(circle at 75% 30%, rgba(216, 190, 130, 0.18) 0%, rgba(16, 17, 19, 0) 65%)',

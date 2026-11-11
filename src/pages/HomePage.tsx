@@ -40,109 +40,79 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
   return (
     <div className="space-y-24 pb-16">
       {/* 1. CINEMATIC HERO SECTION */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-12 pb-16">
-        {/* Abstract Gold & Darkness Atmospheric Glows */}
-        <div className="absolute inset-0 bg-midnight pointer-events-none" />
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-10 left-10 w-80 h-80 bg-bronze/10 rounded-full blur-3xl pointer-events-none" />
+      <section className="cinematic-hero relative flex items-center">
+        <div className="cinematic-hero__inner">
+          <div className="cinematic-hero__content">
+            <p className="cinematic-hero__eyebrow">
+              <span className="cinematic-hero__eyebrow-mark" aria-hidden="true" />
+              {BRAND.slogan}
+            </p>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left Column: Headlines & CTAs */}
-            <div className="lg:col-span-7 space-y-6 text-left">
-              {/* Campaign Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-charcoal border border-gold/30 shadow-gold-subtle">
-                <span className="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
-                <span className="text-xs uppercase tracking-wider text-gold font-bold">
-                  {BRAND.slogan}
-                </span>
-              </div>
+            <h1 className="cinematic-hero__title">
+              <span>Beyond the Darkness.</span>
+              <span className="cinematic-hero__title-gold">Towards a Brighter Tomorrow.</span>
+            </h1>
 
-              {/* Bilingual Headline */}
-              <div>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-heading text-ivory tracking-tight leading-[1.1]">
-                  Beyond the Darkness.
-                  <span className="block gold-gradient-text mt-1">
-                    Towards a Brighter Tomorrow.
-                  </span>
-                </h1>
-                <h2 className="text-2xl sm:text-3xl font-sinhalaSerif text-gold/90 font-semibold mt-3">
-                  අඳුරෙන් එළියට. වඩාත් දීප්තිමත් හෙට දිනක් කරා.
-                </h2>
-              </div>
+            <h2 className="cinematic-hero__sinhala" lang="si">
+              {BRAND.heroHeadlineSinhala}
+            </h2>
 
-              {/* Subtext */}
-              <p className="text-base sm:text-lg text-ivory/80 max-w-2xl font-sans leading-relaxed">
-                {BRAND.heroSubtext}
-              </p>
-              <p className="text-sm text-gold/80 font-sinhalaSerif">
+            <div className="cinematic-hero__copy">
+              <p>{BRAND.heroSubtext}</p>
+              <p className="cinematic-hero__copy-sinhala" lang="si">
                 {BRAND.heroSubtextSinhala}
               </p>
-
-              {/* Action Buttons */}
-              <div className="pt-2 flex flex-wrap items-center gap-4">
-                <Button
-                  variant="gold"
-                  size="lg"
-                  onClick={onOpenAiChat}
-                  className="shadow-gold-glow"
-                  leftIcon={<Sparkles className="w-5 h-5" />}
-                >
-                  {t('cta.talkToAi')}
-                </Button>
-
-                <Button
-                  variant="charcoal"
-                  size="lg"
-                  onClick={onOpenWizard}
-                  leftIcon={<Compass className="w-5 h-5 text-gold" />}
-                >
-                  Launch Creative Wizard
-                </Button>
-
-                <Link to="/support-directory">
-                  <Button variant="outline" size="lg" leftIcon={<MapPin className="w-4 h-4 text-gold" />}>
-                    Find Care Centers
-                  </Button>
-                </Link>
-              </div>
-
-              {/* Promise Card */}
-              <div className="p-4 rounded-xl bg-charcoal/80 border border-gold/20 max-w-xl text-xs text-ivory/70 leading-relaxed">
-                <strong className="text-champagne block mb-1">Our Core Promise:</strong>
-                {BRAND.promise}
-              </div>
             </div>
 
-            {/* Right Column: Campaign Artwork & Atmosphere */}
-            <div className="lg:col-span-5 flex justify-center">
-              <div className="relative group max-w-sm sm:max-w-md w-full">
-                {/* Glow ring */}
-                <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-gold/30 via-champagne/20 to-bronze/30 blur-xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+            <div className="cinematic-hero__actions">
+              <Button
+                variant="gold"
+                size="lg"
+                onClick={onOpenAiChat}
+                className="cinematic-hero__action cinematic-hero__action-primary"
+                leftIcon={<Sparkles className="cinematic-hero__action-icon h-5 w-5" />}
+              >
+                {t('cta.talkToAi')}
+              </Button>
 
-                <div className="relative rounded-2xl overflow-hidden border border-gold/40 shadow-2xl bg-charcoal">
-                  <img
-                    src={ASSETS.campaignPoster}
-                    alt="Beyond the Darkness Official Campaign Poster"
-                    className="w-full h-auto object-cover transform group-hover:scale-102 transition duration-500"
-                  />
-                  <div className="p-4 bg-gradient-to-t from-midnight via-midnight/90 to-transparent absolute bottom-0 inset-x-0">
-                    <span className="text-[11px] uppercase tracking-wider text-gold font-bold block">
-                      Official Initiative Identity
-                    </span>
-                    <span className="text-xs text-ivory font-medium">
-                      Leo Club of University of Sri Jayewardenepura
-                    </span>
-                  </div>
-                </div>
-              </div>
+              <Button
+                variant="charcoal"
+                size="lg"
+                onClick={onOpenWizard}
+                className="cinematic-hero__action cinematic-hero__action-secondary"
+                leftIcon={<Compass className="cinematic-hero__action-icon h-5 w-5 text-gold" />}
+              >
+                Launch Creative Wizard
+              </Button>
+
+              <Link
+                to="/support-directory"
+                className="cinematic-hero__action cinematic-hero__action-secondary"
+              >
+                <MapPin className="cinematic-hero__action-icon h-4 w-4 text-gold" aria-hidden="true" />
+                <span>Find Care Centers</span>
+              </Link>
             </div>
+
+            <p className="cinematic-hero__promise">
+              <span>OUR PROMISE</span>
+              {BRAND.promise}
+            </p>
           </div>
         </div>
+
+        <a
+          href="#homepage-mission"
+          className="cinematic-hero__scroll"
+          aria-label="Scroll to discover the campaign"
+        >
+          <span>SCROLL TO DISCOVER</span>
+          <ChevronDown className="h-4 w-4" aria-hidden="true" />
+        </a>
       </section>
 
       {/* 2. MISSION & VISION: PREVENT • SUPPORT • CONNECT */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="homepage-mission" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12">
           <span className="text-xs uppercase tracking-wider text-gold font-bold">
             Guiding Philosophy

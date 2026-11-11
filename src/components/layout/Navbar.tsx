@@ -31,7 +31,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
   ];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-gold/15 bg-midnight/90 shadow-[0_12px_36px_-24px_rgba(216,190,130,0.5)] backdrop-blur-xl">
+    <header
+      className={`sticky top-0 z-40 border-b border-gold/15 shadow-[0_12px_36px_-24px_rgba(216,190,130,0.5)] ${
+        location.pathname === '/'
+          ? 'bg-midnight/45 backdrop-blur-md'
+          : 'bg-midnight/90 backdrop-blur-xl'
+      }`}
+    >
       <div className="h-px bg-gradient-to-r from-transparent via-gold/70 to-transparent" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-[76px] items-center justify-between gap-4">
@@ -69,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
           </div>
 
           <div className="flex items-center gap-2 lg:hidden">
-            <LanguageSwitcher className="mr-1" />
+            <LanguageSwitcher className="mr-1 hidden sm:inline-flex" />
 
             <button
               onClick={onOpenAiChat}
@@ -112,6 +118,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
 
       {mobileMenuOpen && (
         <div id="mobile-navigation" className="border-t border-gold/15 bg-midnight/98 px-4 pb-6 pt-3 backdrop-blur-xl lg:hidden">
+          <div className="pb-3 sm:hidden">
+            <LanguageSwitcher />
+          </div>
           <nav className="mx-auto flex max-w-7xl flex-col gap-1" aria-label="Main Navigation">
             {navLinks.map((link) => (
               <NavLink

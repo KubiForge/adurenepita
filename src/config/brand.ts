@@ -8,7 +8,7 @@ export const BRAND = {
   slogan: 'PREVENT • SUPPORT • CONNECT',
   secondarySlogan: 'PREVENTION THROUGH KNOWLEDGE. SUPPORT THROUGH TECHNOLOGY. HOPE THROUGH HUMAN CONNECTION.',
   heroHeadline: 'Beyond the Darkness. Towards a Brighter Tomorrow.',
-  heroHeadlineSinhala: 'අඳුරෙන් එළියට. වඩාත් දීප්තිමත් හෙට දිනක් කරා.',
+  heroHeadlineSinhala: 'අඳුරෙන් එළියට. වඩාත් දිප්තිමත් හෙට දිනක් කරා.',
   heroSubtext: 'Knowledge creates awareness. Support creates possibilities. Together, we can help people find a way forward.',
   heroSubtextSinhala: 'දැනුමෙන් දැනුවත්භාවය ගොඩනැගේ. සහයෝගයෙන් නව මාවත් විවර වේ. එක්ව, අපට යහපත් හෙටක් නිර්මාණය කළ හැකිය.',
   promise: 'A safe place to ask. A trusted path to information, professional support and hope.',

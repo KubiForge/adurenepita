@@ -1,14 +1,21 @@
 import React from 'react';
 import { PhoneCall, AlertTriangle, ShieldAlert } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { useSafety } from '../../context/SafetyContext';
 
 export const EmergencyBanner: React.FC = () => {
   const { t } = useLanguage();
   const { openEmergencyModal } = useSafety();
+  const isHome = useLocation().pathname === '/';
 
   return (
-    <aside aria-label="Crisis & Medical Emergency Support" className="bg-red-950/80 border-b border-red-500/30 text-ivory text-xs py-2 px-4 transition-all">
+    <aside
+      aria-label="Crisis & Medical Emergency Support"
+      className={`relative z-50 border-b border-red-500/30 text-ivory text-xs py-2 px-4 transition-all ${
+        isHome ? 'bg-red-950/55' : 'bg-red-950/80'
+      }`}
+    >
       <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <span className="flex h-2 w-2 relative">

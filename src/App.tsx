@@ -7,6 +7,7 @@ import { SafetyProvider } from './context/SafetyContext';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { EmergencyBanner } from './components/layout/EmergencyBanner';
+import { CinematicBackground } from './components/layout/CinematicBackground';
 import { EmergencyModal } from './components/common/EmergencyModal';
 import { CreativeWizardModal } from './components/wizard/CreativeWizardModal';
 import { AiChatDrawer } from './components/ai/AiChatDrawer';
@@ -34,6 +35,8 @@ const ScrollToTop = () => {
 };
 
 export const AppContent: React.FC = () => {
+  const location = useLocation();
+  const isHome = location.pathname === '/';
   const [isAiChatOpen, setIsAiChatOpen] = useState(false);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [chatInitialPrompt, setChatInitialPrompt] = useState<string | undefined>();
@@ -48,15 +51,16 @@ export const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-midnight text-ivory flex flex-col font-sans">
+    <div className={`relative isolate min-h-screen text-ivory flex flex-col font-sans ${isHome ? 'bg-transparent' : 'bg-midnight'}`}>
       <ScrollToTop />
+      {isHome && <CinematicBackground />}
       <EmergencyBanner />
       <Navbar
         onOpenAiChat={() => handleOpenAiChat()}
         onOpenWizard={handleOpenWizard}
       />
 
-      <main className="flex-1">
+      <main className="relative z-10 flex-1">
         <Routes>
           <Route
             path="/"
@@ -98,7 +102,7 @@ export const AppContent: React.FC = () => {
       <Footer />
 
       {/* Floating AI Action Pill */}
-      <div className="fixed bottom-6 right-6 z-40">
+      <div className={`fixed bottom-6 right-6 z-40 ${isHome ? 'hidden' : ''}`}>
         <button
           onClick={() => handleOpenAiChat()}
           className="btn-gold px-4 py-3 rounded-full font-bold shadow-gold-glow flex items-center gap-2 hover:scale-105 active:scale-95 transition-all"
