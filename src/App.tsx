@@ -68,7 +68,7 @@ export const AppContent: React.FC = () => {
         />
       )}
 
-      <main className="relative z-10 flex-1">
+      <main className="relative z-10 flex-1 w-full overflow-x-hidden">
         <Routes>
           {/* Public User Platform (12 Core Screens + Home, About, Stats) */}
           <Route
