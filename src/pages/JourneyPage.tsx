@@ -87,9 +87,6 @@ export const JourneyPage: React.FC = () => {
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold font-heading text-ivory">
             My Journey
-            <span className="block font-sinhalaSerif text-gold text-2xl mt-0.5">
-              මගේ ගමන් මඟ
-            </span>
           </h1>
           <p className="text-xs sm:text-sm text-ivory/60 mt-1">
             Your saved resources, guided plan progress, and confidential referral records.

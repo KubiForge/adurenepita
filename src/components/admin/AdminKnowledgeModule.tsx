@@ -164,9 +164,6 @@ export const AdminKnowledgeModule: React.FC = () => {
               <h3 className="font-heading font-bold text-lg text-ivory">
                 {drug.name}
               </h3>
-              <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-                {drug.nameSi}
-              </p>
 
               <p className="text-xs text-ivory/70 line-clamp-2 mt-2 leading-relaxed">
                 {drug.description}
@@ -224,7 +221,7 @@ export const AdminKnowledgeModule: React.FC = () => {
             </div>
 
             <form onSubmit={handleSave} className="space-y-4 text-xs">
-              <div className="grid grid-cols-2 gap-3">
+              <div>
                 <div>
                   <label className="block text-ivory/80 font-semibold mb-1">Substance Name</label>
                   <input
@@ -237,16 +234,6 @@ export const AdminKnowledgeModule: React.FC = () => {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-ivory/80 font-semibold mb-1">Sinhala Name</label>
-                  <input
-                    type="text"
-                    value={form.nameSi}
-                    onChange={(e) => setForm({ ...form, nameSi: e.target.value })}
-                    placeholder="e.g. කොකේන්"
-                    className="w-full px-3 py-2 rounded-xl bg-midnight border border-charcoal-light text-ivory focus:outline-none focus:border-gold"
-                  />
-                </div>
               </div>
 
               <div>

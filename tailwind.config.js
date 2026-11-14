@@ -46,11 +46,9 @@ export default {
         },
       },
       fontFamily: {
-        serif: ['"Noto Serif Sinhala"', '"Cormorant Garamond"', 'Georgia', 'serif'],
-        sans: ['Inter', '"Noto Sans Sinhala"', 'system-ui', '-apple-system', 'sans-serif'],
+        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
         editorial: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        sinhalaSerif: ['"Noto Serif Sinhala"', 'serif'],
-        sinhalaSans: ['"Noto Sans Sinhala"', 'sans-serif'],
       },
       boxShadow: {
         'gold-glow': '0 0 25px -5px rgba(216, 190, 130, 0.25)',

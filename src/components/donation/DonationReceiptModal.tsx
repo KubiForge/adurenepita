@@ -43,9 +43,6 @@ export const DonationReceiptModal: React.FC<DonationReceiptModalProps> = ({
           <h3 className="text-2xl font-bold font-heading text-ivory mt-0.5">
             Thank You For Standing with Us
           </h3>
-          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-            ඔබගේ මානුෂීය සහයෝගයට හදපිරි ස්තූතිය!
-          </p>
           <p className="text-xs text-ivory/60 mt-1">
             Your generous gift directly impacts youth across Sri Lanka.
           </p>

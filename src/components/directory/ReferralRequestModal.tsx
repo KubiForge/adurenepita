@@ -19,7 +19,6 @@ export const ReferralRequestModal: React.FC<ReferralRequestModalProps> = ({
   center,
 }) => {
   const { isAuthenticated } = useAuth();
-  const [preferredLanguage, setPreferredLanguage] = useState<'si' | 'en' | 'ta'>('si');
   const [contactMethod, setContactMethod] = useState<'phone' | 'email' | 'in_person'>('phone');
   const [contactInfo, setContactInfo] = useState('');
   const [briefConcern, setBriefConcern] = useState('');
@@ -47,7 +46,7 @@ export const ReferralRequestModal: React.FC<ReferralRequestModalProps> = ({
       district: center.district,
       assessment: {
         purpose: 'professional_support',
-        preferredLanguage,
+        preferredLanguage: 'en',
         consentedToReferral: true,
       },
       dataShareConsent: true,
@@ -116,33 +115,6 @@ export const ReferralRequestModal: React.FC<ReferralRequestModalProps> = ({
             </p>
           </div>
 
-          {/* Preferred Language */}
-          <div>
-            <label className="block text-xs font-semibold text-ivory mb-1">
-              Preferred Language for Communication (භාෂාව)
-            </label>
-            <div className="grid grid-cols-3 gap-2">
-              {[
-                { id: 'si', label: 'සිංහල (Sinhala)' },
-                { id: 'en', label: 'English' },
-                { id: 'ta', label: 'தமிழ் (Tamil)' },
-              ].map((l) => (
-                <button
-                  type="button"
-                  key={l.id}
-                  onClick={() => setPreferredLanguage(l.id as any)}
-                  className={`p-2 rounded-lg text-xs font-medium border text-center transition-all ${
-                    preferredLanguage === l.id
-                      ? 'bg-charcoal border-gold text-gold'
-                      : 'bg-midnight border-charcoal-light text-ivory/70 hover:border-gold/30'
-                  }`}
-                >
-                  {l.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* Preferred Contact Method */}
           <div>
             <label className="block text-xs font-semibold text-ivory mb-1">
@@ -180,7 +152,7 @@ export const ReferralRequestModal: React.FC<ReferralRequestModalProps> = ({
           {/* Contact Information */}
           <div>
             <label className="block text-xs font-semibold text-ivory mb-1">
-              {contactMethod === 'phone' ? 'Phone Number or WhatsApp (දුරකථන අංකය)' : 'Email Address'}
+              {contactMethod === 'phone' ? 'Phone Number or WhatsApp' : 'Email Address'}
             </label>
             <input
               type={contactMethod === 'phone' ? 'tel' : 'email'}
@@ -248,9 +220,6 @@ export const ReferralRequestModal: React.FC<ReferralRequestModalProps> = ({
           <h3 className="text-lg font-bold font-heading text-ivory">
             Referral Request Transmitted Confidentially
           </h3>
-          <p className="text-xs text-gold/80 font-sinhalaSerif">
-            ඔබගේ ඉල්ලීම සාර්ථකව යොමුකරන ලදී
-          </p>
           {requestReference && <p className="font-mono text-gold text-sm">{requestReference}</p>}
           <p className="text-xs text-ivory/70 max-w-md mx-auto leading-relaxed">
             Your request has been sent to the platform's confidential support queue for review. The institution has not been contacted on your behalf. You can track updates from your account or contact {center.name} directly at <strong>{center.phone}</strong>.

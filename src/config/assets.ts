@@ -34,7 +34,6 @@ export const ASSETS = {
     {
       id: 'gallery-1',
       title: 'Beyond the Stigma Campus Drive',
-      titleSinhala: 'විශ්වවිද්‍යාල පරිශ්‍රයේ දැනුවත් කිරීමේ වැඩසටහන',
       category: 'Awareness Drive',
       date: '15 – 30 Nov 2026',
       venue: 'USJ Campus Grounds',
@@ -43,7 +42,6 @@ export const ASSETS = {
     {
       id: 'gallery-2',
       title: 'Youth Prevent Program',
-      titleSinhala: 'තරුණ මත්ද්‍රව්‍ය නිවාරණ වැඩසටහන',
       category: 'Schools & Communities',
       date: '05 Dec 2026',
       venue: 'Western Province Schools',
@@ -52,7 +50,6 @@ export const ASSETS = {
     {
       id: 'gallery-3',
       title: 'Choose a Healthier You',
-      titleSinhala: 'නිරෝගී හෙටක් උදෙසා ප්‍රජා වැඩමුළුව',
       category: 'Community Campaign',
       date: '10 Jan 2027',
       venue: 'Colombo Town Hall',

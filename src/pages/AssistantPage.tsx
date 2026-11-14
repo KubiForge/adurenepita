@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useLanguage } from '../context/LanguageContext';
 import { useSafety } from '../context/SafetyContext';
 import { ChatMessage, SourceCitation } from '../types/chat';
 import { grokService } from '../services/grokService';
@@ -15,13 +14,12 @@ import {
   BookOpen,
   MapPin,
   Heart,
-  Globe,
   Lock,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const AssistantPage: React.FC = () => {
-  const { language, setLanguage } = useLanguage();
+  const language = 'en';
   const { triggerSafetyInterruption, openEmergencyModal } = useSafety();
 
   const [input, setInput] = useState('');
@@ -29,14 +27,7 @@ export const AssistantPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Proposal-defined official multilingual welcome messages
   const getWelcome = (): string => {
-    if (language === 'si') {
-      return 'ආයුබෝවන්. මම BEYOND THE DARKNESS AI Assistant. ඔබට මත්ද්‍රව්‍ය පිළිබඳ තොරතුරු, ඔබේ තත්ත්වය ගැන කතා කිරීම හෝ වෘත්තීය සහය සොයාගැනීම සඳහා මඟ පෙන්වන්න මට පුළුවන්. ඔබට කැමති විදියට ඔබේ භාෂාවෙන් කතා කරන්න. මම AI සහායකයෙක් වන අතර වෛද්‍යවරයෙකු වෙනුවට කටයුතු කරන්නේ නැහැ.';
-    }
-    if (language === 'ta') {
-      return 'வணக்கம். நான் BEYOND THE DARKNESS AI Assistant. போதைப்பொருள் தொடர்பான நம்பகமான தகவல்களை அறியவும், உங்கள் கவலைகளைப் பகிரவும், பொருத்தமான தொழில்முறை உதவியைத் தேடவும் நான் வழிகாட்ட முடியும். நான் ஒரு AI உதவியாளர்; மருத்துவ நிபுணர் அல்லது அவசர சேவை அல்ல.';
-    }
     return "Hello, I'm BEYOND THE DARKNESS AI Assistant. I can help you explore reliable information, talk through what you are concerned about, and find appropriate professional support. You can write naturally or use guided options. I'm an AI assistant, not a healthcare professional or emergency service.";
   };
 
@@ -56,7 +47,7 @@ export const AssistantPage: React.FC = () => {
         ],
       },
     ]);
-  }, [language]);
+  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -146,31 +137,13 @@ export const AssistantPage: React.FC = () => {
               </span>
             </div>
             <p className="text-xs text-ivory/60 mt-0.5">
-              Empathetic, non-judgmental guidance and verified medical service routing in Sinhala, English & Tamil.
+              Empathetic, non-judgmental guidance and verified medical service routing in English.
             </p>
           </div>
         </div>
 
         {/* Language & Actions */}
         <div className="flex items-center gap-2 self-end sm:self-center">
-          <div className="flex bg-midnight p-1 rounded-xl border border-charcoal-light text-xs font-semibold">
-            {[
-              { code: 'en', label: 'EN' },
-              { code: 'si', label: 'සිංහල' },
-              { code: 'ta', label: 'தமிழ்' },
-            ].map((l) => (
-              <button
-                key={l.code}
-                onClick={() => setLanguage(l.code as any)}
-                className={`px-3 py-1 rounded-lg transition-all ${
-                  language === l.code ? 'bg-gold text-midnight font-bold' : 'text-ivory/60 hover:text-ivory'
-                }`}
-              >
-                {l.label}
-              </button>
-            ))}
-          </div>
-
           <button
             onClick={handleReset}
             className="p-2 rounded-xl bg-midnight border border-charcoal-light text-ivory/60 hover:text-gold transition-colors"

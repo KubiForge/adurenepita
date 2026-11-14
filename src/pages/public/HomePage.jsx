@@ -42,7 +42,6 @@ const features = [
 const previewDrugs = [
   {
     name: 'Cannabis',
-    sinhala: 'කංසා',
     category: 'Cannabis',
     desc: 'The most commonly used illicit substance in Sri Lanka. Learn about its effects, risks and support options.',
     slug: 'cannabis',
@@ -50,7 +49,6 @@ const previewDrugs = [
   },
   {
     name: 'Methamphetamine',
-    sinhala: 'අයිස්',
     category: 'Stimulant',
     desc: 'A highly addictive stimulant. Understand the warning signs and pathways to recovery.',
     slug: 'methamphetamine',
@@ -58,7 +56,6 @@ const previewDrugs = [
   },
   {
     name: 'Heroin',
-    sinhala: 'හෙරොයින්',
     category: 'Opioid',
     desc: 'A powerful opioid causing severe dependence. Know the risks and emergency response steps.',
     slug: 'heroin',
@@ -138,15 +135,6 @@ export default function HomePage() {
             BEYOND THE
             <span style={{ display: 'block', color: '#D8BE82' }}>DARKNESS</span>
           </h1>
-
-          {/* Sinhala tagline */}
-          <p style={{
-            fontFamily: '"Noto Serif Sinhala", serif',
-            fontSize: 'clamp(20px, 3vw, 32px)',
-            color: '#D8BE82', marginBottom: 20, letterSpacing: 2,
-          }}>
-            අඳුරෙන් එළියට
-          </p>
 
           {/* Subtitle */}
           <p style={{
@@ -321,7 +309,6 @@ export default function HomePage() {
                     }}>{drug.category}</span>
                   </div>
                   <h3 style={{ fontFamily: '"Cormorant Garamond", serif', fontSize: 24, fontWeight: 500, color: '#F5F2EB', margin: '0 0 4px' }}>{drug.name}</h3>
-                  <p style={{ color: '#D8BE82', fontSize: 13, margin: '0 0 14px', fontFamily: '"Noto Serif Sinhala", serif' }}>{drug.sinhala}</p>
                   <p style={{ color: 'rgba(245,242,235,0.6)', fontSize: 14, lineHeight: 1.65, margin: '0 0 20px' }}>{drug.desc}</p>
                   <Link to={`/drugs/${drug.slug}`} style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, color: '#D8BE82', fontWeight: 600, fontSize: 14 }}>
                     Learn More <ChevronRight size={16} />

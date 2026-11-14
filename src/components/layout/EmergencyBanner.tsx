@@ -1,9 +1,9 @@
 import React from 'react';
 import { AlertTriangle, PhoneCall } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const EmergencyBanner: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useLanguage();
 
   const contacts = [
     { href: 'tel:1927', label: t('emergency.call1927'), icon: <PhoneCall className='w-3 h-3'/> },

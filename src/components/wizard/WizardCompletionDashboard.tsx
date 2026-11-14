@@ -97,9 +97,6 @@ export const WizardCompletionDashboard: React.FC<WizardCompletionDashboardProps>
         <h2 className="text-2xl sm:text-3xl font-bold font-heading text-ivory mt-1">
           Your Personalized Support Plan
         </h2>
-        <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-          ඔබ වෙනුවෙන්ම සකස් කළ පුද්ගලාරෝපිත මඟපෙන්වීම
-        </p>
         <p className="text-xs text-ivory/70 mt-2 max-w-lg mx-auto leading-relaxed">
           Based on your choices, here is a curated path connecting you with evidence-based resources, verified local care, and confidential support.
         </p>
@@ -135,7 +132,6 @@ export const WizardCompletionDashboard: React.FC<WizardCompletionDashboardProps>
                         Verified
                       </span>
                     </div>
-                    <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">{center.nameSi}</p>
                     <p className="text-xs text-ivory/60 mt-1">{center.city} • {center.province}</p>
                   </div>
 
@@ -189,7 +185,6 @@ export const WizardCompletionDashboard: React.FC<WizardCompletionDashboardProps>
                         {drug.classification}
                       </span>
                     </div>
-                    <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">{drug.nameSi}</p>
                     <p className="text-xs text-ivory/60 mt-2 line-clamp-2 leading-relaxed">
                       {drug.description}
                     </p>
@@ -240,7 +235,7 @@ export const WizardCompletionDashboard: React.FC<WizardCompletionDashboardProps>
               Continue Seamlessly with Beyond the Darkness AI
             </h4>
             <p className="text-xs text-ivory/70 mt-0.5">
-              Talk through your situation confidentially in Sinhala, English, or Tamil with our AI Assistant.
+              Talk through your situation confidentially in English with our AI Assistant.
             </p>
           </div>
         </div>

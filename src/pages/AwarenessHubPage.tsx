@@ -11,19 +11,16 @@ export const AwarenessHubPage: React.FC = () => {
   const downloadableResources = [
     {
       title: 'Family Guide: Recognizing Early Signs of Substance Distress in Students',
-      titleSi: 'ශිෂ්‍ය ප්‍රජාව තුළ මත්ද්‍රව්‍ය භාවිතයේ මූලික ලක්ෂණ හඳුනාගැනීම',
       size: 'PDF • 1.4 MB',
       category: 'Family Guide',
     },
     {
       title: 'Emergency Overdose Protocol & Recovery Position One-Pager',
-      titleSi: 'අධික මාත්‍රාවක් ශරීරගත වූ විට ක්ෂණික ප්‍රථමාධාර අත්පොත',
       size: 'PDF • 850 KB',
       category: 'Clinical Protocol',
     },
     {
       title: 'Methamphetamine (ICE) Facts for University Students',
-      titleSi: 'විශ්වවිද්‍යාල සිසුන් සඳහා අයිස් (ICE) පිළිබඳ විද්‍යාත්මක සත්‍යය',
       size: 'PDF • 2.1 MB',
       category: 'Youth Prevention',
     },
@@ -38,9 +35,6 @@ export const AwarenessHubPage: React.FC = () => {
         </span>
         <h1 className="text-4xl font-bold font-heading text-ivory">
           Awareness Hub & Community Resources
-          <span className="block font-sinhalaSerif text-gold text-2xl mt-1">
-            දැනුවත්භාවය හා අධ්‍යාපනික තොරතුරු කේන්ද්‍රය
-          </span>
         </h1>
         <p className="text-sm text-ivory/70 leading-relaxed">
           Explore peer-reviewed educational articles, interactive literacy quizzes, and downloadable guidelines crafted for Sri Lankan youth, educators, and families.
@@ -98,9 +92,6 @@ export const AwarenessHubPage: React.FC = () => {
                 <h3 className="font-heading font-bold text-lg text-ivory leading-snug">
                   {art.title}
                 </h3>
-                <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5 mb-3">
-                  {art.titleSi}
-                </p>
 
                 <p className="text-xs text-ivory/70 leading-relaxed line-clamp-3">
                   {art.summary}
@@ -141,9 +132,6 @@ export const AwarenessHubPage: React.FC = () => {
                 <h3 className="font-heading font-bold text-base text-ivory">
                   {res.title}
                 </h3>
-                <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5 mb-2">
-                  {res.titleSi}
-                </p>
                 <span className="text-[11px] font-mono text-ivory/50 block">{res.size}</span>
               </div>
 
@@ -186,9 +174,6 @@ export const AwarenessHubPage: React.FC = () => {
             <h2 className="text-2xl font-bold font-heading text-ivory mb-1">
               {selectedArticle.title}
             </h2>
-            <p className="text-xs text-gold/80 font-sinhalaSerif mb-4">
-              {selectedArticle.titleSi}
-            </p>
 
             <div className="space-y-4 text-xs sm:text-sm text-ivory/80 leading-relaxed">
               {selectedArticle.content.map((p, i) => (

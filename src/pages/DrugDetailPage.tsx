@@ -87,16 +87,10 @@ export const DrugDetailPage: React.FC<DrugDetailPageProps> = ({ onOpenAiChatWith
           <h1 className="text-3xl sm:text-4xl font-bold font-heading text-ivory">
             {drug.name}
           </h1>
-          <h2 className="text-xl sm:text-2xl font-sinhalaSerif text-gold/90 mt-1">
-            {drug.nameSi}
-          </h2>
         </div>
 
         <p className="text-sm text-ivory/80 leading-relaxed max-w-3xl">
           {drug.description}
-        </p>
-        <p className="text-xs text-gold/80 font-sinhalaSerif">
-          {drug.descriptionSi}
         </p>
 
         {/* Quick Action CTAs */}
@@ -179,9 +173,6 @@ export const DrugDetailPage: React.FC<DrugDetailPageProps> = ({ onOpenAiChatWith
         <p className="text-xs text-ivory/80 leading-relaxed">
           {drug.dependence}
         </p>
-        <p className="text-xs text-gold/80 font-sinhalaSerif">
-          {drug.dependenceSi}
-        </p>
 
         <div className="pt-3 border-t border-charcoal-light">
           <h4 className="text-sm font-semibold text-gold mb-2">
@@ -202,9 +193,6 @@ export const DrugDetailPage: React.FC<DrugDetailPageProps> = ({ onOpenAiChatWith
         </h3>
         <p className="text-xs text-ivory/80 leading-relaxed">
           {drug.evidenceBasedTreatment}
-        </p>
-        <p className="text-xs text-gold/80 font-sinhalaSerif">
-          {drug.evidenceBasedTreatmentSi}
         </p>
       </div>
 

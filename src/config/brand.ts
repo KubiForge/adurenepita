@@ -1,23 +1,18 @@
 export const BRAND = {
-  name: 'BEYOND THE DARKNESS – අඳුරෙන් එළියට',
+  name: 'BEYOND THE DARKNESS',
   shortName: 'Beyond the Darkness',
-  sinhalaName: 'අඳුරෙන් එළියට',
   orgName: 'Leo Club of University of Sri Jayewardenepura',
   district: 'Leo District 306 D2',
   parentOrg: 'Lions International',
   slogan: 'PREVENT • SUPPORT • CONNECT',
   secondarySlogan: 'PREVENTION THROUGH KNOWLEDGE. SUPPORT THROUGH TECHNOLOGY. HOPE THROUGH HUMAN CONNECTION.',
   heroHeadline: 'Beyond the Darkness. Towards a Brighter Tomorrow.',
-  heroHeadlineSinhala: 'අඳුරෙන් එළියට. වඩාත් දිප්තිමත් හෙට දිනක් කරා.',
   heroSubtext: 'Knowledge creates awareness. Support creates possibilities. Together, we can help people find a way forward.',
-  heroSubtextSinhala: 'දැනුමෙන් දැනුවත්භාවය ගොඩනැගේ. සහයෝගයෙන් නව මාවත් විවර වේ. එක්ව, අපට යහපත් හෙටක් නිර්මාණය කළ හැකිය.',
   promise: 'A safe place to ask. A trusted path to information, professional support and hope.',
-  promiseSinhala: 'බියක් සැකක් නැතිව විමසිය හැකි ආරක්ෂිත ඉඩක්. විශ්වාසදායී තොරතුරු, වෘත්තීය සහය සහ බලාපොරොත්තුව වෙත මාවතක්.',
   emergencyContacts: [
     {
       id: 'nddcb',
       name: 'NDDCB Drug Information Hotline',
-      sinhalaName: 'අන්තරායකර ඖෂධ පාලක ජාතික මණ්ඩලය',
       number: '1927',
       hours: '24/7 Toll-Free',
       badge: 'Official Drug Hotline',
@@ -27,7 +22,6 @@ export const BRAND = {
     {
       id: 'ambulance',
       name: 'Suwaseriya Free Ambulance',
-      sinhalaName: '1990 සුවසැරිය ගිලන්රථ සේවය',
       number: '1990',
       hours: '24/7 Toll-Free',
       badge: 'Medical Emergency',
@@ -37,17 +31,15 @@ export const BRAND = {
     {
       id: 'crisis',
       name: 'CCC Crisis & Mental Health Helpline',
-      sinhalaName: 'CCC මානසික සුවතා දුරකථන සේවය',
       number: '1333',
       hours: '24/7 Toll-Free',
       badge: 'Emotional Crisis',
       primary: false,
-      description: 'Confidential crisis support and suicide prevention counseling in Sinhala, Tamil, English.',
+      description: 'Confidential crisis support and suicide prevention counseling.',
     },
     {
       id: 'police',
       name: 'Police Emergency',
-      sinhalaName: 'පොලිස් හදිසි ඇමතුම්',
       number: '119',
       hours: '24/7 Toll-Free',
       badge: 'Emergency',
@@ -57,7 +49,6 @@ export const BRAND = {
     {
       id: 'sumithrayo',
       name: 'Sumithrayo Mental Health Support',
-      sinhalaName: 'මිත්‍රයෝ සංවිධානය',
       number: '011 269 2909',
       hours: '9:00 AM - 8:00 PM Daily',
       badge: 'Counseling',
@@ -67,7 +58,6 @@ export const BRAND = {
     {
       id: 'nimh',
       name: 'National Mental Health Infoline',
-      sinhalaName: 'ජාතික මානසික විද්‍යායතනය',
       number: '1926',
       hours: '24/7 Toll-Free',
       badge: 'Mental Health',

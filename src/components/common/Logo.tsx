@@ -35,9 +35,6 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showSubtitle = true, cl
       <div className="flex flex-col">
         <span className={`font-heading font-bold tracking-tight text-ivory group-hover:text-champagne transition-colors leading-tight ${textSizes[size]}`}>
           BEYOND THE DARKNESS
-          <span className="block font-sinhalaSerif text-gold text-[0.85em] font-semibold">
-            අඳුරෙන් එළියට
-          </span>
         </span>
         {showSubtitle && (
           <span className="text-[10px] uppercase tracking-wider text-ivory/60 font-sans hidden sm:block">

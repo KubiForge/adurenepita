@@ -14,9 +14,6 @@ export const AboutPage: React.FC = () => {
         </div>
         <h1 className="text-4xl sm:text-5xl font-bold font-heading text-ivory">
           About Beyond the Darkness
-          <span className="block font-sinhalaSerif text-gold text-2xl sm:text-3xl mt-2 font-semibold">
-            අඳුරෙන් එළියට - අපගේ මෙහෙවර
-          </span>
         </h1>
         <p className="text-base text-ivory/80 leading-relaxed font-sans">
           A youth-led, evidence-informed digital initiative dedicated to substance prevention, compassionate support navigation, and bridging individuals to accredited healthcare in Sri Lanka.
@@ -32,14 +29,11 @@ export const AboutPage: React.FC = () => {
           <h2 className="text-2xl sm:text-3xl font-bold font-heading text-ivory">
             Leo Club of University of Sri Jayewardenepura
           </h2>
-          <p className="text-xs text-gold/80 font-sinhalaSerif">
-            ලියෝ දිස්ත්‍රික් 306 D2 • Lions International
-          </p>
           <p className="text-sm text-ivory/80 leading-relaxed">
             The Leo Club of University of Sri Jayewardenepura operates under Lions International (Leo District 306 D2) as one of Sri Lanka’s most active university-based youth humanitarian organizations. Comprising undergraduate leaders across multiple academic faculties—including Medical Sciences, Applied Sciences, Humanities, Management, and Technology—the club leads impactful community service initiatives across the island.
           </p>
           <p className="text-sm text-ivory/80 leading-relaxed">
-            Recognizing the alarming spread of illicit synthetic substances among youth and university communities, the club initiated <strong>"Beyond the Darkness – අඳුරෙන් එළියට"</strong> to dismantle stigma and replace fear with verified science, confidential technology, and clinical connection.
+            Recognizing the alarming spread of illicit synthetic substances among youth and university communities, the club initiated <strong>"Beyond the Darkness"</strong> to dismantle stigma and replace fear with verified science, confidential technology, and clinical connection.
           </p>
         </div>
 

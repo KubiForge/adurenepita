@@ -29,8 +29,8 @@ const volunteerOpportunities = [
   },
   {
     icon: Globe,
-    title: 'Translation & Multilingual Support',
-    description: 'Help us make our resources accessible in Sinhala and Tamil, ensuring no one is left behind due to language barriers.',
+    title: 'English Educational Content & Media',
+    description: 'Help us make clear, accessible English-language resources for everyone in the community.',
     commitment: 'Flexible, remote',
     locations: 'Remote/Island-wide',
   },
@@ -84,7 +84,7 @@ const interestAreas = [
   'School Outreach',
   'Community Events',
   'Peer Support',
-  'Translation / Language Support',
+  'English Educational Content',
   'Content & Media',
   'Helpline Support',
   'Fundraising',
@@ -358,7 +358,7 @@ export default function CommunityPage() {
                 and knowing how to seek help.
               </p>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
-                {['Interactive workshops in Sinhala, Tamil & English', 'Curriculum approved by education specialists', 'Available for government and private schools', 'Includes parent awareness sessions'].map(item => (
+                {['Interactive English-language workshops', 'Curriculum approved by education specialists', 'Available for government and private schools', 'Includes parent awareness sessions'].map(item => (
                   <li key={item} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                     <CheckCircle size={16} color="var(--gold)" style={{ minWidth: 16, marginTop: 3 }} />
                     <span style={{ color: 'var(--ivory-dim)', fontSize: '0.9rem' }}>{item}</span>

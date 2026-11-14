@@ -94,7 +94,7 @@ export const AdminServicesModule: React.FC = () => {
         serviceTypes: [form.type.toLowerCase() as any],
         languagesSupported: ['si', 'en', 'ta'],
         operatingHours: '8:00 AM - 4:00 PM',
-        operatingHoursSi: 'පෙ.ව. 8:00 - ප.ව. 4:00',
+        operatingHoursSi: '8:00 AM - 4:00 PM',
         isFreeOrGovernmentFunded: true,
         verificationStatus: form.verified ? 'verified' : 'pending',
         lastVerifiedDate: 'Nov 2026',

@@ -45,9 +45,6 @@ export const SupportCenterCard: React.FC<SupportCenterCardProps> = ({
       <h3 className="text-lg font-bold font-heading text-ivory leading-snug">
         {center.name}
       </h3>
-      <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5 mb-3">
-        {center.nameSi}
-      </p>
 
       <p className="text-xs text-ivory/70 line-clamp-2 leading-relaxed mb-4">
         {center.description}
@@ -67,7 +64,6 @@ export const SupportCenterCard: React.FC<SupportCenterCardProps> = ({
 
         <div className="flex items-center gap-2">
           <Globe className="w-3.5 h-3.5 text-gold flex-shrink-0" />
-          <span>Supported: {center.languagesSupported.map((l) => l.toUpperCase()).join(', ')}</span>
         </div>
       </div>
 

@@ -31,7 +31,7 @@ interface HomePageProps {
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }) => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const [openFaqId, setOpenFaqId] = React.useState<string | null>(FAQS_DATA[0].id);
 
   const toggleFaq = (id: string) => {
@@ -54,15 +54,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               <span className="cinematic-hero__title-gold">Towards a Brighter Tomorrow.</span>
             </h1>
 
-            <h2 className="cinematic-hero__sinhala" lang="si">
-              {BRAND.heroHeadlineSinhala}
-            </h2>
-
             <div className="cinematic-hero__copy">
               <p>{BRAND.heroSubtext}</p>
-              <p className="cinematic-hero__copy-sinhala" lang="si">
-                {BRAND.heroSubtextSinhala}
-              </p>
             </div>
 
             <div className="cinematic-hero__actions">
@@ -121,9 +114,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
           <h2 className="text-3xl sm:text-4xl font-bold font-heading text-ivory mt-1">
             Prevent. Support. Connect.
           </h2>
-          <p className="text-sm text-gold/80 font-sinhalaSerif mt-1">
-            දැනුවත්භාවයෙන් නිවාරණය. තාක්ෂණයෙන් සහයෝගය. මානුෂීය බැඳීමෙන් බලාපොරොත්තුව.
-          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -132,7 +122,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               <BookOpen className="w-7 h-7" />
             </div>
             <h3 className="text-xl font-bold font-heading text-champagne mb-2">
-              PREVENT (නිවාරණය)
+              PREVENT
             </h3>
             <p className="text-xs text-ivory/70 leading-relaxed">
               Equipping university students, school pupils, and families with rigorous, evidence-based knowledge to demystify peer pressure and prevent initial drug experimentation.
@@ -144,7 +134,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               <Sparkles className="w-7 h-7" />
             </div>
             <h3 className="text-xl font-bold font-heading text-champagne mb-2">
-              SUPPORT (සහයෝගය)
+              SUPPORT
             </h3>
             <p className="text-xs text-ivory/70 leading-relaxed">
               Offering an empathetic, completely anonymous AI-powered assistant and 10-step guided intake wizard that eliminates stigma and fear of judgment.
@@ -156,7 +146,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               <MapPin className="w-7 h-7" />
             </div>
             <h3 className="text-xl font-bold font-heading text-champagne mb-2">
-              CONNECT (සම්බන්ධීකරණය)
+              CONNECT
             </h3>
             <p className="text-xs text-ivory/70 leading-relaxed">
               Bridging vulnerable individuals directly with verified Sri Lankan hospitals, NDDCB centers, and non-profit psychosocial counseling facilities across all 25 districts.
@@ -176,9 +166,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               <h2 className="text-3xl sm:text-4xl font-bold font-heading text-ivory">
                 Why Beyond the Darkness Matters Right Now
               </h2>
-              <p className="text-xs text-gold/80 font-sinhalaSerif">
-                අද දවසේ ශ්‍රී ලංකාව මුහුණදෙන අභියෝගය සහ අපගේ කාර්යභාරය
-              </p>
               <p className="text-sm text-ivory/80 leading-relaxed">
                 In recent years, the illicit drug landscape in Sri Lanka has undergone an alarming transformation. The emergence and aggressive proliferation of crystalline methamphetamine (ICE) and diverted pharmaceuticals have severely impacted university youth and adolescents.
               </p>
@@ -210,9 +197,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               </div>
 
               <div className="charcoal-card p-5 border-charcoal-light">
-                <div className="text-3xl font-bold font-mono text-gold">3</div>
-                <div className="text-xs text-ivory font-semibold mt-1">Languages Supported</div>
-                <p className="text-[11px] text-ivory/60 mt-1">සිංහල • English • தமிழ்</p>
+                <div className="text-3xl font-bold font-mono text-gold">1</div>
+                <div className="text-xs text-ivory font-semibold mt-1">Language Available</div>
+                <p className="text-[11px] text-ivory/60 mt-1">English</p>
               </div>
             </div>
           </div>
@@ -229,9 +216,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
             <h2 className="text-3xl font-bold font-heading text-ivory mt-1">
               Substance Awareness & Education
             </h2>
-            <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-              විද්‍යාත්මක හා වෛද්‍යමය තොරතුරු පිරික්සන්න
-            </p>
           </div>
           <Link to="/learn" className="text-xs text-gold hover:underline font-semibold flex items-center gap-1">
             <span>Explore Full Knowledge Centre</span>
@@ -265,9 +249,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
                   <h3 className="font-heading font-bold text-lg text-ivory">
                     {drug.name}
                   </h3>
-                  <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-                    {drug.nameSi}
-                  </p>
 
                   <p className="text-xs text-ivory/70 mt-3 line-clamp-3 leading-relaxed">
                     {drug.description}
@@ -307,9 +288,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-ivory">
               Not Sure Where to Begin? Use Our Creative Wizard.
             </h2>
-            <p className="text-sm text-gold/80 font-sinhalaSerif">
-              ඔබේ අවශ්‍යතාවයට ගැළපෙන සහයෝගය පියවරෙන් පියවර සොයාගන්න
-            </p>
             <p className="text-sm text-ivory/70 leading-relaxed">
               If typing a detailed message feels daunting or confusing, our 10-step conversational wizard guides you gently through your situation, primary concerns, and preferred local support options.
             </p>
@@ -340,9 +318,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
           <h2 className="text-3xl font-bold font-heading text-ivory mt-1">
             Certified Sri Lankan Care Centers
           </h2>
-          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-            දිවයින පුරා රජයේ හා පිළිගත් ප්‍රතිකාර මධ්‍යස්ථාන
-          </p>
           <p className="text-xs text-ivory/60 mt-2">
             Explore state rehabilitation centers and government hospital psychiatric clinics mapped with verified contacts and operating hours.
           </p>
@@ -357,9 +332,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               <h3 className="font-heading font-bold text-base text-ivory mt-2">
                 NDDCB Thalangama Rehabilitation Centre
               </h3>
-              <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-                තලංගම ප්‍රතිකාර හා පුනරුත්ථාපන මධ්‍යස්ථානය
-              </p>
               <p className="text-xs text-ivory/60 mt-2">
                 Battaramulla, Colombo • 24-hour residential facilities, multi-disciplinary detox, and counseling.
               </p>
@@ -380,9 +352,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               <h3 className="font-heading font-bold text-base text-ivory mt-2">
                 Mel Medura (Sumithrayo Care)
               </h3>
-              <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-                මෙල් මැදුර මත්ද්‍රව්‍ය නිවාරණ හා සහන මධ්‍යස්ථානය
-              </p>
               <p className="text-xs text-ivory/60 mt-2">
                 Horton Place, Colombo 07 • Free, confidential drop-in counseling, relapse prevention, and family healing.
               </p>
@@ -403,9 +372,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               <h3 className="font-heading font-bold text-base text-ivory mt-2">
                 National Institute of Mental Health (NIMH)
               </h3>
-              <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-                ජාතික මානසික විද්‍යායතනය - අංගොඩ
-              </p>
               <p className="text-xs text-ivory/60 mt-2">
                 Angoda • Tertiary psychiatric stabilization, emergency 24/7 care for severe withdrawal and acute psychosis.
               </p>
@@ -438,9 +404,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
             <h2 className="text-3xl font-bold font-heading text-ivory mt-1">
               Campaign Drives & Events
             </h2>
-            <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-              ශ්‍රී ජයවර්ධනපුර විශ්වවිද්‍යාලයීය ලියෝ සමාජයේ ඉදිරි ක්‍රියාකාරකම්
-            </p>
           </div>
           <Link to="/campaigns" className="text-xs text-gold hover:underline font-semibold flex items-center gap-1">
             <span>Volunteer & Get Involved</span>
@@ -458,9 +421,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
                 <h3 className="font-heading font-bold text-base text-ivory">
                   {ev.title}
                 </h3>
-                <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-                  {ev.titleSi}
-                </p>
                 <p className="text-xs text-ivory/60 mt-3 leading-relaxed">
                   {ev.description}
                 </p>
@@ -482,9 +442,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
           <h2 className="text-2xl sm:text-3xl font-bold font-heading text-ivory">
             Support Drug Prevention & Recovery in Sri Lanka
           </h2>
-          <p className="text-xs text-gold/80 font-sinhalaSerif mt-1">
-            අපගේ තරුණ පරපුර මත්ද්‍රව්‍ය උවදුරෙන් මුදවාගැනීමට ඔබටත් දායක විය හැකිය
-          </p>
           <p className="text-xs text-ivory/70 max-w-xl mx-auto mt-2 leading-relaxed">
             Every verified contribution supports university campus awareness workshops, digital health tool maintenance, and peer guidance programs. Complete financial records are maintained for institutional transparency.
           </p>
@@ -507,9 +464,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
           <h2 className="text-3xl font-bold font-heading text-ivory mt-1">
             Common Inquiries & Privacy Information
           </h2>
-          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-            නිතර අසන ප්‍රශ්න සහ පිළිතුරු
-          </p>
         </div>
 
         <div className="space-y-3">
@@ -526,7 +480,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
                 >
                   <div>
                     <h3 className="font-bold text-sm sm:text-base text-ivory">{faq.question}</h3>
-                    <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">{faq.questionSi}</p>
                   </div>
                   <ChevronDown
                     className={`w-5 h-5 text-gold flex-shrink-0 transition-transform duration-200 ${
@@ -538,7 +491,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
                 {isOpen && (
                   <div className="p-4 sm:p-5 pt-0 text-xs sm:text-sm text-ivory/80 leading-relaxed border-t border-charcoal-light/60 space-y-2">
                     <p>{faq.answer}</p>
-                    <p className="text-xs text-gold/80 font-sinhalaSerif">{faq.answerSi}</p>
                   </div>
                 )}
               </div>

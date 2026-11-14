@@ -82,10 +82,10 @@ export const VOLUNTEER_ROLES: VolunteerRole[] = [
   },
   {
     id: 'role-content',
-    title: 'Multilingual Content & Media Creator',
+    title: 'English Educational Content & Media Creator',
     titleSi: 'ත්‍රිභාෂා අන්තර්ගත නිර්මාණකරු',
     commitment: '2–4 hours / week',
-    description: 'Design educational social media infographics, short video clips, and translate peer articles into Sinhala, Tamil, and English.',
+    description: 'Design educational social media infographics, short video clips, and accessible English-language articles.',
     descriptionSi: 'සමාජ මාධ්‍ය සඳහා දැනුවත් කිරීමේ පෝස්ට්, වීඩියෝ සහ පරිවර්තන සකස් කිරීම.',
   },
   {

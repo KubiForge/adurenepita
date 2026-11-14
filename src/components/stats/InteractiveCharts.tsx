@@ -46,9 +46,6 @@ export const InteractiveCharts: React.FC = () => {
               <h4 className="text-sm font-bold text-ivory leading-snug">
                 {stat.label}
               </h4>
-              <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-                {stat.labelSi}
-              </p>
               <p className="text-xs text-ivory/60 mt-2 leading-relaxed">
                 {stat.subtext}
               </p>
@@ -72,9 +69,6 @@ export const InteractiveCharts: React.FC = () => {
             <h3 className="text-xl sm:text-2xl font-bold font-heading text-ivory mt-0.5">
               Substance Seizure & Treatment Admissions in Sri Lanka (2020 – 2025)
             </h3>
-            <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-              ශ්‍රී ලංකාවේ මත්ද්‍රව්‍ය ප්‍රවණතා සහ අත්අඩංගුවට ගැනීම් සංසන්දනය
-            </p>
           </div>
           <div className="text-xs text-ivory/50 font-mono">
             Source: NDDCB Annual Surveillance Reports
@@ -117,9 +111,6 @@ export const InteractiveCharts: React.FC = () => {
             <h3 className="text-lg font-bold font-heading text-ivory mb-1">
               Age Demographic Profile of First-Time Inquiries
             </h3>
-            <p className="text-xs text-gold/80 font-sinhalaSerif mb-4">
-              සහය පතා යොමුවන අයගේ වයස් කාණ්ඩ ප්‍රතිශතය
-            </p>
 
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
@@ -153,9 +144,6 @@ export const InteractiveCharts: React.FC = () => {
             <h3 className="text-lg font-bold font-heading text-ivory mb-1">
               Primary Triggers for Initiating Recovery Support
             </h3>
-            <p className="text-xs text-gold/80 font-sinhalaSerif mb-4">
-              ප්‍රතිකාර සඳහා යොමුවීමට බලපෑ ප්‍රධාන හේතු
-            </p>
 
             <div className="h-64 w-full flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
@@ -202,9 +190,6 @@ export const InteractiveCharts: React.FC = () => {
           <ShieldCheck className="w-5 h-5 text-gold" />
           <span>{METHODOLOGY_NOTE.title}</span>
         </h4>
-        <p className="text-xs text-gold/80 font-sinhalaSerif">
-          {METHODOLOGY_NOTE.titleSi}
-        </p>
         <ul className="list-disc pl-5 space-y-1.5 text-ivory/60 leading-relaxed">
           {METHODOLOGY_NOTE.notes.map((n, i) => (
             <li key={i}>{n}</li>

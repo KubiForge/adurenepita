@@ -146,7 +146,7 @@ export const Footer: React.FC = () => {
             Clinical Governance & Legal Disclaimer:
           </p>
           <p>
-            BEYOND THE DARKNESS – අඳුරෙන් එළියට is an educational, awareness, and support navigational digital platform organized by the Leo Club of University of Sri Jayewardenepura. The platform and its AI Assistant do not provide medical diagnosis, clinical treatment plans, pharmaceutical prescriptions, or emergency dispatch services. Always consult certified healthcare professionals or hospital psychiatry units for clinical concerns. If you or someone you know is in immediate life-threatening physical danger, contact emergency medical services (1990) or the police (119) immediately.
+            BEYOND THE DARKNESS is an educational, awareness, and support navigational digital platform organized by the Leo Club of University of Sri Jayewardenepura. The platform and its AI Assistant do not provide medical diagnosis, clinical treatment plans, pharmaceutical prescriptions, or emergency dispatch services. Always consult certified healthcare professionals or hospital psychiatry units for clinical concerns. If you or someone you know is in immediate life-threatening physical danger, contact emergency medical services (1990) or the police (119) immediately.
           </p>
         </div>
 
@@ -156,7 +156,6 @@ export const Footer: React.FC = () => {
             &copy; {new Date().getFullYear()} Beyond the Darkness. Organized by Leo Club of University of Sri Jayewardenepura (Leo District 306 D2).
           </p>
           <div className="flex items-center gap-4">
-            <span className="text-gold/80 font-sinhalaSerif">අඳුරෙන් එළියට - නව හෙට දිනක් කරා</span>
             <button
               onClick={scrollToTop}
               className="p-2 rounded bg-charcoal hover:bg-gold/20 text-ivory hover:text-gold transition-colors flex items-center gap-1"

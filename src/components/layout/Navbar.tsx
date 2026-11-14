@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { Logo } from '../common/Logo';
-import { LanguageSwitcher } from './LanguageSwitcher';
 import { useLanguage } from '../../context/LanguageContext';
 import { Sparkles, Menu, X, Heart, Shield, Compass, UserRound } from 'lucide-react';
 
@@ -44,7 +43,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
           <Logo size="md" className="min-w-0" />
 
           <div className="hidden items-center gap-2.5 lg:flex">
-            <LanguageSwitcher />
             <Link
               to="/profile"
               className="inline-flex items-center gap-1.5 rounded-full border border-gold/20 px-3 py-2 text-xs text-ivory/75 hover:border-gold/50 hover:text-gold"
@@ -82,8 +80,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
           </div>
 
           <div className="flex items-center gap-2 lg:hidden">
-            <LanguageSwitcher className="mr-1 hidden sm:inline-flex" />
-
             <button
               onClick={onOpenAiChat}
               className="btn-gold rounded-full p-2.5"
@@ -125,9 +121,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
 
       {mobileMenuOpen && (
         <div id="mobile-navigation" className="border-t border-gold/15 bg-midnight/98 px-4 pb-6 pt-3 backdrop-blur-xl lg:hidden">
-          <div className="pb-3 sm:hidden">
-            <LanguageSwitcher />
-          </div>
           <nav className="mx-auto flex max-w-7xl flex-col gap-1" aria-label="Main Navigation">
             {navLinks.map((link) => (
               <NavLink

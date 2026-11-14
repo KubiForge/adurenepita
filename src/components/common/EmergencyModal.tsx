@@ -56,9 +56,6 @@ export const EmergencyModal: React.FC = () => {
                   <h4 className="font-bold text-ivory text-sm group-hover:text-champagne transition-colors">
                     {contact.name}
                   </h4>
-                  <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-                    {contact.sinhalaName}
-                  </p>
                   <p className="text-xs text-ivory/60 mt-1 leading-snug">
                     {contact.description}
                   </p>

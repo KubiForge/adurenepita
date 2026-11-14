@@ -8,7 +8,7 @@ interface ContentItem {
   id: string;
   title: string;
   type: 'Article' | 'Page' | 'Banner' | 'FAQ' | 'Media';
-  language: 'EN' | 'SI' | 'TA';
+  language: 'EN';
   status: 'Published' | 'Draft';
   updated: string;
 }
@@ -29,28 +29,12 @@ export const AdminContentModule: React.FC = () => {
       updated: 'Nov 10, 2026',
     },
     {
-      id: 'c-2',
-      title: 'මත්ද්‍රව්‍ය භාවිතයේ මනෝවිද්‍යාත්මක බලපෑම්',
-      type: 'Article',
-      language: 'SI',
-      status: 'Published',
-      updated: 'Nov 08, 2026',
-    },
-    {
       id: 'c-3',
       title: 'Drug Prevention in Secondary Schools',
       type: 'Article',
       language: 'EN',
       status: 'Draft',
       updated: 'Nov 06, 2026',
-    },
-    {
-      id: 'c-4',
-      title: 'போதைப்பொருள் ஒழிப்பு வழிகாட்டி',
-      type: 'Page',
-      language: 'TA',
-      status: 'Published',
-      updated: 'Nov 05, 2026',
     },
     {
       id: 'c-5',
@@ -306,8 +290,6 @@ export const AdminContentModule: React.FC = () => {
                     className="w-full p-2 rounded-xl bg-midnight border border-charcoal-light text-ivory focus:outline-none focus:border-gold"
                   >
                     <option value="EN">English</option>
-                    <option value="SI">Sinhala</option>
-                    <option value="TA">Tamil</option>
                   </select>
                 </div>
 

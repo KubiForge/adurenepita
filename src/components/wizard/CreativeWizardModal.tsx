@@ -73,7 +73,7 @@ export const CreativeWizardModal: React.FC<CreativeWizardModalProps> = ({
       title={
         <div className="flex items-center gap-2">
           <Compass className="w-5 h-5 text-gold" />
-          <span>Creative AI Guided Wizard • පියවරෙන් පියවර මඟපෙන්වීම</span>
+          <span>Creative AI Guided Wizard</span>
         </div>
       }
     >

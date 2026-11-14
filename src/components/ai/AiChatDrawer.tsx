@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useLanguage } from '../../context/LanguageContext';
 import { useSafety } from '../../context/SafetyContext';
 import { ChatMessage, SourceCitation } from '../../types/chat';
 import { grokService } from '../../services/grokService';
@@ -32,7 +31,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
   onOpenWizard,
   initialMessage,
 }) => {
-  const { language } = useLanguage();
+  const language = 'en';
   const { triggerSafetyInterruption } = useSafety();
 
   const [input, setInput] = useState('');
@@ -41,14 +40,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Welcome messages strictly aligned with proposal specifications
   const getWelcomeMessage = (): string => {
-    if (language === 'si') {
-      return 'ආයුබෝවන්. මම BEYOND THE DARKNESS AI Assistant. ඔබට මත්ද්‍රව්‍ය පිළිබඳ තොරතුරු, ඔබේ තත්ත්වය ගැන කතා කිරීම හෝ වෘත්තීය සහය සොයාගැනීම සඳහා මඟ පෙන්වන්න මට පුළුවන්. ඔබට කැමති විදියට ඔබේ භාෂාවෙන් කතා කරන්න. මම AI සහායකයෙක් වන අතර වෛද්‍යවරයෙකු වෙනුවට කටයුතු කරන්නේ නැහැ.';
-    }
-    if (language === 'ta') {
-      return 'வணக்கம். நான் BEYOND THE DARKNESS AI Assistant. போதைப்பொருள் தொடர்பான நம்பகமான தகவல்களை அறியவும், உங்கள் கவலைகளைப் பகிரவும், பொருத்தமான தொழில்முறை உதவியைத் தேடவும் நான் வழிகாட்ட முடியும். நான் ஒரு AI உதவியாளர்; மருத்துவ நிபுணர் அல்லது அவசர சேவை அல்ல.';
-    }
     return "Hello, I'm BEYOND THE DARKNESS AI Assistant. I can help you explore reliable information, talk through what you are concerned about, and find appropriate professional support. You can write naturally or use guided options. I'm an AI assistant, not a healthcare professional or emergency service.";
   };
 
@@ -181,8 +173,8 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
                   Grok RAG
                 </span>
               </h2>
-              <p className="text-[11px] text-ivory/60 font-sinhalaSerif">
-                මත්ද්‍රව්‍ය නිවාරණ හා පුනරුත්ථාපන AI සහයකයා
+              <p className="text-[11px] text-ivory/60">
+                Substance prevention and recovery support assistant
               </p>
             </div>
           </div>
@@ -354,7 +346,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
           >
             <input
               type="text"
-              placeholder="Ask a question or explain what's on your mind in your language..."
+              placeholder="Ask a question or explain what's on your mind in English..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isLoading}

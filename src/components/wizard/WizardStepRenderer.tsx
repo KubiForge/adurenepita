@@ -23,41 +23,35 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
 
   // STEP 01 - PURPOSE
   if (currentStep === 1) {
-    const purposeOptions: { id: WizardPurpose; title: string; titleSi: string; desc: string }[] = [
+    const purposeOptions: { id: WizardPurpose; title: string; desc: string }[] = [
       {
         id: 'stop_using',
         title: 'I want to stop using substances',
-        titleSi: 'මට මත්ද්‍රව්‍ය භාවිතයෙන් ඉවත්වීමට අවශ්‍යයි',
         desc: 'Compassionate, non-judgmental guidance and safe medical withdrawal navigation.',
       },
       {
         id: 'drug_info',
         title: 'I want information about drugs',
-        titleSi: 'මට මත්ද්‍රව්‍ය පිළිබඳ නිවැරදි තොරතුරු අවශ්‍යයි',
         desc: 'Evidence-based pharmacology, risks, warning signs, and facts.',
       },
       {
         id: 'worried_about_someone',
         title: 'I am worried about someone',
-        titleSi: 'මගේ මිතුරෙකු හෝ පවුලේ අයෙකු ගැන මම කනස්සල්ලෙන් පසුවෙමි',
         desc: 'Advice on compassionate communication, boundary setting, and family support.',
       },
       {
         id: 'health_concern',
         title: 'I have health concerns',
-        titleSi: 'මට සෞඛ්‍යමය හෝ ශාරීරික ගැටලු පවතී',
         desc: 'Recognizing urgent medical signs, toxicity, and clinical care direction.',
       },
       {
         id: 'professional_support',
         title: 'I need professional support',
-        titleSi: 'මට වෘත්තීය වෛද්‍ය හෝ පුනරුත්ථාපන සහය අවශ්‍යයි',
         desc: 'Connecting with certified Sri Lankan counseling and rehabilitation facilities.',
       },
       {
         id: 'prevention_info',
         title: 'I want prevention education',
-        titleSi: 'මට නිවාරණ අධ්‍යාපනය සහ සමාජ දැනුවත්භාවය අවශ්‍යයි',
         desc: 'Resources for university students, educators, schools, and communities.',
       },
     ];
@@ -67,7 +61,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
         <div className="text-center mb-6">
           <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 01 of 10</span>
           <h2 className="text-2xl font-bold font-heading text-ivory mt-1">What brings you here today?</h2>
-          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">අද ඔබ මෙහි පැමිණීමට හේතුව කුමක්ද?</p>
           <p className="text-xs text-ivory/60 mt-2 max-w-md mx-auto">
             Select the statement that best matches your current focus. Your draft stays in this browser session unless you explicitly submit it.
           </p>
@@ -99,7 +92,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
                       {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
                     </div>
                   </div>
-                  <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">{opt.titleSi}</p>
                   <p className="text-xs text-ivory/60 mt-1.5 leading-snug">{opt.desc}</p>
                 </div>
               </button>
@@ -119,13 +111,13 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
       { id: 'someone_else', label: 'Someone else' },
       { id: 'prefer_not_to_say', label: 'Prefer not to say' },
     ];
-    const situationOptions: { id: UserSituation; label: string; labelSi: string }[] = [
-      { id: 'currently_using', label: 'Currently using regularly', labelSi: 'දැනට නිරන්තරයෙන් භාවිතා කරමි' },
-      { id: 'recently_stopped', label: 'Recently stopped / in early recovery', labelSi: 'මෑතකදී භාවිතය නැවැත්වූවෙමි' },
-      { id: 'trying_to_reduce', label: 'Trying to reduce or cut down', labelSi: 'භාවිතය අඩුකර ගැනීමට උත්සාහ කරමි' },
-      { id: 'difficult_to_stay_away', label: 'Finding it difficult to stay away (cravings)', labelSi: 'නැවත භාවිතා කිරීමට සිතුවිලි ඇතිවේ' },
-      { id: 'considering_help', label: 'Considering professional help for the first time', labelSi: 'පළමු වරට වෘත්තීය සහය සෙවීම ගැන සිතමි' },
-      { id: 'unsure', label: 'Unsure / Exploring options quietly', labelSi: 'තවමත් අවිනිශ්චිතය / තොරතුරු පමණක් සොයමි' },
+    const situationOptions: { id: UserSituation; label: string }[] = [
+      { id: 'currently_using', label: 'Currently using regularly' },
+      { id: 'recently_stopped', label: 'Recently stopped / in early recovery' },
+      { id: 'trying_to_reduce', label: 'Trying to reduce or cut down' },
+      { id: 'difficult_to_stay_away', label: 'Finding it difficult to stay away (cravings)' },
+      { id: 'considering_help', label: 'Considering professional help for the first time' },
+      { id: 'unsure', label: 'Unsure / Exploring options quietly' },
     ];
 
     return (
@@ -133,7 +125,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
         <div className="text-center mb-6">
           <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 02 of 10</span>
           <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Who needs support, and what is happening?</h2>
-          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබේ වර්තමාන තත්ත්වය වඩාත්ම නිරූපණය කරන්නේ කුමක්ද?</p>
         </div>
 
         <div className="space-y-2.5 max-w-xl mx-auto">
@@ -165,7 +156,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
               >
                 <div>
                   <span className="font-semibold text-sm text-ivory block">{opt.label}</span>
-                  <span className="text-xs text-gold/80 font-sinhalaSerif">{opt.labelSi}</span>
                 </div>
                 <div
                   className={`w-5 h-5 rounded-full border flex items-center justify-center flex-shrink-0 ${
@@ -185,22 +175,20 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
   // STEP 03 - SUBSTANCE (Searchable Multi-Select)
   if (currentStep === 3) {
     const allSubstances = [
-      { id: 'methamphetamine', label: 'Methamphetamine (Crystal Meth / ICE)', labelSi: 'මෙතැම්ෆෙටමින් (අයිස්)' },
-      { id: 'heroin', label: 'Heroin (Brown Sugar / Kudu)', labelSi: 'හෙරොයින් (කුඩු / බ්‍රවුන් ෂුගර්)' },
-      { id: 'alcohol', label: 'Alcohol (Arrack / Beer / Spirits)', labelSi: 'මත්පැන් (ඇල්කොහොල්)' },
-      { id: 'cannabis', label: 'Cannabis (Ganja / KG / Weed)', labelSi: 'ගංජා (කැනබිස් / කේ.ජී)' },
-      { id: 'prescription_drugs', label: 'Prescription Medication Misuse (Benzos, Tramadol, Pregabalin)', labelSi: 'වෙද වට්ටෝරු පෙති (ට්‍රැමඩෝල්, ප්‍රෙගබලින්)' },
-      { id: 'tobacco', label: 'Tobacco & Nicotine (Cigarettes, Vapes)', labelSi: 'දුම්කොළ සහ නිකොටින් (දුම්වැටි / වේප්ස්)' },
-      { id: 'cocaine', label: 'Cocaine & Crack', labelSi: 'කොකේන් (ක්‍රැක්)' },
-      { id: 'other', label: 'Other synthetic or unknown substance', labelSi: 'වෙනත් නොදන්නා රසායනික ද්‍රව්‍යයක්' },
-      { id: 'not_sure', label: "I'm not sure", labelSi: 'මට නිශ්චිතවම විශ්වාස නැත' },
-      { id: 'prefer_not_to_say', label: 'Prefer not to say', labelSi: 'පැවසීමට අකමැතිය' },
+      { id: 'methamphetamine', label: 'Methamphetamine (Crystal Meth / ICE)' },
+      { id: 'heroin', label: 'Heroin (Brown Sugar / Kudu)' },
+      { id: 'alcohol', label: 'Alcohol (Arrack / Beer / Spirits)' },
+      { id: 'cannabis', label: 'Cannabis (Ganja / KG / Weed)' },
+      { id: 'prescription_drugs', label: 'Prescription Medication Misuse (Benzos, Tramadol, Pregabalin)' },
+      { id: 'tobacco', label: 'Tobacco & Nicotine (Cigarettes, Vapes)' },
+      { id: 'cocaine', label: 'Cocaine & Crack' },
+      { id: 'other', label: 'Other synthetic or unknown substance' },
+      { id: 'not_sure', label: "I'm not sure" },
+      { id: 'prefer_not_to_say', label: 'Prefer not to say' },
     ];
 
     const filtered = allSubstances.filter(
-      (s) =>
-        s.label.toLowerCase().includes(substanceSearch.toLowerCase()) ||
-        s.labelSi.includes(substanceSearch)
+      (s) => s.label.toLowerCase().includes(substanceSearch.toLowerCase())
     );
 
     const toggleSubstance = (id: string) => {
@@ -223,7 +211,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
         <div className="text-center mb-6">
           <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 03 of 10</span>
           <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Which substance are you concerned about?</h2>
-          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබ වඩාත්ම අවධානය යොමුකරන මත්ද්‍රව්‍යය කුමක්ද?</p>
           <p className="text-xs text-ivory/60 mt-1">Select all that apply. Search by common or local names.</p>
         </div>
 
@@ -254,7 +241,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
               >
                 <div>
                   <span className="font-semibold text-xs text-ivory block">{s.label}</span>
-                  <span className="text-[11px] text-gold/80 font-sinhalaSerif">{s.labelSi}</span>
                 </div>
                 <div
                   className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ml-2 ${
@@ -273,14 +259,14 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
 
   // STEP 04 - DURATION
   if (currentStep === 4) {
-    const durations: { id: ConcernDuration; label: string; labelSi: string }[] = [
-      { id: 'less_than_1_month', label: 'Less than one month', labelSi: 'මසකට අඩු කාලයක්' },
-      { id: '1_to_6_months', label: '1 to 6 months', labelSi: 'මාස 1 සිට 6 දක්වා' },
-      { id: '6_to_12_months', label: '6 to 12 months', labelSi: 'මාස 6 සිට වසර 1 දක්වා' },
-      { id: '1_to_3_years', label: '1 to 3 years', labelSi: 'වසර 1 සිට 3 දක්වා' },
-      { id: 'more_than_3_years', label: 'More than 3 years', labelSi: 'වසර 3කට වඩා වැඩි කාලයක්' },
-      { id: 'not_sure', label: "I'm not sure", labelSi: 'නිශ්චිතවම පැවසිය නොහැක' },
-      { id: 'prefer_not_to_say', label: 'Prefer not to say', labelSi: 'පැවසීමට අකමැතිය' },
+    const durations: { id: ConcernDuration; label: string }[] = [
+      { id: 'less_than_1_month', label: 'Less than one month' },
+      { id: '1_to_6_months', label: '1 to 6 months' },
+      { id: '6_to_12_months', label: '6 to 12 months' },
+      { id: '1_to_3_years', label: '1 to 3 years' },
+      { id: 'more_than_3_years', label: 'More than 3 years' },
+      { id: 'not_sure', label: "I'm not sure" },
+      { id: 'prefer_not_to_say', label: 'Prefer not to say' },
     ];
 
     return (
@@ -288,7 +274,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
         <div className="text-center mb-6">
           <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 04 of 10</span>
           <h2 className="text-2xl font-bold font-heading text-ivory mt-1">How long has this been a concern?</h2>
-          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">මෙම තත්ත්වය කොපමණ කාලයක සිට පවතීද?</p>
           <p className="text-xs text-ivory/60 mt-1">This helps tailor support pathways; it is not a diagnostic score.</p>
         </div>
 
@@ -307,7 +292,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
               >
                 <div>
                   <span className="font-semibold text-sm text-ivory block">{d.label}</span>
-                  <span className="text-xs text-gold/80 font-sinhalaSerif">{d.labelSi}</span>
                 </div>
                 <div
                   className={`w-5 h-5 rounded-full border flex items-center justify-center flex-shrink-0 ${
@@ -333,19 +317,18 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
       { id: 'unsure', label: 'Not sure' },
       { id: 'prefer_not_to_say', label: 'Prefer not to say' },
     ];
-    const stateOptions: { id: CurrentState; label: string; labelSi: string; isUrgent?: boolean }[] = [
-      { id: 'using_regularly', label: 'Using regularly / daily', labelSi: 'දිනපතා හෝ නිරන්තරයෙන් භාවිතා කරමි' },
-      { id: 'using_occasionally', label: 'Using occasionally / on weekends', labelSi: 'වරින් වර / සති අන්තවල පමණක් භාවිතා කරමි' },
-      { id: 'recently_stopped', label: 'Recently stopped / in initial recovery', labelSi: 'මෑතකදී නැවැත්වූවෙමි' },
-      { id: 'experiencing_cravings', label: 'Experiencing intense cravings or urge to reuse', labelSi: 'නැවත භාවිතා කිරීමට දැඩි පෙළඹවීමක් දැනේ' },
+    const stateOptions: { id: CurrentState; label: string; isUrgent?: boolean }[] = [
+      { id: 'using_regularly', label: 'Using regularly / daily' },
+      { id: 'using_occasionally', label: 'Using occasionally / on weekends' },
+      { id: 'recently_stopped', label: 'Recently stopped / in initial recovery' },
+      { id: 'experiencing_cravings', label: 'Experiencing intense cravings or urge to reuse' },
       {
         id: 'possible_withdrawal',
         label: 'Experiencing acute withdrawal symptoms (shakes, seizures, extreme confusion)',
-        labelSi: 'දැඩි අතුරු ආබාධ පවතී (වෙව්ලීම, සිහිවිකල් බව, වලිප්පුව)',
         isUrgent: true,
       },
-      { id: 'not_currently_using', label: 'Not currently using (seeking info or helping someone)', labelSi: 'දැනට භාවිතා නොකරමි (තොරතුරු පමණක් සොයමි)' },
-      { id: 'prefer_not_to_say', label: 'Prefer not to say', labelSi: 'පැවසීමට අකමැතිය' },
+      { id: 'not_currently_using', label: 'Not currently using (seeking info or helping someone)' },
+      { id: 'prefer_not_to_say', label: 'Prefer not to say' },
     ];
 
     return (
@@ -353,7 +336,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
         <div className="text-center mb-6">
           <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 05 of 10</span>
           <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Which statement best describes things right now?</h2>
-          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">දැනට පවතින තත්ත්වය වඩාත්ම පැහැදිලි කරන්නේ කුමක්ද?</p>
         </div>
 
         <div className="space-y-2.5 max-w-xl mx-auto">
@@ -387,7 +369,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
                       </span>
                     )}
                   </div>
-                  <span className="text-xs text-gold/80 font-sinhalaSerif block mt-0.5">{opt.labelSi}</span>
                 </div>
                 <div
                   className={`w-5 h-5 rounded-full border flex items-center justify-center flex-shrink-0 ${
@@ -422,14 +403,14 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
   // STEP 06 - MAIN CONCERNS (Multi-Select)
   if (currentStep === 6) {
     const concernOptions = [
-      { id: 'physical_health', label: 'Physical health & organ damage', labelSi: 'ශාරීරික සෞඛ්‍යය හා අවයව ආශ්‍රිත හානි' },
-      { id: 'mental_wellbeing', label: 'Mental wellbeing & depression/anxiety', labelSi: 'මානසික සුවතාවය, කාංසාව හෝ විෂාදය' },
-      { id: 'family_relationships', label: 'Family relationships & trust', labelSi: 'පවුල් සබඳතා සහ විශ්වාසය බිඳවැටීම' },
-      { id: 'education_academics', label: 'University / school studies', labelSi: 'විශ්වවිද්‍යාල හෝ පාසල් අධ්‍යාපනය' },
-      { id: 'employment_career', label: 'Job & employment stability', labelSi: 'රැකියාව සහ ආර්ථික ස්ථාවරත්වය' },
-      { id: 'financial_strain', label: 'Financial debt or money problems', labelSi: 'මූල්‍යමය ණයගැතිභාවය හෝ මුදල් ගැටලු' },
-      { id: 'difficulty_stopping', label: 'Difficulty stopping once started', labelSi: 'නැවැත්වීමේ අපහසුතාවය' },
-      { id: 'fear_of_withdrawal', label: 'Fear of withdrawal sickness', labelSi: 'නැවැත්වූ පසු ඇතිවන වේදනාවට ඇති බිය' },
+      { id: 'physical_health', label: 'Physical health & organ damage' },
+      { id: 'mental_wellbeing', label: 'Mental wellbeing & depression/anxiety' },
+      { id: 'family_relationships', label: 'Family relationships & trust' },
+      { id: 'education_academics', label: 'University / school studies' },
+      { id: 'employment_career', label: 'Job & employment stability' },
+      { id: 'financial_strain', label: 'Financial debt or money problems' },
+      { id: 'difficulty_stopping', label: 'Difficulty stopping once started' },
+      { id: 'fear_of_withdrawal', label: 'Fear of withdrawal sickness' },
     ];
 
     const toggleConcern = (id: string) => {
@@ -444,7 +425,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
         <div className="text-center mb-6">
           <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 06 of 10</span>
           <h2 className="text-2xl font-bold font-heading text-ivory mt-1">What are you most concerned about?</h2>
-          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබ වඩාත්ම කනස්සල්ලට පත්වන කරුණු මොනවාද?</p>
           <p className="text-xs text-ivory/60 mt-1">Select all areas where you are feeling strain.</p>
         </div>
 
@@ -463,7 +443,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
               >
                 <div>
                   <span className="font-semibold text-xs text-ivory block">{opt.label}</span>
-                  <span className="text-[11px] text-gold/80 font-sinhalaSerif">{opt.labelSi}</span>
                 </div>
                 <div
                   className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ml-2 ${
@@ -482,41 +461,35 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
 
   // STEP 07 - SUPPORT PREFERENCE
   if (currentStep === 7) {
-    const preferences: { id: SupportPreference; label: string; labelSi: string; desc: string }[] = [
+    const preferences: { id: SupportPreference; label: string; desc: string }[] = [
       {
         id: 'educational_info',
         label: 'Educational Information & Science',
-        labelSi: 'විද්‍යාත්මක දැනුම හා අධ්‍යාපනික තොරතුරු',
         desc: 'Understand the biological and psychological aspects of substances.',
       },
       {
         id: 'ai_guided_support',
         label: 'Confidential AI-Guided Support',
-        labelSi: 'රහසිගත AI සහයකයා සමඟ සංවාද පැවැත්වීම',
         desc: 'Have anonymous, private conversations at your own pace.',
       },
       {
         id: 'professional_counseling',
         label: 'Professional One-on-One Counseling',
-        labelSi: 'වෘත්තීය මනෝවිද්‍යා උපදේශනය',
         desc: 'Connect with certified clinical psychologists or centers like Mel Medura.',
       },
       {
         id: 'rehabilitation_info',
         label: 'Inpatient Rehabilitation Facilities',
-        labelSi: 'නේවාසික පුනරුත්ථාපන මධ්‍යස්ථාන',
         desc: 'Information regarding state and accredited residential recovery centers.',
       },
       {
         id: 'family_support',
         label: 'Family & Loved One Guidance',
-        labelSi: 'පවුලේ සාමාජිකයන් සඳහා මඟපෙන්වීම්',
         desc: 'Strategies for parents, siblings, and partners supporting someone.',
       },
       {
         id: 'not_sure',
         label: "I'm not sure yet",
-        labelSi: 'තවමත් තීරණය කර නැත',
         desc: 'Explore all available pathways quietly without obligation.',
       },
     ];
@@ -526,7 +499,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
         <div className="text-center mb-6">
           <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 07 of 10</span>
           <h2 className="text-2xl font-bold font-heading text-ivory mt-1">What type of help would you prefer?</h2>
-          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබ වඩාත් කැමති සහයෝගීතා ක්‍රමය කුමක්ද?</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl mx-auto">
@@ -553,7 +525,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
                       {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
                     </div>
                   </div>
-                  <span className="text-xs text-gold/80 font-sinhalaSerif block mt-0.5">{p.labelSi}</span>
                   <p className="text-xs text-ivory/60 mt-1">{p.desc}</p>
                 </div>
               </button>
@@ -573,7 +544,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
         <div className="text-center mb-6">
           <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 08 of 10</span>
           <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Where would you prefer to find support?</h2>
-          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබ සහය සෙවීමට බලාපොරොත්තු වන ප්‍රදේශය කුමක්ද?</p>
           <p className="text-xs text-ivory/60 mt-1">
             Optional: Selecting your province and district narrows down certified local hospital units.
           </p>
@@ -582,7 +552,7 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
         {/* Province Select */}
         <div>
           <label className="block text-xs font-semibold uppercase tracking-wider text-gold mb-1.5">
-            Select Province (පළාත තෝරන්න)
+            Select Province
           </label>
           <select
             value={answers.province || ''}
@@ -592,7 +562,7 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
             <option value="">-- Choose Province --</option>
             {PROVINCES_AND_DISTRICTS.map((p) => (
               <option key={p.id} value={p.name}>
-                {p.name} ({p.nameSi})
+                {p.name}
               </option>
             ))}
           </select>
@@ -602,7 +572,7 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
         {selectedProvinceObj && (
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-gold mb-1.5">
-              Select District in {selectedProvinceObj.name} (දිස්ත්‍රික්කය තෝරන්න)
+              Select District in {selectedProvinceObj.name}
             </label>
             <select
               value={answers.district || ''}
@@ -612,7 +582,7 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
               <option value="">-- Choose District --</option>
               {selectedProvinceObj.districts.map((d) => (
                 <option key={d.id} value={d.name}>
-                  {d.name} ({d.nameSi})
+                  {d.name}
                 </option>
               ))}
             </select>
@@ -649,7 +619,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
         <div className="text-center mb-6">
           <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 09 of 10</span>
           <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Is there anything else you would like us to know?</h2>
-          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබට අප වෙත පැවසීමට වෙනත් යමක් තිබේද?</p>
           <p className="text-xs text-ivory/60 mt-1">Optional. Only share what you are comfortable including in a request.</p>
         </div>
 
@@ -705,7 +674,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
         <div className="text-center mb-6">
           <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 10 of 10</span>
           <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Review your answers</h2>
-          <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබ ලබාදුන් තොරතුරු සමාලෝචනය කරන්න</p>
           <p className="text-xs text-ivory/60 mt-1">
             Check your choices. Nothing is sent to the support team unless you sign in and separately submit a request.
           </p>

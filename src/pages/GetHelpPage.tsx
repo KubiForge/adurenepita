@@ -22,14 +22,12 @@ export const GetHelpPage: React.FC<GetHelpPageProps> = ({ onOpenAiChat, onOpenWi
   const pathways = [
     {
       title: 'I Want to Stop Using Substances',
-      titleSi: 'මට මත්ද්‍රව්‍ය භාවිතය නතර කිරීමට අවශ්‍යයි',
       desc: 'You are taking a brave, life-changing step. We provide compassionate guidance without judgment, safe medical detox advice, and links to free local clinics.',
       actionLabel: 'Explore Personal Recovery',
       actionType: 'wizard',
     },
     {
       title: 'I Am Worried About a Friend or Family Member',
-      titleSi: 'මගේ මිතුරෙකු හෝ පවුලේ සාමාජිකයෙකු ගැන මම කනස්සල්ලෙන් පසුවෙමි',
       desc: 'Discover how to talk with a loved one without causing defensiveness or anger, set healthy boundaries, and connect them with trusted counseling.',
       actionLabel: 'Support a Loved One',
       actionType: 'chat',
@@ -37,7 +35,6 @@ export const GetHelpPage: React.FC<GetHelpPageProps> = ({ onOpenAiChat, onOpenWi
     },
     {
       title: 'I Have Urgent Health Concerns or Symptoms',
-      titleSi: 'මට හදිසි ශාරීරික හෝ මානසික සෞඛ්‍ය ගැටලු පවතී',
       desc: 'Learn to recognize acute toxicity, severe withdrawal hazards, and when emergency 1990 medical assistance is essential.',
       actionLabel: 'Check Emergency Guidance',
       actionType: 'chat',
@@ -45,7 +42,6 @@ export const GetHelpPage: React.FC<GetHelpPageProps> = ({ onOpenAiChat, onOpenWi
     },
     {
       title: 'I Need Certified Professional Support',
-      titleSi: 'මට වෘත්තීය වෛද්‍ය හෝ උපදේශන සහය අවශ්‍යයි',
       desc: 'Find verified state and accredited non-profit centers across all 9 provinces and 25 districts with direct phone lines and verified hours.',
       actionLabel: 'Find Support Centers',
       actionType: 'navigate',
@@ -62,9 +58,6 @@ export const GetHelpPage: React.FC<GetHelpPageProps> = ({ onOpenAiChat, onOpenWi
         </span>
         <h1 className="text-4xl sm:text-5xl font-bold font-heading text-ivory">
           A Safe Place to Ask for Help
-          <span className="block font-sinhalaSerif text-gold text-2xl sm:text-3xl mt-1 font-semibold">
-            සහය පතා යොමුවීමට ආරක්ෂිත ඉඩක්
-          </span>
         </h1>
         <p className="text-sm text-ivory/70 leading-relaxed max-w-2xl mx-auto">
           Whatever you or your loved one is facing, you do not have to walk this path in silence or shame. Choose a pathway below or speak privately with our AI Assistant.
@@ -79,9 +72,6 @@ export const GetHelpPage: React.FC<GetHelpPageProps> = ({ onOpenAiChat, onOpenWi
               <h3 className="font-heading font-bold text-xl text-ivory">
                 {p.title}
               </h3>
-              <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5 mb-3">
-                {p.titleSi}
-              </p>
               <p className="text-xs text-ivory/70 leading-relaxed">
                 {p.desc}
               </p>

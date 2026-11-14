@@ -31,9 +31,6 @@ export const CampaignsPage: React.FC = () => {
         </span>
         <h1 className="text-4xl font-bold font-heading text-ivory">
           Campaigns & Community Engagement
-          <span className="block font-sinhalaSerif text-gold text-2xl mt-1">
-            ක්‍රියාකාරකම් සහ ප්‍රජා සහභාගීත්වය
-          </span>
         </h1>
         <p className="text-sm text-ivory/70 leading-relaxed">
           Led by the Leo Club of University of Sri Jayewardenepura, our campaigns combine physical university drives, island-wide school caravans, and youth empowerment.
@@ -92,9 +89,6 @@ export const CampaignsPage: React.FC = () => {
                 <h3 className="font-heading font-bold text-lg text-ivory">
                   {event.title}
                 </h3>
-                <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5 mb-3">
-                  {event.titleSi}
-                </p>
 
                 <p className="text-xs text-ivory/70 leading-relaxed">
                   {event.description}
@@ -120,9 +114,6 @@ export const CampaignsPage: React.FC = () => {
           <h2 className="text-2xl sm:text-3xl font-bold font-heading text-ivory">
             Volunteer with Leo Club of USJ
           </h2>
-          <p className="text-xs text-gold/80 font-sinhalaSerif">
-            ස්වේච්ඡාවෙන් දායක වී වෙනසක් සිදුකරන්න
-          </p>
           <p className="text-xs text-ivory/70 leading-relaxed">
             Whether you are a university undergraduate, health advocate, content creator, or empathetic listener, we welcome your dedication. Volunteers receive comprehensive orientation on clinical boundaries and safeguarding protocols.
           </p>
@@ -134,7 +125,6 @@ export const CampaignsPage: React.FC = () => {
                   <h4 className="font-bold text-sm text-ivory">{role.title}</h4>
                   <span className="text-[11px] text-gold font-mono">{role.commitment}</span>
                 </div>
-                <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">{role.titleSi}</p>
                 <p className="text-xs text-ivory/60 mt-1 leading-snug">{role.description}</p>
               </div>
             ))}
@@ -197,7 +187,7 @@ export const CampaignsPage: React.FC = () => {
                 >
                   {VOLUNTEER_ROLES.map((r) => (
                     <option key={r.id} value={r.title}>
-                      {r.title} ({r.titleSi})
+                      {r.title}
                     </option>
                   ))}
                 </select>
@@ -223,9 +213,6 @@ export const CampaignsPage: React.FC = () => {
               <h3 className="font-heading font-bold text-xl text-ivory">
                 Application Received!
               </h3>
-              <p className="text-xs text-gold/80 font-sinhalaSerif">
-                ඔබගේ ලියාපදිංචිය සාර්ථකව භාරගන්නා ලදී
-              </p>
               <p className="text-xs text-ivory/70 leading-relaxed max-w-sm mx-auto">
                 Thank you for offering your energy. The Leo Club project coordinator will contact you via WhatsApp for orientation details.
               </p>

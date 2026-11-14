@@ -58,9 +58,6 @@ export const InteractiveQuiz: React.FC = () => {
             <h3 className="text-xl font-bold font-heading text-ivory">
               {currentQ.question}
             </h3>
-            <p className="text-xs text-gold/80 font-sinhalaSerif mt-1">
-              {currentQ.questionSi}
-            </p>
           </div>
 
           {/* Options */}
@@ -86,7 +83,6 @@ export const InteractiveQuiz: React.FC = () => {
                 >
                   <div>
                     <span className="font-medium text-sm block mb-0.5">{opt.text}</span>
-                    <span className="text-[11px] font-sinhalaSerif block opacity-90">{opt.textSi}</span>
                   </div>
 
                   {hasAnswered && opt.isCorrect && (
@@ -105,7 +101,6 @@ export const InteractiveQuiz: React.FC = () => {
             <div className="p-4 rounded-xl bg-midnight border border-gold/30 text-xs space-y-2 animate-fade-in">
               <div className="font-bold text-champagne">Clinical Scientific Explanation:</div>
               <p className="text-ivory/80 leading-relaxed">{currentQ.explanation}</p>
-              <p className="text-gold/80 font-sinhalaSerif">{currentQ.explanationSi}</p>
               <div className="text-[10px] text-ivory/40 pt-1 border-t border-charcoal-light">
                 <strong>Citation:</strong> {currentQ.citation}
               </div>
@@ -132,9 +127,6 @@ export const InteractiveQuiz: React.FC = () => {
             <h3 className="text-2xl font-bold font-heading text-ivory">
               Quiz Completed!
             </h3>
-            <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-              ප්‍රශ්නාවලිය සාර්ථකව අවසන් කළා
-            </p>
             <div className="text-3xl font-bold font-mono text-champagne mt-3">
               {score} / {QUIZ_QUESTIONS.length} Correct
             </div>

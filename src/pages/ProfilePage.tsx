@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import {
   User,
   Shield,
   Bell,
-  Globe,
   Lock,
   Trash2,
   CheckCircle,
@@ -33,7 +31,6 @@ interface SupportRequestSummary {
 }
 
 export const ProfilePage: React.FC = () => {
-  const { language, setLanguage, t } = useLanguage();
   const {
     currentUser,
     isAuthenticated,
@@ -61,7 +58,7 @@ export const ProfilePage: React.FC = () => {
   const [supportRequests, setSupportRequests] = useState<SupportRequestSummary[]>([]);
   const [supportRequestError, setSupportRequestError] = useState<string | null>(null);
   const [isLoadingRequests, setIsLoadingRequests] = useState(false);
-  const [activeSection, setActiveSection] = useState<'profile' | 'notifications' | 'language' | 'privacy' | 'delete'>('profile');
+  const [activeSection, setActiveSection] = useState<'profile' | 'notifications' | 'privacy' | 'delete'>('profile');
   const [awarenessUpdates, setAwarenessUpdates] = useState(true);
   const [emailAlerts, setEmailAlerts] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -115,7 +112,7 @@ export const ProfilePage: React.FC = () => {
           email: authEmail,
           phone,
           password: authPassword,
-          language,
+          language: 'en',
           acceptedPrivacyPolicy: acceptedPrivacy,
           acceptedTerms,
         });
@@ -243,7 +240,7 @@ export const ProfilePage: React.FC = () => {
     e.preventDefault();
     setProfileError(null);
     try {
-      await updateAccountProfile(displayName, profilePhone, language);
+      await updateAccountProfile(displayName, profilePhone, 'en');
       setIsSaved(true);
       window.setTimeout(() => setIsSaved(false), 3000);
     } catch (error) {
@@ -268,12 +265,9 @@ export const ProfilePage: React.FC = () => {
         </span>
         <h1 className="text-3xl sm:text-4xl font-bold font-heading text-ivory mt-1">
           Profile & Settings
-          <span className="block font-sinhalaSerif text-gold text-2xl mt-0.5">
-            ගිණුම සහ රහස්‍යතා සැකසුම්
-          </span>
         </h1>
         <p className="text-xs sm:text-sm text-ivory/60 mt-1">
-          Manage your personal preferences, multilingual choices, privacy thresholds, and account deletion.
+          Manage your personal preferences, privacy settings, and account access.
         </p>
         <p className="text-xs text-ivory/60 mt-2">Signed in as <strong className="text-ivory">{currentUser?.email}</strong></p>
         <div className="flex flex-wrap gap-3 mt-3">
@@ -323,7 +317,6 @@ export const ProfilePage: React.FC = () => {
         <div className="md:col-span-4 charcoal-card p-3 space-y-1">
           {[
             { id: 'profile', label: 'Profile Information', icon: User },
-            { id: 'language', label: 'Language & Locale', icon: Globe },
             { id: 'notifications', label: 'Notifications & Updates', icon: Bell },
             { id: 'privacy', label: 'Privacy & Security', icon: Shield },
             { id: 'delete', label: 'Delete Account & Data', icon: Trash2 },
@@ -422,43 +415,6 @@ export const ProfilePage: React.FC = () => {
                   Save Changes
                 </Button>
               </form>
-            </div>
-          )}
-
-          {activeSection === 'language' && (
-            <div className="space-y-6">
-              <div>
-                <h2 className="text-lg font-heading font-bold text-ivory">
-                  Language Preferences
-                </h2>
-                <p className="text-xs text-ivory/60">
-                  Select your primary language for navigation, educational monographs, and AI conversations.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {[
-                  { code: 'en', label: 'English', native: 'English', desc: 'Full platform & citations' },
-                  { code: 'si', label: 'Sinhala', native: 'සිංහල', desc: 'ස්වදේශීය භාෂා සහය' },
-                  { code: 'ta', label: 'Tamil', native: 'தமிழ்', desc: 'முழுமையான தமிழ் மொழி' },
-                ].map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => setLanguage(lang.code as any)}
-                    className={`p-4 rounded-xl border text-left transition-all ${
-                      language === lang.code
-                        ? 'bg-charcoal border-gold text-gold shadow-gold-subtle'
-                        : 'bg-midnight/70 border-charcoal-light text-ivory/70 hover:border-gold/30'
-                    }`}
-                  >
-                    <span className="font-bold text-sm block">{lang.label}</span>
-                    <span className="text-xs text-gold/90 font-sinhalaSerif block mt-0.5">
-                      {lang.native}
-                    </span>
-                    <span className="text-[10px] text-ivory/40 block mt-1">{lang.desc}</span>
-                  </button>
-                ))}
-              </div>
             </div>
           )}
 

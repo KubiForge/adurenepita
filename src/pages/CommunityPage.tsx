@@ -57,8 +57,8 @@ export const CommunityPage: React.FC = () => {
     },
     {
       icon: BookOpen,
-      title: 'Content & Multilingual Media',
-      description: 'Help create accessible educational resources in Sinhala and Tamil, ensuring no one is left behind.',
+      title: 'English Educational Content & Media',
+      description: 'Help create clear and accessible English-language educational resources for the community.',
       commitment: 'Flexible, remote',
       locations: 'Remote / Online',
     },
@@ -87,9 +87,6 @@ export const CommunityPage: React.FC = () => {
         </span>
         <h1 className="text-4xl font-bold font-heading text-ivory">
           Join the Community
-          <span className="block font-sinhalaSerif text-gold text-2xl mt-1">
-            ප්‍රජාව සමඟ එක්වන්න
-          </span>
         </h1>
         <p className="text-sm text-ivory/70 leading-relaxed">
           Be part of a compassionate network of youth leaders, recovering individuals, family advocates, and mental health champions across Sri Lanka.

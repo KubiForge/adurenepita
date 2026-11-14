@@ -22,7 +22,6 @@ export const SupportDirectoryPage: React.FC = () => {
   const filteredCenters = SUPPORT_CENTERS_DATA.filter((center) => {
     const matchQuery =
       center.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      center.nameSi.includes(searchQuery) ||
       center.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
       center.district.toLowerCase().includes(searchQuery.toLowerCase());
 
@@ -63,9 +62,6 @@ export const SupportDirectoryPage: React.FC = () => {
           </span>
           <h1 className="text-4xl font-bold font-heading text-ivory">
             Find Rehabilitation & Professional Support
-            <span className="block font-sinhalaSerif text-gold text-2xl mt-1">
-              ශ්‍රී ලංකාවේ ප්‍රතිකාර හා උපදේශන මධ්‍යස්ථාන
-            </span>
           </h1>
           <p className="text-sm text-ivory/80 leading-relaxed">
             Locate verified government hospitals, NDDCB residential rehabilitation centers, and non-profit counseling facilities across all 9 provinces and 25 districts.

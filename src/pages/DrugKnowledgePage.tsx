@@ -21,7 +21,7 @@ export const DrugKnowledgePage: React.FC = () => {
     const searchText = [
       entry.name,
       entry.caption,
-      ...(monograph ? [monograph.name, monograph.nameSi, ...monograph.commonNames, ...monograph.aliases] : []),
+      ...(monograph ? [monograph.name, ...monograph.commonNames, ...monograph.aliases] : []),
     ].join(' ').toLowerCase();
     const matchSearch = searchText.includes(search.toLowerCase());
     const matchClass = selectedClassification === 'All' || entry.classification === selectedClassification;
@@ -46,9 +46,6 @@ export const DrugKnowledgePage: React.FC = () => {
           </span>
           <h1 className="text-4xl font-bold font-heading text-ivory">
             Drug Education
-            <span className="block font-sinhalaSerif text-gold text-2xl mt-1">
-              මත්ද්‍රව්‍ය විද්‍යාත්මක තොරතුරු කේන්ද්‍රය
-            </span>
           </h1>
           <p className="text-sm text-ivory/80 leading-relaxed">
             Explore 28 illustrated substance-awareness cards and read the available evidence-based clinical monographs.
@@ -129,9 +126,6 @@ export const DrugKnowledgePage: React.FC = () => {
                 </h2>
                 {monograph ? (
                   <>
-                    <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-                      {monograph.nameSi}
-                    </p>
 
                     <div className="mt-2 flex flex-wrap gap-1">
                       {monograph.commonNames.slice(0, 3).map((commonName) => (

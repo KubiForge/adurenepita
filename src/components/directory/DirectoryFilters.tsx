@@ -67,10 +67,10 @@ export const DirectoryFilters: React.FC<DirectoryFiltersProps> = ({
             }}
             className="w-full px-3.5 py-2.5 rounded-xl bg-midnight border border-charcoal-light text-ivory text-xs focus:outline-none focus:border-gold"
           >
-            <option value="">All Provinces (සියලු පළාත්)</option>
+            <option value="">All Provinces</option>
             {PROVINCES_AND_DISTRICTS.map((p) => (
               <option key={p.id} value={p.name}>
-                {p.name} ({p.nameSi})
+                {p.name}
               </option>
             ))}
           </select>
@@ -89,7 +89,7 @@ export const DirectoryFilters: React.FC<DirectoryFiltersProps> = ({
             </option>
             {currentProvinceObj?.districts.map((d) => (
               <option key={d.id} value={d.name}>
-                {d.name} ({d.nameSi})
+                {d.name}
               </option>
             ))}
           </select>

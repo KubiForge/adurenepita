@@ -91,9 +91,6 @@ export const DonationForm: React.FC = () => {
         <h2 className="text-2xl sm:text-3xl font-bold font-heading text-ivory">
           Empower Hope & Prevention
         </h2>
-        <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-          අඳුරෙන් එළියට - ඔබේ සහයෝගය අනාගතයක් බේරාගනී
-        </p>
         <p className="text-xs text-ivory/60 mt-2 max-w-md mx-auto leading-relaxed">
           100% of public contributions directly fund university awareness drives, school workshops, and digital health tools by the Leo Club of University of Sri Jayewardenepura.
         </p>

@@ -28,7 +28,7 @@ export const AdminAnalyticsModule: React.FC = () => {
             Reports & Analytics
           </h2>
           <p className="text-xs text-ivory/60 mt-0.5">
-            Platform usage, user engagement metrics, language distributions and impact insights.
+            Platform usage, user engagement metrics, and impact insights.
           </p>
         </div>
 
@@ -145,77 +145,20 @@ export const AdminAnalyticsModule: React.FC = () => {
           </div>
         </div>
 
-        {/* User Language Distribution Donut (5 Cols) */}
+        {/* Platform Language */}
         <div className="lg:col-span-5 charcoal-card p-6 border-charcoal-light flex flex-col justify-between space-y-6">
           <div className="border-b border-charcoal-light pb-3">
             <h3 className="font-heading font-bold text-base text-ivory">
-              User Language Distribution
+              Platform Language
             </h3>
-            <p className="text-[11px] text-ivory/50">Multilingual visitor session breakdown</p>
+            <p className="text-[11px] text-ivory/50">The platform interface is currently available in English.</p>
           </div>
-
-          {/* Donut representation */}
-          <div className="relative w-44 h-44 mx-auto flex items-center justify-center">
-            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-              {/* Sinhala: 52% */}
-              <circle
-                cx="50"
-                cy="50"
-                r="40"
-                stroke="#D8BE82"
-                strokeWidth="12"
-                strokeDasharray="251.2"
-                strokeDashoffset="120.5" /* 52% */
-                fill="transparent"
-              />
-              {/* English: 32% */}
-              <circle
-                cx="50"
-                cy="50"
-                r="40"
-                stroke="#F1DFA5"
-                strokeWidth="12"
-                strokeDasharray="251.2"
-                strokeDashoffset="170.8" /* 32% */
-                strokeDashoffset-reverse
-                fill="transparent"
-                style={{ transform: 'rotate(187deg)', transformOrigin: 'center' }}
-              />
-              {/* Tamil: 16% */}
-              <circle
-                cx="50"
-                cy="50"
-                r="40"
-                stroke="#8F7952"
-                strokeWidth="12"
-                strokeDasharray="251.2"
-                strokeDashoffset="211" /* 16% */
-                fill="transparent"
-                style={{ transform: 'rotate(302deg)', transformOrigin: 'center' }}
-              />
-            </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-              <span className="text-2xl font-bold font-heading text-ivory">12,480</span>
-              <span className="text-[10px] text-ivory/50 uppercase">Total Visits</span>
-            </div>
-          </div>
-
-          {/* Legend */}
-          <div className="grid grid-cols-3 gap-2 text-center text-xs pt-2 border-t border-charcoal-light">
-            <div className="p-2 rounded-xl bg-midnight border border-charcoal-light">
-              <div className="w-2.5 h-2.5 rounded-full bg-gold mx-auto mb-1" />
-              <strong className="block text-ivory">Sinhala</strong>
-              <span className="text-gold font-mono font-bold">52%</span>
-            </div>
-            <div className="p-2 rounded-xl bg-midnight border border-charcoal-light">
-              <div className="w-2.5 h-2.5 rounded-full bg-champagne mx-auto mb-1" />
-              <strong className="block text-ivory">English</strong>
-              <span className="text-champagne font-mono font-bold">32%</span>
-            </div>
-            <div className="p-2 rounded-xl bg-midnight border border-charcoal-light">
-              <div className="w-2.5 h-2.5 rounded-full bg-bronze mx-auto mb-1" />
-              <strong className="block text-ivory">Tamil</strong>
-              <span className="text-bronze font-mono font-bold">16%</span>
+          <div className="flex flex-1 items-center justify-center">
+            <div className="rounded-2xl border border-gold/30 bg-midnight px-8 py-6 text-center">
+              <span className="block text-3xl font-bold font-heading text-champagne">EN</span>
+              <span className="mt-1 block text-xs font-semibold uppercase tracking-wider text-ivory/70">
+                English
+              </span>
             </div>
           </div>
         </div>
