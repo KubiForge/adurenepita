@@ -102,6 +102,7 @@ export const DrugKnowledgePage: React.FC = () => {
                   alt={`${entry.name} awareness illustration`}
                   className="w-full aspect-square object-contain rounded-xl bg-midnight mb-4"
                   loading="lazy"
+                  decoding="async"
                 />
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-midnight text-gold border border-gold/30 uppercase font-bold tracking-wider">

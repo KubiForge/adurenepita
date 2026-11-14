@@ -235,6 +235,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
                       alt={`${drug.name} awareness illustration`}
                       className="mb-4 aspect-[4/3] w-full rounded-xl bg-midnight object-contain"
                       loading="lazy"
+                      decoding="async"
                     />
                   )}
                   <div className="flex items-center justify-between mb-2">

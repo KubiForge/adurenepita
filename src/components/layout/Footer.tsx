@@ -2,21 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUp, ExternalLink, Heart, Mail, MapPin, PhoneCall, Shield } from 'lucide-react';
 import { BRAND } from '../../config/brand';
+import { ASSETS } from '../../config/assets';
+import { ORGANIZATION_LOGOS } from '../../data/organizationLogos';
 import { LogoPlaceholder } from '../common/LogoPlaceholder';
 
 const KUBI_FORGE_URL = 'https://kubiforge.vercel.app';
 
 const footerLinkClass =
   'inline-flex text-sm text-ivory/60 transition duration-200 hover:translate-x-0.5 hover:text-champagne';
-
-const logoShowcaseItems = [
-  { label: 'Leo Club of University of Sri Jayewardenepura', category: 'Organizing body' },
-  { label: 'Lions International', category: 'Organization' },
-  { label: 'Leo District 306 D2', category: 'District identity' },
-  { label: 'Beyond the Darkness', category: 'Project identity' },
-  { label: 'Knowledge & References', category: 'Reference platforms' },
-  { label: 'Kubi Forge', category: 'Development credit' },
-];
 
 export const Footer: React.FC = () => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -34,15 +27,16 @@ export const Footer: React.FC = () => {
               Together for a Brighter Tomorrow
             </h2>
             <p className="mt-1.5 text-xs text-ivory/50">
-              Organizations, identities and technology behind this initiative.
+              Organization and Leo identity marks supplied for this initiative.
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))]">
-            {logoShowcaseItems.map((item) => (
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {ORGANIZATION_LOGOS.map((item) => (
               <LogoPlaceholder
                 key={item.label}
                 label={item.label}
                 category={item.category}
+                src={item.src}
                 showcase
                 className="rounded-xl border-gold/20 bg-charcoal/35 hover:bg-charcoal/60"
               />
@@ -60,6 +54,7 @@ export const Footer: React.FC = () => {
               <LogoPlaceholder
                 label="Beyond the Darkness"
                 category="Project identity"
+                src={ASSETS.logo}
                 compact
                 className="w-16 shrink-0 rounded-xl border-gold/25 bg-charcoal/60"
               />

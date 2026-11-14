@@ -23,7 +23,13 @@ export const LogoPlaceholder: React.FC<LogoPlaceholderProps> = ({
     aria-label={src ? undefined : `${label} logo placeholder`}
   >
     {src ? (
-      <img src={src} alt={`${label} logo`} className={`${compact ? 'h-8' : showcase ? 'h-14' : 'h-24'} w-full object-contain`} />
+      <img
+        src={src}
+        alt={`${label} logo`}
+        loading="lazy"
+        decoding="async"
+        className={`${compact ? 'h-8' : showcase ? 'h-16 sm:h-20' : 'h-28 sm:h-32'} w-full object-contain`}
+      />
     ) : (
       <>
         <span className={`font-semibold uppercase tracking-[0.16em] text-gold/70 ${compact ? 'text-[6px]' : showcase ? 'text-[7px]' : 'text-[9px]'}`}>{category}</span>

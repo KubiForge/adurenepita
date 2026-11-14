@@ -65,6 +65,7 @@ export const CampaignsPage: React.FC = () => {
             alt="Beyond the Darkness awareness campaign poster"
             className="aspect-square w-full object-contain"
             loading="lazy"
+            decoding="async"
           />
         </div>
       </section>

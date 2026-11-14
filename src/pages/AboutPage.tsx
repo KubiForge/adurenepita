@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { ASSETS } from '../config/assets';
 import { BRAND } from '../config/brand';
+import { ORGANIZATION_LOGOS } from '../data/organizationLogos';
 import { LogoPlaceholder } from '../components/common/LogoPlaceholder';
 
 const KUBI_FORGE_URL = 'https://kubiforge.vercel.app';
@@ -74,13 +75,6 @@ const SectionHeading: React.FC<{ eyebrow: string; title: string; description?: s
   </div>
 );
 
-const logoItems = [
-  { label: 'Leo Club of University of Sri Jayewardenepura', category: 'Organizing organization' },
-  { label: 'Lions International', category: 'Parent organization' },
-  { label: 'Leo District 306 D2', category: 'District identity' },
-  { label: 'Beyond the Darkness', category: 'Project identity' },
-];
-
 const missionItems = [
   {
     title: 'PREVENT',
@@ -97,14 +91,6 @@ const missionItems = [
     description: 'Access to verified healthcare services.',
     icon: Link2,
   },
-];
-
-const referenceItems = [
-  { label: 'Shatterproof', category: 'Knowledge & reference platform' },
-  { label: 'Partnership to End Addiction', category: 'Knowledge & reference platform' },
-  { label: 'SAMHSA', category: 'Knowledge & reference platform' },
-  { label: 'NDDCB Sri Lanka', category: 'Sri Lankan reference' },
-  { label: 'ADIC Sri Lanka', category: 'Sri Lankan reference' },
 ];
 
 export const AboutPage: React.FC = () => (
@@ -155,14 +141,15 @@ export const AboutPage: React.FC = () => (
             id="identity-title"
             eyebrow="Organization identity"
             title="Driven by Purpose. Powered by People."
-            description="A youth-led initiative rooted in service, guided by its organizing body, and shaped around a clear project identity."
+            description="Official organizational and Leo identity marks supplied for this initiative."
           />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {logoItems.map((item) => (
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
+            {ORGANIZATION_LOGOS.map((item) => (
               <LogoPlaceholder
                 key={item.label}
                 label={item.label}
                 category={item.category}
+                src={item.src}
                 className="min-h-44 bg-charcoal/55"
               />
             ))}
@@ -289,6 +276,8 @@ export const AboutPage: React.FC = () => (
                   src={ASSETS.kubiForgeShowcase}
                   alt="Kubi Forge Startup Hub showcase"
                   className="mt-5 aspect-video w-full rounded-2xl border border-gold/20 object-contain"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <p className="mt-5 text-center font-heading text-3xl font-semibold tracking-[0.12em] text-champagne">KUBI FORGE</p>
                 <a
@@ -310,22 +299,21 @@ export const AboutPage: React.FC = () => (
         <section aria-labelledby="ecosystem-title">
           <SectionHeading
             id="ecosystem-title"
-            eyebrow="Identity, development credit & references"
-            title="Our Ecosystem & References"
-            description="Organizational identity, project identity, development credit, and independently consulted references are shown separately."
+            eyebrow="Official organization logos"
+            title="Organizations & Leo Identities"
+            description="The complete set of organizational, Leo, university and leadership marks supplied for this initiative."
           />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            <LogoPlaceholder label="Leo Club of University of Sri Jayewardenepura" category="Organizing organization" className="min-h-40 bg-charcoal/55" />
-            <LogoPlaceholder label="Lions International" category="Parent organization" className="min-h-40 bg-charcoal/55" />
-            <LogoPlaceholder label="Leo District 306 D2" category="District identity" className="min-h-40 bg-charcoal/55" />
-            <LogoPlaceholder label="Beyond the Darkness" category="Project identity" className="min-h-40 bg-charcoal/55" />
-            {referenceItems.map((item) => (
-              <LogoPlaceholder key={item.label} label={item.label} category={item.category} className="min-h-40 bg-charcoal/35" />
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 xl:grid-cols-4">
+            {ORGANIZATION_LOGOS.map((item) => (
+              <LogoPlaceholder
+                key={item.label}
+                label={item.label}
+                category={item.category}
+                src={item.src}
+                className="min-h-40 bg-charcoal/55"
+              />
             ))}
           </div>
-          <p className="mt-5 text-xs leading-6 text-ivory/45">
-            Reference platform placeholders identify sources consulted for inspiration and information only; they do not represent endorsement, affiliation, or formal partnership.
-          </p>
         </section>
       </Reveal>
     </div>

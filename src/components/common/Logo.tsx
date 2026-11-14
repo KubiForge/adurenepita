@@ -28,6 +28,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showSubtitle = true, cl
         <img
           src={ASSETS.logoIcon}
           alt="Beyond the Darkness Emblem"
+          decoding="async"
           className="w-full h-full object-cover"
         />
       </div>

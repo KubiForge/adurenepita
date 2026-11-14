@@ -5,24 +5,34 @@
 
 export const ASSETS = {
   // Official Campaign Poster
-  campaignPoster: '/assets/campaign_poster.png',
+  campaignPoster: '/assets/campaign_poster.webp',
   
   // Official Logo & Emblems
-  logo: '/assets/logo.png',
-  logoIcon: '/assets/logo.png',
-  leoLogoPlaceholder: '/assets/logo.png',
-  kubiForgeShowcase: '/assets/Kubi%20Forge%20Startup%20Hub%20Showcase.png',
+  logo: '/assets/logo.webp',
+  logoIcon: '/assets/logo.webp',
+  leoLogoPlaceholder: '/assets/logo.webp',
+  kubiForgeShowcase: '/assets/Kubi%20Forge%20Startup%20Hub%20Showcase.webp',
+  logos: {
+    leoDistrict306D2: '/assets/logos/d2%20logo.webp',
+    multipleDistrictPresident: '/assets/logos/Dp%20Logo%2026-27%20-%20Final%20(2)%20(2).webp',
+    lionsInternational: '/assets/logos/LCI_emblem_white.webp',
+    leoUsj: '/assets/logos/leo-usj-wordmark.webp',
+    leoEmblem: '/assets/logos/Leo%20International%20logo.webp',
+    leosSriLankaMaldives: '/assets/logos/leos-sri-lanka-maldives.webp',
+    multipleDistrict306: '/assets/logos/MDP%20306%20White%20Frame.webp',
+    university: '/assets/logos/University%20logo.webp',
+  },
 
   // Real Photographic Backgrounds
-  heroBg: '/assets/hero-bg.png',
-  knowledgeBg: '/assets/knowledge-bg.png',
-  servicesBg: '/assets/services-bg.png',
-  campaignsBg: '/assets/campaigns-bg.jpg',
-  donateBg: '/assets/donate-bg.png',
+  heroBg: '/assets/hero-bg.webp',
+  knowledgeBg: '/assets/knowledge-bg.webp',
+  servicesBg: '/assets/services-bg.webp',
+  campaignsBg: '/assets/campaigns-bg.webp',
+  donateBg: '/assets/donate-bg.webp',
 
   // UI Reference Collages
-  uiReferenceUser: '/assets/ui-reference-user.jpg',
-  uiReferenceAdmin: '/assets/ui-reference-admin.jpg',
+  uiReferenceUser: '/assets/ui-reference-user.webp',
+  uiReferenceAdmin: '/assets/ui-reference-admin.webp',
 
   // Hero Atmospheric Styles
   heroAtmosphere: {
@@ -38,7 +48,7 @@ export const ASSETS = {
       category: 'Awareness Drive',
       date: '15 – 30 Nov 2026',
       venue: 'USJ Campus Grounds',
-      image: '/assets/campaigns-bg.jpg',
+      image: '/assets/campaigns-bg.webp',
     },
     {
       id: 'gallery-2',
@@ -46,7 +56,7 @@ export const ASSETS = {
       category: 'Schools & Communities',
       date: '05 Dec 2026',
       venue: 'Western Province Schools',
-      image: '/assets/campaign_poster.png',
+      image: '/assets/campaign_poster.webp',
     },
     {
       id: 'gallery-3',
@@ -54,7 +64,7 @@ export const ASSETS = {
       category: 'Community Campaign',
       date: '10 Jan 2027',
       venue: 'Colombo Town Hall',
-      image: '/assets/hero-bg.png',
+      image: '/assets/hero-bg.webp',
     },
   ],
 };
