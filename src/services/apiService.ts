@@ -3,45 +3,80 @@ import { ApiResponse } from '../types';
 import { DRUGS_DATA } from '../data/drugsData';
 import { SUPPORT_CENTERS_DATA } from '../data/sriLankaData';
 import { KEY_STATISTICS } from '../data/statisticsData';
+import { getFirebaseAuth, isFirebaseConfigured } from './firebaseAuth';
+
+interface ApiRequestOptions {
+  method?: string;
+  body?: object;
+  idToken?: string;
+}
 
 class ApiService {
   private baseUrl = API_CONFIG.appsScriptUrl;
 
-  /**
-   * Dispatches a request to Google Apps Script or falls back to local verified data
-   */
-  async request<T>(endpoint: string, options: { method?: string; body?: any } = {}): Promise<ApiResponse<T>> {
-    // If an Apps Script Web App URL is configured, send the payload
-    if (this.baseUrl && !API_CONFIG.isDemoMode) {
-      try {
-        const response = await fetch(this.baseUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: JSON.stringify({
-            endpoint,
-            method: options.method || 'GET',
-            payload: options.body || {},
-          }),
-        });
+  async request<T>(endpoint: string, options: ApiRequestOptions = {}): Promise<ApiResponse<T>> {
+    const requiresAuthentication =
+      endpoint.startsWith('/api/admin/') ||
+      endpoint.startsWith('/api/users/') ||
+      endpoint.startsWith('/api/user/') ||
+      endpoint.startsWith('/api/auth/') ||
+      endpoint === '/api/auth/me' ||
+      endpoint === '/api/support-requests' ||
+      endpoint === '/api/wizard/submit';
 
-        if (!response.ok) {
-          throw new Error(`Apps Script HTTP error: ${response.status}`);
-        }
-
-        const json = await response.json();
-        return json as ApiResponse<T>;
-      } catch (err: any) {
-        console.warn(`[ApiService] Apps Script request failed for ${endpoint}, falling back to local provider:`, err.message);
+    if (!this.baseUrl || API_CONFIG.isDemoMode) {
+      if (requiresAuthentication) {
+        throw new Error('Secure account services are unavailable until the backend is configured.');
       }
+      return this.mockResponseHandler<T>(endpoint, options);
     }
 
-    // Local verified response handler for demo/offline/development mode
-    return this.mockResponseHandler<T>(endpoint, options);
+    let idToken = options.idToken;
+    if (requiresAuthentication && !idToken && isFirebaseConfigured) {
+      idToken = await getFirebaseAuth().currentUser?.getIdToken();
+    }
+    if (requiresAuthentication && !idToken) {
+      throw new Error('Sign in with a verified account to continue.');
+    }
+
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), API_CONFIG.timeoutMs);
+
+    try {
+      const response = await fetch(this.baseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify({
+          endpoint,
+          method: options.method || 'POST',
+          payload: { ...options.body, ...(idToken ? { idToken } : {}) },
+        }),
+        signal: controller.signal,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Apps Script HTTP error: ${response.status}`);
+      }
+
+      const json = await response.json() as ApiResponse<T>;
+      if (!json.success) {
+        throw new Error(json.error || 'The request could not be completed.');
+      }
+      return json;
+    } catch (error) {
+      if (requiresAuthentication) {
+        throw error;
+      }
+      console.warn(`[ApiService] Apps Script request failed for ${endpoint}; using local read-only demo data.`);
+      return this.mockResponseHandler<T>(endpoint, options);
+    } finally {
+      window.clearTimeout(timeout);
+    }
   }
 
-  private mockResponseHandler<T>(endpoint: string, options: any): Promise<ApiResponse<T>> {
+  private mockResponseHandler<T>(endpoint: string, options: ApiRequestOptions): Promise<ApiResponse<T>> {
     return new Promise((resolve) => {
       setTimeout(() => {
         const timestamp = new Date().toISOString();

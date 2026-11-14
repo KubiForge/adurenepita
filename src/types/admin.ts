@@ -1,13 +1,16 @@
-export type UserRole = 'ADMIN' | 'TECHNICAL_CREW';
+export type UserRole = 'ADMIN' | 'USER';
 
 export interface AdminUser {
   id: string;
   email: string;
   name: string;
+  phone?: string;
   role: UserRole;
   isActive: boolean;
   lastLoginAt: string;
   createdAt: string;
+  emailVerified: boolean;
+  mustChangePassword?: boolean;
 }
 
 export interface AuditLogEntry {

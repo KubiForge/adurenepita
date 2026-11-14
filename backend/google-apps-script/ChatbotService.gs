@@ -85,32 +85,8 @@ function handleAiChat(payload) {
   };
 }
 
-function handleWizardSubmission(payload) {
-  var sheet = getSheetTab('WizardSubmissions');
-  if (sheet) {
-    sheet.appendRow([
-      'wiz-' + new Date().getTime(),
-      new Date().toISOString(),
-      payload.purpose || '',
-      payload.situation || '',
-      (payload.substances || []).join('; '),
-      payload.duration || '',
-      payload.province || '',
-      payload.district || '',
-      payload.supportPreference || ''
-    ]);
-  }
-  return { success: true, message: 'Wizard choices recorded for navigation summary.' };
-}
-
 function handleAiFeedback(payload) {
   var sheet = getSheetTab('AIUsage');
   // Log feedback score without sensitive message content
   return { success: true, message: 'Feedback recorded' };
-}
-
-function handleSupportRequest(payload) {
-  var sheet = getSheetTab('WizardSubmissions');
-  // Store referral under restricted access
-  return { success: true, referenceId: 'REF-' + new Date().getTime() };
 }

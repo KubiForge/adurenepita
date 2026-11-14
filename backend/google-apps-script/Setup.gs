@@ -10,7 +10,7 @@ function setupBeyondTheDarknessEnvironment() {
     throw new Error('No active spreadsheet found. Please bind this script to a Google Spreadsheet or set SPREADSHEET_ID in Script Properties.');
   }
 
-  // 1. Initialize all 10 required Google Sheets Workbook Tabs
+  // 1. Initialize required Google Sheets workbook tabs
   var tabs = {
     'SiteContent': ['ContentKey', 'Language', 'Section', 'TextContent', 'LastUpdated'],
     'DrugKnowledge': ['Name', 'NameSi', 'ReviewStatus', 'Classification', 'Description', 'ShortTermEffects', 'EmergencySigns', 'Treatment', 'SourceTitle', 'SourceUrl', 'LastReviewDate'],
@@ -19,9 +19,16 @@ function setupBeyondTheDarknessEnvironment() {
     'DonationRecords': ['ReferenceID', 'Timestamp', 'Amount', 'Currency', 'PaymentStatus', 'DonorName', 'DonorEmail', 'PaymentProvider', 'CampaignAllocation', 'ReceiptDrivePath'],
     'Campaigns': ['EventID', 'Title', 'TitleSi', 'Phase', 'EventDate', 'Location', 'Status', 'Participants'],
     'AIUsage': ['Timestamp', 'Model', 'Tokens', 'StatusCode', 'CostEstimateUSD'],
-    'AdminUsers': ['Email', 'Role', 'IsActive', 'CreatedDate'],
+    'AdminUsers': ['Email', 'Role', 'IsActive', 'CreatedDate', 'FirebaseUID', 'MustChangePassword'],
     'AuditLog': ['Timestamp', 'UserEmail', 'Action', 'Details'],
-    'SystemConfig': ['ConfigKey', 'ConfigValue', 'Description', 'UpdatedDate']
+    'SystemConfig': ['ConfigKey', 'ConfigValue', 'Description', 'UpdatedDate'],
+    'UserProfiles': ['FirebaseUID', 'Email', 'FullName', 'Phone', 'Language', 'CreatedAt', 'UpdatedAt', 'PrivacyAcceptedAt', 'TermsAcceptedAt', 'PolicyVersion', 'DeletionRequestedAt'],
+    'Assessments': ['AssessmentID', 'FirebaseUID', 'CreatedAt', 'AnswersJson', 'ConsentAt', 'PolicyVersion'],
+    'SupportRequests': ['RequestID', 'Reference', 'FirebaseUID', 'AssessmentID', 'CreatedAt', 'SupportMethod', 'ContactMethod', 'ContactInfo', 'CenterID', 'Province', 'District', 'AdditionalDetails', 'Status', 'Priority', 'ConsentAt', 'IdempotencyKey', 'UpdatedAt'],
+    'RequestMessages': ['MessageID', 'RequestID', 'AuthorUID', 'AuthorRole', 'CreatedAt', 'Message', 'IsInternal'],
+    'RequestStatusHistory': ['HistoryID', 'RequestID', 'PreviousStatus', 'NewStatus', 'ChangedByUID', 'ChangedByRole', 'Timestamp', 'AdminNote'],
+    'RequestRecommendations': ['RecommendationID', 'RequestID', 'CenterID', 'PersonalizedNote', 'NextSteps', 'CreatedByUID', 'CreatedAt'],
+    'UserConsents': ['ConsentID', 'FirebaseUID', 'RequestID', 'ConsentType', 'PolicyVersion', 'Timestamp', 'DataShareConsent']
   };
 
   for (var tabName in tabs) {
@@ -30,19 +37,22 @@ function setupBeyondTheDarknessEnvironment() {
       sheet = ss.insertSheet(tabName);
       Logger.log('Created tab: ' + tabName);
     }
-    // Set headers if sheet is empty
+    // Add missing headers without changing existing records.
     if (sheet.getLastRow() === 0) {
       sheet.appendRow(tabs[tabName]);
       sheet.getRange(1, 1, 1, tabs[tabName].length).setFontWeight('bold').setBackground('#242426').setFontColor('#D8BE82');
       sheet.setFrozenRows(1);
+    } else {
+      var currentHeaders = getTableHeaders(sheet);
+      var missingHeaders = tabs[tabName].filter(function (header) {
+        return currentHeaders.indexOf(header) === -1;
+      });
+      if (missingHeaders.length) {
+        var firstNewColumn = sheet.getLastColumn() + 1;
+        sheet.getRange(1, firstNewColumn, 1, missingHeaders.length).setValues([missingHeaders]);
+        sheet.getRange(1, firstNewColumn, 1, missingHeaders.length).setFontWeight('bold').setBackground('#242426').setFontColor('#D8BE82');
+      }
     }
-  }
-
-  // Seed default admin allowlist
-  var adminSheet = ss.getSheetByName('AdminUsers');
-  if (adminSheet.getLastRow() <= 1) {
-    adminSheet.appendRow(['admin@leousj.org', 'ADMIN', true, new Date().toISOString()]);
-    adminSheet.appendRow(['tech@leousj.org', 'TECHNICAL_CREW', true, new Date().toISOString()]);
   }
 
   // 2. Initialize Google Drive Folder Structure

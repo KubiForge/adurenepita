@@ -43,12 +43,19 @@ export type SupportPreference =
   | 'family_support'
   | 'not_sure';
 
+export type PersonNeedingSupport = 'myself' | 'family_member' | 'friend' | 'someone_else' | 'prefer_not_to_say';
+
+export type UseFrequency = 'daily' | 'several_times_week' | 'weekly_or_less' | 'unsure' | 'prefer_not_to_say';
+
+export type PreviousSupport = 'currently_receiving' | 'received_before' | 'not_yet' | 'prefer_not_to_say';
+
 export interface WizardAnswers {
   // Step 1
   purpose?: WizardPurpose;
   purposeOther?: string;
 
   // Step 2
+  personNeedingSupport?: PersonNeedingSupport;
   situation?: UserSituation;
   situationOther?: string;
 
@@ -61,6 +68,7 @@ export interface WizardAnswers {
 
   // Step 5
   currentState?: CurrentState;
+  useFrequency?: UseFrequency;
 
   // Step 6
   concerns: string[];
@@ -76,9 +84,11 @@ export interface WizardAnswers {
 
   // Step 9
   additionalContext?: string;
+  previousSupport?: PreviousSupport;
+  healthInfo?: string;
 
   // Step 10
-  consentedToReferral?: boolean;
+  privacyNoticeAcknowledged?: boolean;
 }
 
 export interface WizardCompletionResult {

@@ -303,6 +303,9 @@ export const DonationForm: React.FC = () => {
           <Lock className="w-4 h-4 text-gold flex-shrink-0 mt-0.5" />
           <span>
             <strong>Secure Processing:</strong> Your card data and banking credentials are never collected or stored on this website. Payments are encrypted and verified server-side through authorized gateway providers.
+            <span className="block mt-1 text-gold/80 text-[11px] font-mono">
+              Note: Gateway integration is currently running in Preview / Test Sandbox Mode. Submitting will generate a simulated receipt record for verification.
+            </span>
           </span>
         </div>
 

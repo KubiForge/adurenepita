@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Modal } from '../common/Modal';
-import { SupportCenter, SupportReferralRequest } from '../../types/directory';
+import { Link } from 'react-router-dom';
+import { SupportCenter } from '../../types/directory';
 import { Button } from '../common/Button';
 import { apiService } from '../../services/apiService';
-import { ShieldCheck, PhoneCall, Mail, UserCheck, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, PhoneCall, Mail, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 interface ReferralRequestModalProps {
   isOpen: boolean;
@@ -16,6 +18,7 @@ export const ReferralRequestModal: React.FC<ReferralRequestModalProps> = ({
   onClose,
   center,
 }) => {
+  const { isAuthenticated } = useAuth();
   const [preferredLanguage, setPreferredLanguage] = useState<'si' | 'en' | 'ta'>('si');
   const [contactMethod, setContactMethod] = useState<'phone' | 'email' | 'in_person'>('phone');
   const [contactInfo, setContactInfo] = useState('');
@@ -23,6 +26,8 @@ export const ReferralRequestModal: React.FC<ReferralRequestModalProps> = ({
   const [explicitConsent, setExplicitConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [requestReference, setRequestReference] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   if (!center) return null;
 
@@ -31,25 +36,34 @@ export const ReferralRequestModal: React.FC<ReferralRequestModalProps> = ({
     if (!explicitConsent || !contactInfo.trim()) return;
 
     setIsSubmitting(true);
-    const requestPayload: SupportReferralRequest = {
+    setError(null);
+    const requestPayload = {
       centerId: center.id,
-      preferredLanguage,
-      contactMethod,
+      supportMethod: 'professional_guidance',
+      contactMethod: contactMethod === 'in_person' ? 'phone' : contactMethod,
       contactInfo,
-      briefConcern: briefConcern.trim() || undefined,
-      explicitConsentGiven: true,
-      submittedAt: new Date().toISOString(),
-      status: 'pending',
+      additionalDetails: briefConcern.trim(),
+      province: center.province,
+      district: center.district,
+      assessment: {
+        purpose: 'professional_support',
+        preferredLanguage,
+        consentedToReferral: true,
+      },
+      dataShareConsent: true,
+      policyVersion: '2026-11-13',
+      idempotencyKey: window.crypto.randomUUID(),
     };
 
     try {
-      await apiService.request('/api/support-requests', {
+      const response = await apiService.request<{ reference: string }>('/api/support-requests', {
         method: 'POST',
         body: requestPayload,
       });
+      setRequestReference(response.data?.reference || null);
       setIsSuccess(true);
-    } catch (err) {
-      console.error('Referral submission failed:', err);
+    } catch (submitError) {
+      setError(submitError instanceof Error ? submitError.message : 'The request could not be submitted. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -60,6 +74,8 @@ export const ReferralRequestModal: React.FC<ReferralRequestModalProps> = ({
     setContactInfo('');
     setBriefConcern('');
     setExplicitConsent(false);
+    setError(null);
+    setRequestReference(null);
     onClose();
   };
 
@@ -75,7 +91,15 @@ export const ReferralRequestModal: React.FC<ReferralRequestModalProps> = ({
         </div>
       }
     >
-      {!isSuccess ? (
+      {!isAuthenticated ? (
+        <div className="space-y-4 text-sm">
+          <p className="text-ivory/75">Sign in with a verified account to submit a confidential request. You can also contact {center.name} directly at <strong className="text-gold">{center.phone}</strong>.</p>
+          <div className="flex gap-3">
+            <Link to="/profile" onClick={onClose} className="btn-gold px-4 py-2 rounded-xl text-xs font-bold">Sign in</Link>
+            <Link to="/profile?auth=register" onClick={onClose} className="btn-charcoal px-4 py-2 rounded-xl text-xs">Create account</Link>
+          </div>
+        </div>
+      ) : !isSuccess ? (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="p-3.5 rounded-xl bg-charcoal border border-charcoal-light">
             <span className="text-xs text-gold uppercase tracking-wider font-semibold block">
@@ -88,7 +112,7 @@ export const ReferralRequestModal: React.FC<ReferralRequestModalProps> = ({
           <div className="p-3 rounded-lg bg-midnight/80 border border-gold/20 text-xs text-ivory/70 space-y-1">
             <p className="font-semibold text-gold">Strict Privacy & Autonomy Guarantee:</p>
             <p>
-              Your AI conversation history is NEVER shared with third parties or medical units. You may also contact this facility directly using their public phone ({center.phone}) without completing this form.
+              Your AI conversation history is not included. This request is reviewed by the platform support team; it is not automatically sent to the institution. You may also contact this facility directly at {center.phone}.
             </p>
           </div>
 
@@ -193,10 +217,12 @@ export const ReferralRequestModal: React.FC<ReferralRequestModalProps> = ({
                 className="mt-0.5 h-4 w-4 rounded border-charcoal-light text-gold focus:ring-gold bg-midnight"
               />
               <span className="text-[11px] text-ivory/80 leading-snug">
-                I give explicit consent for this contact detail to be securely transmitted to {center.name} for the sole purpose of scheduling an appointment.
+                I explicitly consent to share the contact details and information entered here with the platform support team so they can review my request and respond with support options. I understand this does not schedule an appointment or automatically share my details with {center.name}.
               </span>
             </label>
           </div>
+
+          {error && <p role="alert" className="p-3 rounded-xl bg-red-950/70 border border-red-800 text-xs text-red-200 flex gap-2"><AlertCircle className="w-4 h-4 shrink-0" />{error}</p>}
 
           {/* Submit Buttons */}
           <div className="flex items-center justify-end gap-2 pt-3 border-t border-charcoal-light">
@@ -225,8 +251,9 @@ export const ReferralRequestModal: React.FC<ReferralRequestModalProps> = ({
           <p className="text-xs text-gold/80 font-sinhalaSerif">
             ඔබගේ ඉල්ලීම සාර්ථකව යොමුකරන ලදී
           </p>
+          {requestReference && <p className="font-mono text-gold text-sm">{requestReference}</p>}
           <p className="text-xs text-ivory/70 max-w-md mx-auto leading-relaxed">
-            Your inquiry has been queued for {center.name}. A representative will reach out via your preferred method. Remember, you can also call them directly at <strong>{center.phone}</strong> anytime during operating hours.
+            Your request has been sent to the platform's confidential support queue for review. The institution has not been contacted on your behalf. You can track updates from your account or contact {center.name} directly at <strong>{center.phone}</strong>.
           </p>
           <div className="pt-4">
             <Button variant="gold" size="sm" onClick={handleReset}>

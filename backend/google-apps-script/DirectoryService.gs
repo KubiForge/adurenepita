@@ -23,10 +23,13 @@ function getVerifiedSupportCenters(filterProvince, filterDistrict) {
     var status = row[8];
     var lastVerified = row[9];
 
-    if (filterProvince && province.toLowerCase() !== filterProvince.toLowerCase()) {
+    if (!centerId || String(status || '').toLowerCase() !== 'verified') {
       continue;
     }
-    if (filterDistrict && district.toLowerCase() !== filterDistrict.toLowerCase()) {
+    if (filterProvince && String(province || '').toLowerCase() !== String(filterProvince).toLowerCase()) {
+      continue;
+    }
+    if (filterDistrict && String(district || '').toLowerCase() !== String(filterDistrict).toLowerCase()) {
       continue;
     }
 
@@ -45,4 +48,12 @@ function getVerifiedSupportCenters(filterProvince, filterDistrict) {
   }
 
   return centers;
+}
+
+function getVerifiedCenterById(centerId) {
+  var centers = getVerifiedSupportCenters(null, null);
+  for (var i = 0; i < centers.length; i++) {
+    if (String(centers[i].id) === String(centerId)) return centers[i];
+  }
+  return null;
 }

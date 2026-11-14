@@ -3,7 +3,7 @@ import { NavLink, Link, useLocation } from 'react-router-dom';
 import { Logo } from '../common/Logo';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { useLanguage } from '../../context/LanguageContext';
-import { Sparkles, Menu, X, Heart, Shield, Compass } from 'lucide-react';
+import { Sparkles, Menu, X, Heart, Shield, Compass, UserRound } from 'lucide-react';
 
 interface NavbarProps {
   onOpenAiChat?: () => void;
@@ -45,6 +45,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
 
           <div className="hidden items-center gap-2.5 lg:flex">
             <LanguageSwitcher />
+            <Link
+              to="/profile"
+              className="inline-flex items-center gap-1.5 rounded-full border border-gold/20 px-3 py-2 text-xs text-ivory/75 hover:border-gold/50 hover:text-gold"
+            >
+              <UserRound className="h-3.5 w-3.5" />
+              <span>Account</span>
+            </Link>
 
             {onOpenWizard && (
               <button
@@ -141,6 +148,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
           </nav>
 
           <div className="mx-auto mt-4 flex max-w-7xl flex-col gap-2.5 border-t border-ivory/10 pt-4">
+            <Link
+              to="/profile"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold text-ivory/80 hover:text-gold"
+            >
+              <UserRound className="h-4 w-4 text-gold" />
+              <span>Account</span>
+            </Link>
             {onOpenWizard && (
               <button
                 onClick={() => {

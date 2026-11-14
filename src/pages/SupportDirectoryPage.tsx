@@ -7,6 +7,7 @@ import { DirectoryFilters } from '../components/directory/DirectoryFilters';
 import { ReferralRequestModal } from '../components/directory/ReferralRequestModal';
 import { Map, List, ShieldCheck, PhoneCall } from 'lucide-react';
 import { Button } from '../components/common/Button';
+import { ASSETS } from '../config/assets';
 
 export const SupportDirectoryPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -48,19 +49,28 @@ export const SupportDirectoryPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
       {/* Page Header */}
-      <div className="text-center max-w-3xl mx-auto space-y-3">
-        <span className="text-xs uppercase tracking-wider text-gold font-bold">
-          Verified Sri Lankan Directory
-        </span>
-        <h1 className="text-4xl font-bold font-heading text-ivory">
-          Find Rehabilitation & Professional Support
-          <span className="block font-sinhalaSerif text-gold text-2xl mt-1">
-            ශ්‍රී ලංකාවේ ප්‍රතිකාර හා උපදේශන මධ්‍යස්ථාන
+      <div
+        className="relative isolate overflow-hidden rounded-3xl border border-gold/20 px-6 py-10 sm:px-10 sm:py-14"
+        style={{
+          backgroundImage: `linear-gradient(90deg, rgba(16, 17, 19, 0.98) 0%, rgba(16, 17, 19, 0.86) 52%, rgba(16, 17, 19, 0.28) 100%), url(${ASSETS.servicesBg})`,
+          backgroundPosition: 'center, right center',
+          backgroundSize: 'cover',
+        }}
+      >
+        <div className="max-w-2xl space-y-3">
+          <span className="text-xs uppercase tracking-wider text-gold font-bold">
+            Verified Sri Lankan Directory
           </span>
-        </h1>
-        <p className="text-sm text-ivory/70 leading-relaxed">
-          Locate verified government hospitals, NDDCB residential rehabilitation centers, and non-profit counseling facilities across all 9 provinces and 25 districts.
-        </p>
+          <h1 className="text-4xl font-bold font-heading text-ivory">
+            Find Rehabilitation & Professional Support
+            <span className="block font-sinhalaSerif text-gold text-2xl mt-1">
+              ශ්‍රී ලංකාවේ ප්‍රතිකාර හා උපදේශන මධ්‍යස්ථාන
+            </span>
+          </h1>
+          <p className="text-sm text-ivory/80 leading-relaxed">
+            Locate verified government hospitals, NDDCB residential rehabilitation centers, and non-profit counseling facilities across all 9 provinces and 25 districts.
+          </p>
+        </div>
       </div>
 
       {/* Directory Filter Component */}

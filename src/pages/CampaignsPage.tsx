@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { CAMPAIGN_EVENTS, VOLUNTEER_ROLES } from '../data/campaignData';
 import { ASSETS } from '../config/assets';
 import { Button } from '../components/common/Button';
@@ -38,6 +39,38 @@ export const CampaignsPage: React.FC = () => {
           Led by the Leo Club of University of Sri Jayewardenepura, our campaigns combine physical university drives, island-wide school caravans, and youth empowerment.
         </p>
       </div>
+
+      <section className="relative isolate grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_260px] gap-8 items-center overflow-hidden rounded-3xl border border-gold/30 p-6 sm:p-10">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-20 bg-cover bg-center"
+          style={{ backgroundImage: `url(${ASSETS.campaignsBg})` }}
+        />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-r from-midnight via-midnight/90 to-midnight/55" />
+        <div className="space-y-4">
+          <span className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-midnight/70 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gold">
+            <HeartHandshake className="h-4 w-4" />
+            Beyond the Stigma
+          </span>
+          <h2 className="max-w-2xl text-3xl sm:text-4xl font-bold font-heading text-ivory">
+            A community that makes hope visible.
+          </h2>
+          <p className="max-w-xl text-sm leading-relaxed text-ivory/80">
+            Join youth-led awareness work that replaces stigma with knowledge, connection, and compassionate support.
+          </p>
+          <Link to="/about" className="inline-flex items-center gap-2 text-sm font-semibold text-gold hover:text-champagne">
+            Learn about our mission <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+        <div className="mx-auto w-full max-w-[260px] overflow-hidden rounded-2xl border border-gold/30 bg-midnight/70 shadow-2xl">
+          <img
+            src={ASSETS.campaignPoster}
+            alt="Beyond the Darkness awareness campaign poster"
+            className="aspect-square w-full object-contain"
+            loading="lazy"
+          />
+        </div>
+      </section>
 
       {/* Campaign Events Timeline */}
       <div className="space-y-6">

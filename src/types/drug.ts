@@ -4,8 +4,10 @@ export type SubstanceClassification =
   | 'Opioid'
   | 'Cannabinoid'
   | 'Hallucinogen'
+  | 'Dissociative'
   | 'Prescription Medicine'
   | 'Inhalant'
+  | 'Mixed'
   | 'Nicotine/Tobacco';
 
 export type ReviewStatus = 'draft' | 'pending_review' | 'approved' | 'rejected' | 'expired';

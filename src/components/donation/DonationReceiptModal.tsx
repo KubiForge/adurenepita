@@ -34,8 +34,11 @@ export const DonationReceiptModal: React.FC<DonationReceiptModalProps> = ({
         </div>
 
         <div>
-          <span className="text-xs uppercase tracking-wider text-gold font-bold">
-            Official Acknowledgment
+          <div className="inline-block px-2.5 py-0.5 rounded bg-gold/20 border border-gold/40 text-[10px] uppercase font-mono font-bold text-gold mb-1">
+            Sandbox / Preview Mode Record
+          </div>
+          <span className="block text-xs uppercase tracking-wider text-gold font-bold">
+            Sample Acknowledgment Receipt (Test Mode)
           </span>
           <h3 className="text-2xl font-bold font-heading text-ivory mt-0.5">
             Thank You For Standing with Us
@@ -84,7 +87,10 @@ export const DonationReceiptModal: React.FC<DonationReceiptModalProps> = ({
           </div>
 
           <div className="pt-2 border-t border-charcoal-light text-[11px] text-ivory/50">
-            <strong>Drive Receipt Archive:</strong> {record.receiptDriveReference}
+            <strong>Drive Receipt Archive Path:</strong> {record.receiptDriveReference}
+            <span className="block text-[10px] text-gold/70 mt-0.5">
+              (Preview: Live PDF generated once Google Apps Script Drive integration is deployed)
+            </span>
           </div>
         </div>
 

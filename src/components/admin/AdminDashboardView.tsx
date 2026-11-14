@@ -3,53 +3,25 @@ import { useAuth } from '../../context/AuthContext';
 import { DRUGS_DATA } from '../../data/drugsData';
 import { SUPPORT_CENTERS_DATA } from '../../data/sriLankaData';
 import { paymentService } from '../../services/paymentService';
-import { DonationRecord } from '../../types/donation';
 import {
   Users,
-  Database,
-  HeartHandshake,
-  FileText,
+  MessageSquare,
+  Heart,
+  Star,
+  ArrowUpRight,
   ShieldCheck,
   Download,
   Plus,
-  Edit,
-  CheckCircle,
+  Clock,
+  Activity,
+  CheckCircle2,
   AlertTriangle,
   RotateCcw,
 } from 'lucide-react';
-import { Button } from '../common/Button';
+import { Link } from 'react-router-dom';
 
 export const AdminDashboardView: React.FC = () => {
   const { currentUser } = useAuth();
-  const [activeTab, setActiveTab] = useState<'overview' | 'drugs' | 'directory' | 'donations' | 'volunteers'>('overview');
-  const [donations, setDonations] = useState<DonationRecord[]>(() => paymentService.getRecordsFromLocalCache());
-
-  // Metrics
-  const totalVerifiedLKR = donations
-    .filter((d) => d.paymentStatus === 'verified')
-    .reduce((acc, curr) => acc + curr.amount, 0);
-
-  const exportDonationsCsv = () => {
-    const headers = ['ReferenceID', 'Amount', 'Currency', 'Status', 'Donor', 'Allocation', 'Date'];
-    const rows = donations.map((d) => [
-      d.referenceId,
-      d.amount,
-      d.currency,
-      d.paymentStatus,
-      d.isAnonymous ? 'Anonymous' : d.donorName || 'N/A',
-      `"${d.campaignAllocation}"`,
-      d.createdAt,
-    ]);
-
-    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `btd_donations_reconciliation_${Date.now()}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
   return (
     <div className="space-y-6">
@@ -58,281 +30,279 @@ export const AdminDashboardView: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs uppercase tracking-wider px-2.5 py-0.5 rounded bg-midnight text-gold font-bold border border-gold/30">
-              Role: ADMIN
+              Role: SUPER ADMIN
             </span>
-            <span className="text-xs text-ivory/60">
-              Authenticated identity: {currentUser?.email}
+            <span className="text-xs text-ivory/60 font-mono">
+              {currentUser?.email || 'admin@btd.lk'}
             </span>
           </div>
           <h2 className="text-2xl font-bold font-heading text-ivory">
-            Leo Club Operational Administration
+            Platform Overview & Key Insights
           </h2>
           <p className="text-xs text-ivory/70 mt-1">
-            Oversee verified support directories, drug knowledge records, donation ledger reconciliation, and volunteer operations.
+            Real-time operations, service referral metrics, AI interactions, and clinical knowledge governance.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="charcoal" size="sm" onClick={exportDonationsCsv} leftIcon={<Download className="w-4 h-4 text-gold" />}>
-            Export Financial Ledger
-          </Button>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="flex overflow-x-auto gap-2 border-b border-charcoal-light pb-2">
-        {[
-          { id: 'overview', label: 'Overview Metrics' },
-          { id: 'donations', label: `Donations (${donations.length})` },
-          { id: 'drugs', label: `Drug Knowledge (${DRUGS_DATA.length})` },
-          { id: 'directory', label: `Support Directory (${SUPPORT_CENTERS_DATA.length})` },
-          { id: 'volunteers', label: 'Volunteer Applications' },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-              activeTab === tab.id
-                ? 'bg-gold text-midnight shadow-gold-subtle'
-                : 'text-ivory/70 hover:text-ivory hover:bg-charcoal'
-            }`}
+          <Link
+            to="/admin/content"
+            className="btn-gold px-4 py-2 rounded-xl text-xs font-bold shadow-gold-subtle flex items-center gap-1.5"
           >
-            {tab.label}
-          </button>
-        ))}
+            <Plus className="w-4 h-4 text-midnight" />
+            <span className="text-midnight">+ New Content</span>
+          </Link>
+          <Link
+            to="/admin/services"
+            className="btn-charcoal px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5"
+          >
+            <Star className="w-4 h-4 text-gold" />
+            <span>Verify Services</span>
+          </Link>
+        </div>
       </div>
 
-      {/* TAB 1: OVERVIEW METRICS */}
-      {activeTab === 'overview' && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="charcoal-card p-5">
-              <span className="text-xs text-gold uppercase tracking-wider font-semibold block">
-                Total Verified Funds
-              </span>
-              <div className="text-2xl font-bold text-champagne font-mono mt-1">
-                Rs. {totalVerifiedLKR.toLocaleString()}
-              </div>
-              <span className="text-[11px] text-emerald-400 mt-1 block">
-                Reconciled with payment gateway
-              </span>
-            </div>
-
-            <div className="charcoal-card p-5">
-              <span className="text-xs text-gold uppercase tracking-wider font-semibold block">
-                Verified Support Centers
-              </span>
-              <div className="text-2xl font-bold text-ivory font-mono mt-1">
-                {SUPPORT_CENTERS_DATA.length}
-              </div>
-              <span className="text-[11px] text-ivory/50 mt-1 block">
-                Across 9 provinces & 25 districts
-              </span>
-            </div>
-
-            <div className="charcoal-card p-5">
-              <span className="text-xs text-gold uppercase tracking-wider font-semibold block">
-                Approved Drug Monographs
-              </span>
-              <div className="text-2xl font-bold text-ivory font-mono mt-1">
-                {DRUGS_DATA.length}
-              </div>
-              <span className="text-[11px] text-emerald-400 mt-1 block">
-                100% medically reviewed & cited
-              </span>
-            </div>
-
-            <div className="charcoal-card p-5">
-              <span className="text-xs text-gold uppercase tracking-wider font-semibold block">
-                Total Educational Visits
-              </span>
-              <div className="text-2xl font-bold text-ivory font-mono mt-1">
-                14,280
-              </div>
-              <span className="text-[11px] text-gold/80 mt-1 block">
-                3,412 AI inquiries handled safely
-              </span>
-            </div>
+      {/* 4 KPI Cards (Screen 01 in Image 7) */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Card 1: Website Visits */}
+        <div className="charcoal-card p-5 border-charcoal-light">
+          <div className="flex items-center justify-between text-xs text-ivory/60">
+            <span>Website Visits</span>
+            <Users className="w-4 h-4 text-gold" />
           </div>
+          <div className="text-2xl sm:text-3xl font-bold font-heading text-ivory mt-2">
+            12,480
+          </div>
+          <div className="text-[11px] text-emerald-400 flex items-center gap-1 mt-1 font-semibold">
+            <ArrowUpRight className="w-3.5 h-3.5" />
+            <span>+12% vs last month</span>
+          </div>
+        </div>
 
-          {/* Governance Notice */}
-          <div className="p-4 rounded-xl bg-charcoal border border-charcoal-light text-xs text-ivory/70 flex items-start gap-3">
-            <ShieldCheck className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
+        {/* Card 2: AI Conversations */}
+        <div className="charcoal-card p-5 border-charcoal-light">
+          <div className="flex items-center justify-between text-xs text-ivory/60">
+            <span>AI Conversations</span>
+            <MessageSquare className="w-4 h-4 text-gold" />
+          </div>
+          <div className="text-2xl sm:text-3xl font-bold font-heading text-gold mt-2">
+            1,328
+          </div>
+          <div className="text-[11px] text-emerald-400 flex items-center gap-1 mt-1 font-semibold">
+            <ArrowUpRight className="w-3.5 h-3.5" />
+            <span>+18% 24/7 engagement</span>
+          </div>
+        </div>
+
+        {/* Card 3: Referrals */}
+        <div className="charcoal-card p-5 border-charcoal-light">
+          <div className="flex items-center justify-between text-xs text-ivory/60">
+            <span>Referrals</span>
+            <Heart className="w-4 h-4 text-gold" />
+          </div>
+          <div className="text-2xl sm:text-3xl font-bold font-heading text-champagne mt-2">
+            276
+          </div>
+          <div className="text-[11px] text-emerald-400 flex items-center gap-1 mt-1 font-semibold">
+            <ArrowUpRight className="w-3.5 h-3.5" />
+            <span>+24% support cases</span>
+          </div>
+        </div>
+
+        {/* Card 4: Verified Services */}
+        <div className="charcoal-card p-5 border-charcoal-light">
+          <div className="flex items-center justify-between text-xs text-ivory/60">
+            <span>Service Providers</span>
+            <Star className="w-4 h-4 text-gold" />
+          </div>
+          <div className="text-2xl sm:text-3xl font-bold font-heading text-emerald-400 mt-2">
+            42
+          </div>
+          <div className="text-[11px] text-emerald-400 flex items-center gap-1 mt-1 font-semibold">
+            <ArrowUpRight className="w-3.5 h-3.5" />
+            <span>+8% island-wide centers</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Visual Analytics Row: 30-Day Line Chart & Referral Status Donut */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* User Engagement (Last 30 Days) SVG Chart */}
+        <div className="lg:col-span-8 charcoal-card p-6 border-charcoal-light space-y-4">
+          <div className="flex items-center justify-between border-b border-charcoal-light pb-3">
             <div>
-              <p className="font-bold text-ivory text-sm">Two-Role Access Control Model:</p>
-              <p className="mt-1 leading-relaxed">
-                As per official platform governance, this system enforces only two roles: <strong>ADMIN</strong> and <strong>TECHNICAL CREW</strong>. As an Admin, you govern public content, verified support directories, and financial records. Private user chat histories are restricted and not exposed to administrators by default to preserve strict user confidentiality.
-              </p>
+              <h3 className="font-heading font-bold text-base text-ivory">
+                User Engagement (Last 30 Days)
+              </h3>
+              <p className="text-[11px] text-ivory/50">Daily visitor interactions and active sessions</p>
+            </div>
+            <span className="text-xs text-gold font-mono font-bold">Peak: 1,480 Sessions</span>
+          </div>
+
+          {/* SVG Line Chart (matching Screenshot 01) */}
+          <div className="relative h-56 w-full pt-4">
+            <svg className="w-full h-full overflow-visible" viewBox="0 0 700 200">
+              <defs>
+                <linearGradient id="goldGradientArea" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#D8BE82" stopOpacity="0.35" />
+                  <stop offset="100%" stopColor="#D8BE82" stopOpacity="0.0" />
+                </linearGradient>
+              </defs>
+
+              {/* Grid Lines */}
+              <line x1="50" y1="20" x2="680" y2="20" stroke="rgba(245,242,235,0.06)" strokeDasharray="3 3" />
+              <line x1="50" y1="70" x2="680" y2="70" stroke="rgba(245,242,235,0.06)" strokeDasharray="3 3" />
+              <line x1="50" y1="120" x2="680" y2="120" stroke="rgba(245,242,235,0.06)" strokeDasharray="3 3" />
+              <line x1="50" y1="170" x2="680" y2="170" stroke="rgba(245,242,235,0.1)" />
+
+              {/* Y Axis Labels */}
+              <text x="15" y="24" fill="rgba(245,242,235,0.4)" fontSize="10" fontFamily="sans-serif">1.5K</text>
+              <text x="15" y="74" fill="rgba(245,242,235,0.4)" fontSize="10" fontFamily="sans-serif">1.2K</text>
+              <text x="15" y="124" fill="rgba(245,242,235,0.4)" fontSize="10" fontFamily="sans-serif">900</text>
+              <text x="15" y="174" fill="rgba(245,242,235,0.4)" fontSize="10" fontFamily="sans-serif">300</text>
+
+              {/* Chart Filled Area */}
+              <polygon
+                points="50,170 50,150 140,140 230,145 320,130 410,110 500,80 590,60 680,45 680,170"
+                fill="url(#goldGradientArea)"
+              />
+
+              {/* Chart Golden Line */}
+              <polyline
+                points="50,150 140,140 230,145 320,130 410,110 500,80 590,60 680,45"
+                fill="none"
+                stroke="#D8BE82"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+
+              {/* Interactive Points */}
+              {[[50,150],[140,140],[230,145],[320,130],[410,110],[500,80],[590,60],[680,45]].map(([cx, cy], i) => (
+                <circle key={i} cx={cx} cy={cy} r="4" fill="#101113" stroke="#D8BE82" strokeWidth="2.5" />
+              ))}
+
+              {/* X Axis Labels */}
+              <text x="45" y="195" fill="rgba(245,242,235,0.4)" fontSize="10">Oct 12</text>
+              <text x="135" y="195" fill="rgba(245,242,235,0.4)" fontSize="10">Oct 17</text>
+              <text x="225" y="195" fill="rgba(245,242,235,0.4)" fontSize="10">Oct 22</text>
+              <text x="315" y="195" fill="rgba(245,242,235,0.4)" fontSize="10">Oct 27</text>
+              <text x="405" y="195" fill="rgba(245,242,235,0.4)" fontSize="10">Nov 01</text>
+              <text x="665" y="195" fill="rgba(245,242,235,0.4)" fontSize="10">Nov 06</text>
+            </svg>
+          </div>
+        </div>
+
+        {/* Referral Status Donut Chart */}
+        <div className="lg:col-span-4 charcoal-card p-6 border-charcoal-light flex flex-col justify-between space-y-4">
+          <div className="border-b border-charcoal-light pb-3">
+            <h3 className="font-heading font-bold text-base text-ivory">
+              Referral Status
+            </h3>
+            <p className="text-[11px] text-ivory/50">Breakdown of active client assistance cases</p>
+          </div>
+
+          <div className="relative w-40 h-40 mx-auto flex items-center justify-center">
+            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+              {/* Completed: 48% (Emerald) */}
+              <circle
+                cx="50"
+                cy="50"
+                r="38"
+                stroke="#10b981"
+                strokeWidth="11"
+                strokeDasharray="238.7"
+                strokeDashoffset="124.1" /* 48% */
+                fill="transparent"
+              />
+              {/* In Progress: 32% (Gold) */}
+              <circle
+                cx="50"
+                cy="50"
+                r="38"
+                stroke="#D8BE82"
+                strokeWidth="11"
+                strokeDasharray="238.7"
+                strokeDashoffset="162.3" /* 32% */
+                fill="transparent"
+                style={{ transform: 'rotate(172.8deg)', transformOrigin: 'center' }}
+              />
+              {/* Pending: 20% (Amber) */}
+              <circle
+                cx="50"
+                cy="50"
+                r="38"
+                stroke="#f59e0b"
+                strokeWidth="11"
+                strokeDasharray="238.7"
+                strokeDashoffset="190.9" /* 20% */
+                fill="transparent"
+                style={{ transform: 'rotate(288deg)', transformOrigin: 'center' }}
+              />
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+              <span className="text-2xl font-bold font-heading text-ivory">276</span>
+              <span className="text-[10px] text-ivory/50 uppercase">Total Referrals</span>
+            </div>
+          </div>
+
+          <div className="space-y-2 text-xs pt-2 border-t border-charcoal-light">
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-2 text-ivory/80">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                <span>Completed</span>
+              </span>
+              <span className="font-mono font-bold text-emerald-400">48% (132)</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-2 text-ivory/80">
+                <span className="w-2.5 h-2.5 rounded-full bg-gold" />
+                <span>In Progress</span>
+              </span>
+              <span className="font-mono font-bold text-gold">32% (88)</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-2 text-ivory/80">
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+                <span>Pending</span>
+              </span>
+              <span className="font-mono font-bold text-amber-400">20% (56)</span>
             </div>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* TAB 2: DONATION RECONCILIATION */}
-      {activeTab === 'donations' && (
-        <div className="charcoal-card overflow-hidden">
-          <div className="p-4 border-b border-charcoal-light flex items-center justify-between">
-            <h3 className="font-heading font-bold text-base text-ivory">
-              Financial Reconciliation Ledger (Google Sheets: DonationRecords)
-            </h3>
-            <span className="text-xs text-ivory/50">
-              Only verified payments reflect in campaign accounts
-            </span>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-ivory/80">
-              <thead className="bg-midnight/80 uppercase text-[10px] tracking-wider text-gold/80 border-b border-charcoal-light">
-                <tr>
-                  <th className="p-3">Reference ID</th>
-                  <th className="p-3">Amount</th>
-                  <th className="p-3">Donor</th>
-                  <th className="p-3">Gateway</th>
-                  <th className="p-3">Status</th>
-                  <th className="p-3">Drive Receipt</th>
-                  <th className="p-3">Date</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-charcoal-light">
-                {donations.map((d) => (
-                  <tr key={d.id} className="hover:bg-charcoal-light/30">
-                    <td className="p-3 font-mono text-champagne font-bold">{d.referenceId}</td>
-                    <td className="p-3 font-semibold text-ivory">
-                      {d.currency} {d.amount.toLocaleString()}
-                    </td>
-                    <td className="p-3">{d.isAnonymous ? 'Anonymous Supporter' : d.donorName}</td>
-                    <td className="p-3 uppercase font-mono text-[11px]">{d.paymentProvider}</td>
-                    <td className="p-3">
-                      <span
-                        className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                          d.paymentStatus === 'verified'
-                            ? 'bg-emerald-950 text-emerald-400 border border-emerald-800'
-                            : 'bg-amber-950 text-amber-400 border border-amber-800'
-                        }`}
-                      >
-                        {d.paymentStatus}
-                      </span>
-                    </td>
-                    <td className="p-3 font-mono text-[10px] text-ivory/50">
-                      {d.receiptDriveReference ? 'Generated in Drive' : 'Pending'}
-                    </td>
-                    <td className="p-3 text-ivory/50 font-mono">
-                      {new Date(d.createdAt).toLocaleDateString()}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {/* TAB 3: DRUG KNOWLEDGE MONOGRAPHS */}
-      {activeTab === 'drugs' && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="font-heading font-bold text-base text-ivory">
-              Approved Substance Knowledge Base (Google Sheets: DrugKnowledge)
-            </h3>
-            <span className="text-xs text-emerald-400 flex items-center gap-1 font-semibold">
-              <CheckCircle className="w-3.5 h-3.5" />
-              <span>All 6 Active Monographs Medically Approved</span>
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {DRUGS_DATA.map((drug) => (
-              <div key={drug.id} className="charcoal-card p-5 border border-charcoal-light flex flex-col justify-between">
-                <div>
-                  <div className="flex items-start justify-between">
-                    <h4 className="font-bold text-base text-ivory">{drug.name}</h4>
-                    <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 font-bold uppercase">
-                      {drug.reviewStatus}
-                    </span>
-                  </div>
-                  <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">{drug.nameSi}</p>
-                  <p className="text-xs text-ivory/60 mt-2 line-clamp-2 leading-relaxed">
-                    {drug.description}
-                  </p>
-                </div>
-
-                <div className="mt-4 pt-3 border-t border-charcoal-light flex items-center justify-between text-xs text-ivory/50">
-                  <span>Reviewed: {drug.lastReviewDate}</span>
-                  <span className="text-gold font-medium">{drug.reviewerName}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* TAB 4: SUPPORT DIRECTORY */}
-      {activeTab === 'directory' && (
-        <div className="charcoal-card overflow-hidden">
-          <div className="p-4 border-b border-charcoal-light flex items-center justify-between">
-            <h3 className="font-heading font-bold text-base text-ivory">
-              Verified Sri Lankan Care Directory (Google Sheets: SupportDirectory)
-            </h3>
-            <span className="text-xs text-ivory/50">Periodic re-verification required</span>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-ivory/80">
-              <thead className="bg-midnight/80 uppercase text-[10px] tracking-wider text-gold/80 border-b border-charcoal-light">
-                <tr>
-                  <th className="p-3">Facility Name</th>
-                  <th className="p-3">District</th>
-                  <th className="p-3">Official Phone</th>
-                  <th className="p-3">Type</th>
-                  <th className="p-3">Verified By</th>
-                  <th className="p-3">Last Checked</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-charcoal-light">
-                {SUPPORT_CENTERS_DATA.map((center) => (
-                  <tr key={center.id} className="hover:bg-charcoal-light/30">
-                    <td className="p-3 font-semibold text-ivory">{center.name}</td>
-                    <td className="p-3">{center.district}</td>
-                    <td className="p-3 font-mono text-champagne font-bold">{center.phone}</td>
-                    <td className="p-3 uppercase text-[10px]">{center.organizationType}</td>
-                    <td className="p-3 text-ivory/60">{center.verifiedBy}</td>
-                    <td className="p-3 text-emerald-400 font-mono text-[11px]">
-                      {center.lastVerifiedDate}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {/* TAB 5: VOLUNTEER ACTIVITY */}
-      {activeTab === 'volunteers' && (
-        <div className="charcoal-card p-6 space-y-4">
-          <h3 className="font-heading font-bold text-base text-ivory">
-            Volunteer Registrations & Community Involvement
+      {/* Recent Activity Table */}
+      <div className="charcoal-card p-6 border-charcoal-light space-y-4">
+        <div className="flex items-center justify-between border-b border-charcoal-light pb-3">
+          <h3 className="font-heading font-bold text-base text-ivory flex items-center gap-2">
+            <Activity className="w-4 h-4 text-gold" />
+            <span>Recent Administrative Activities</span>
           </h3>
-          <p className="text-xs text-ivory/60">
-            Recent applicants for Leo Club campus awareness drives and content development:
-          </p>
-          <div className="space-y-3">
-            {[
-              { name: 'Kavindu Dilshan', email: 'kavindu@usj.ac.lk', faculty: 'Applied Sciences', role: 'Community Outreach Ambassador', date: '2026-11-09' },
-              { name: 'Sanduni Nethmini', email: 'sanduni@usj.ac.lk', faculty: 'Humanities & Social Sciences', role: 'Multilingual Content Creator', date: '2026-11-08' },
-              { name: 'Tharusha Perera', email: 'tharusha@usj.ac.lk', faculty: 'Management Studies', role: 'Technical Support Assistant', date: '2026-11-07' },
-            ].map((v, i) => (
-              <div key={i} className="p-3.5 rounded-xl bg-midnight border border-charcoal-light flex items-center justify-between text-xs">
-                <div>
-                  <h4 className="font-bold text-ivory">{v.name} ({v.email})</h4>
-                  <p className="text-ivory/60">{v.faculty} • Role: <strong className="text-gold">{v.role}</strong></p>
-                </div>
-                <span className="font-mono text-ivory/40">{v.date}</span>
-              </div>
-            ))}
-          </div>
+          <Link to="/admin/audit" className="text-xs text-gold hover:underline">
+            View All Audit Logs →
+          </Link>
         </div>
-      )}
+
+        <div className="divide-y divide-charcoal-light text-xs">
+          {[
+            { action: 'Support Referral REF-1048 assigned to NDDCB Colombo', time: '10 mins ago', user: 'Admin Specialist', status: 'In Progress' },
+            { action: 'Published educational monograph update for Methamphetamine', time: '45 mins ago', user: 'Content Editor', status: 'Published' },
+            { action: 'Verified new rehabilitation facility: SADHC Kandy', time: '2 hours ago', user: 'Admin Specialist', status: 'Verified' },
+            { action: 'Reconciled anonymous donation of LKR 5,000 (DON-2189)', time: '3 hours ago', user: 'Financial System', status: 'Reconciled' },
+          ].map((act, i) => (
+            <div key={i} className="py-3 flex items-center justify-between gap-4">
+              <div className="space-y-0.5">
+                <div className="font-medium text-ivory">{act.action}</div>
+                <div className="text-[11px] text-ivory/50">By {act.user} • {act.time}</div>
+              </div>
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-midnight border border-gold/30 text-gold">
+                {act.status}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

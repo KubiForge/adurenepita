@@ -4,16 +4,10 @@
  */
 
 function handleAdminAction(endpoint, payload) {
-  var userEmail = payload.adminEmail || '';
-  var authCheck = validateAdminRole(userEmail);
-
-  if (!authCheck.isAuthorized) {
-    logAuditEvent(userEmail || 'ANONYMOUS', 'UNAUTHORIZED_ACCESS_ATTEMPT', 'Denied access to ' + endpoint);
-    return {
-      success: false,
-      error: 'Unauthorized. The supplied identity is not in the backend-authorized allowlist.',
-      statusCode: 403
-    };
+  var identity = requireAuthenticatedIdentity(payload, false);
+  if (identity.role !== 'ADMIN') {
+    logAuditEvent(identity.email, 'UNAUTHORIZED_ACCESS_ATTEMPT', 'Denied access to ' + endpoint);
+    throw createApiError('Administrator access is required.', 403);
   }
 
   // Admin Analytics Summary
@@ -37,40 +31,22 @@ function handleAdminAction(endpoint, payload) {
     return { success: true, data: logs };
   }
 
-  return { success: false, error: 'Unknown admin endpoint' };
+  if (endpoint.indexOf('/api/admin/support-requests') === 0) {
+    return handleAdminSupportRequestAction(endpoint, payload, identity);
+  }
+
+  throw createApiError('Unknown administrator endpoint.', 404);
 }
 
-/**
- * Validates against the AdminUsers sheet tab
- */
-function validateAdminRole(email) {
-  if (!email) return { isAuthorized: false };
-
-  var sheet = getSheetTab('AdminUsers');
-  if (!sheet) {
-    // Default bootstrap allowlist
-    var defaultAdmins = ['admin@leousj.org', 'tech@leousj.org'];
-    if (defaultAdmins.indexOf(email.toLowerCase()) !== -1) {
-      return {
-        isAuthorized: true,
-        role: email.indexOf('tech') !== -1 ? 'TECHNICAL_CREW' : 'ADMIN'
-      };
-    }
+function validateAdminRole(identity) {
+  if (!identity || !identity.uid || !identity.emailVerified) {
     return { isAuthorized: false };
   }
-
-  var data = sheet.getDataRange().getValues();
-  for (var i = 1; i < data.length; i++) {
-    var rowEmail = (data[i][0] || '').toString().toLowerCase();
-    var role = data[i][1];
-    var active = data[i][2];
-
-    if (rowEmail === email.toLowerCase() && active === true) {
-      return { isAuthorized: true, role: role };
-    }
-  }
-
-  return { isAuthorized: false };
+  var record = getAdminRecordForIdentity(identity);
+  return {
+    isAuthorized: !!record,
+    role: record ? 'ADMIN' : 'USER'
+  };
 }
 
 function getRecentAuditLogs() {

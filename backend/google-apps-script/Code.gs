@@ -60,6 +60,24 @@ function doPost(e) {
     var endpoint = request.endpoint;
     var payload = request.payload || {};
 
+    // Firebase identity and account lifecycle
+    if (endpoint === '/api/auth/me') {
+      return jsonResponse(handleAuthMe(payload));
+    }
+    if (endpoint === '/api/auth/register-profile') {
+      return jsonResponse(handleRegistrationProfile(payload));
+    }
+    if (endpoint === '/api/auth/password-changed') {
+      return jsonResponse(handlePasswordChanged(payload));
+    }
+    if (endpoint === '/api/support-centers') {
+      return jsonResponse({
+        success: true,
+        data: getVerifiedSupportCenters(payload.province || null, payload.district || null),
+        timestamp: new Date().toISOString()
+      });
+    }
+
     // 1. AI Chat & RAG
     if (endpoint === '/api/ai/chat') {
       return jsonResponse(handleAiChat(payload));
@@ -79,6 +97,12 @@ function doPost(e) {
     if (endpoint === '/api/support-requests') {
       return jsonResponse(handleSupportRequest(payload));
     }
+    if (endpoint === '/api/users/profile') {
+      return jsonResponse(handleProfileUpdate(payload));
+    }
+    if (endpoint.indexOf('/api/users/') === 0) {
+      return jsonResponse(handleUserSupportAction(endpoint, payload));
+    }
 
     // 5. Donation Initiation & Verification
     if (endpoint === '/api/donations/initiate') {
@@ -95,8 +119,8 @@ function doPost(e) {
 
     return errorResponse('Endpoint not recognized: ' + endpoint, 404);
   } catch (err) {
-    logAuditEvent('SYSTEM', 'ERROR', 'Exception in doPost: ' + err.message);
-    return errorResponse(err.message, 500);
+    logAuditEvent('SYSTEM', 'API_ERROR', 'Request failed: ' + (err && err.statusCode ? err.statusCode : 500));
+    return errorResponse(err.message || 'Request failed', err.statusCode || 500);
   }
 }
 

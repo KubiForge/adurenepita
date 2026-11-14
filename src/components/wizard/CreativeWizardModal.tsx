@@ -22,6 +22,7 @@ export const CreativeWizardModal: React.FC<CreativeWizardModalProps> = ({
 
   const [currentStep, setCurrentStep] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [validationMessage, setValidationMessage] = useState<string | null>(null);
   const [answers, setAnswers] = useState<WizardAnswers>({
     substances: [],
     concerns: [],
@@ -32,6 +33,11 @@ export const CreativeWizardModal: React.FC<CreativeWizardModalProps> = ({
   };
 
   const handleNext = () => {
+    if (currentStep === 10 && !answers.privacyNoticeAcknowledged) {
+      setValidationMessage('Acknowledge the privacy notice to view your plan. This does not submit your answers.');
+      return;
+    }
+    setValidationMessage(null);
     if (currentStep < 10) {
       setCurrentStep((prev) => prev + 1);
     } else {
@@ -162,6 +168,9 @@ export const CreativeWizardModal: React.FC<CreativeWizardModalProps> = ({
                 </Button>
               </div>
             </div>
+          )}
+          {validationMessage && !isCompleted && (
+            <p role="alert" className="mt-3 text-right text-xs text-amber-200">{validationMessage}</p>
           )}
         </div>
       </div>

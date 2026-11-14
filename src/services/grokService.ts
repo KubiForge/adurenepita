@@ -1,6 +1,8 @@
 import { SafetyLevel, SourceCitation, ChatMessage } from '../types/chat';
 import { DRUGS_DATA } from '../data/drugsData';
 import { SUPPORT_CENTERS_DATA } from '../data/sriLankaData';
+import { apiService } from './apiService';
+import { API_CONFIG } from '../config/api';
 
 export interface AIResponseResult {
   content: string;
@@ -8,6 +10,12 @@ export interface AIResponseResult {
   safetyReason?: string;
   sources: SourceCitation[];
   suggestedQuickActions?: { label: string; action: string; payload?: string }[];
+}
+
+export interface SendMessageParams {
+  message: string;
+  conversationHistory?: ChatMessage[];
+  language?: 'si' | 'en' | 'ta';
 }
 
 class GrokService {
@@ -123,6 +131,36 @@ class GrokService {
     }
 
     return { contextSummary, sources: matchedSources };
+  }
+
+  /**
+   * Standard sendMessage entry point used by AssistantPage and external callers
+   */
+  async sendMessage(params: SendMessageParams): Promise<AIResponseResult> {
+    const { message, conversationHistory = [], language = 'en' } = params;
+
+    // Check if real Apps Script backend is configured
+    if (API_CONFIG.appsScriptUrl && !API_CONFIG.isDemoMode) {
+      try {
+        const res = await apiService.request<AIResponseResult>('/api/ai/chat', {
+          method: 'POST',
+          body: {
+            message,
+            history: conversationHistory.slice(-6),
+            language,
+          },
+        });
+
+        if (res.success && res.data && res.data.content) {
+          return res.data;
+        }
+      } catch (err) {
+        console.warn('[GrokService] Remote Apps Script endpoint failed, using local safety engine:', err);
+      }
+    }
+
+    // Fall back to local safety engine and grounded knowledge base
+    return this.generateResponse(message, conversationHistory, language);
   }
 
   /**

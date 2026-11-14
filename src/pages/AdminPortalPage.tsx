@@ -1,67 +1,48 @@
 import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { AdminLayout } from '../components/admin/AdminLayout';
+import { AdminLoginView } from '../components/admin/AdminLoginView';
 import { AdminDashboardView } from '../components/admin/AdminDashboardView';
-import { TechCrewDashboardView } from '../components/admin/TechCrewDashboardView';
-import { Shield, Cpu, LogOut, RefreshCw } from 'lucide-react';
-import { Button } from '../components/common/Button';
+import { AdminContentModule } from '../components/admin/AdminContentModule';
+import { AdminKnowledgeModule } from '../components/admin/AdminKnowledgeModule';
+import { AdminServicesModule } from '../components/admin/AdminServicesModule';
+import { AdminUsersModule } from '../components/admin/AdminUsersModule';
+import { AdminCampaignsModule } from '../components/admin/AdminCampaignsModule';
+import { AdminDonationsModule } from '../components/admin/AdminDonationsModule';
+import { AdminAnalyticsModule } from '../components/admin/AdminAnalyticsModule';
+import { AdminSettingsModule } from '../components/admin/AdminSettingsModule';
+import { AdminAuditModule } from '../components/admin/AdminAuditModule';
 
 export const AdminPortalPage: React.FC = () => {
-  const { currentUser, role, switchRole, logout } = useAuth();
+  const { currentUser, role, isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div className="min-h-[70vh] flex items-center justify-center text-sm text-ivory/70">Checking secure session...</div>;
+  }
+  if (!isAuthenticated || !currentUser) {
+    return <AdminLoginView />;
+  }
+  if (role !== 'ADMIN') return <Navigate to="/profile" replace />;
+  if (currentUser.mustChangePassword) return <Navigate to="/profile?auth=change-password" replace />;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      {/* Role Switcher Toolbar (Development & Evaluation) */}
-      <div className="p-4 rounded-xl bg-charcoal border border-gold/30 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-midnight border border-gold/40 flex items-center justify-center text-gold">
-            <Shield className="w-4 h-4" />
-          </div>
-          <div>
-            <span className="text-xs text-ivory/50 uppercase tracking-wider block">
-              Active Session Security Context
-            </span>
-            <div className="text-sm font-bold text-ivory flex items-center gap-2">
-              <span>{currentUser?.name || 'Authorized Member'}</span>
-              <span className="text-[10px] px-2 py-0.5 rounded bg-midnight text-gold border border-gold/30 font-mono">
-                {currentUser?.email}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Role Switcher */}
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-ivory/50 hidden md:inline">Switch Role:</span>
-          <button
-            onClick={() => switchRole('ADMIN')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-              role === 'ADMIN'
-                ? 'bg-gold text-midnight shadow-gold-subtle'
-                : 'bg-midnight text-ivory/60 hover:text-ivory border border-charcoal-light'
-            }`}
-          >
-            Admin View
-          </button>
-
-          <button
-            onClick={() => switchRole('TECHNICAL_CREW')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-              role === 'TECHNICAL_CREW'
-                ? 'bg-cyan-500 text-midnight shadow-sm'
-                : 'bg-midnight text-ivory/60 hover:text-ivory border border-charcoal-light'
-            }`}
-          >
-            Technical Crew View
-          </button>
-        </div>
-      </div>
-
-      {/* Role-Specific View */}
-      {role === 'ADMIN' ? (
-        <AdminDashboardView />
-      ) : (
-        <TechCrewDashboardView />
-      )}
-    </div>
+    <AdminLayout>
+      <Routes>
+        <Route path="/" element={<AdminDashboardView />} />
+        <Route path="content" element={<AdminContentModule />} />
+        <Route path="knowledge" element={<AdminKnowledgeModule />} />
+        <Route path="services" element={<AdminServicesModule />} />
+        <Route path="users" element={<AdminUsersModule />} />
+        <Route path="campaigns" element={<AdminCampaignsModule />} />
+        <Route path="donations" element={<AdminDonationsModule />} />
+        <Route path="analytics" element={<AdminAnalyticsModule />} />
+        <Route path="settings" element={<AdminSettingsModule />} />
+        <Route path="audit" element={<AdminAuditModule />} />
+        <Route path="*" element={<Navigate to="/admin" replace />} />
+      </Routes>
+    </AdminLayout>
   );
 };
+
+export default AdminPortalPage;

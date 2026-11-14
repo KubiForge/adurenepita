@@ -4,6 +4,7 @@ import { BRAND } from '../config/brand';
 import { ASSETS } from '../config/assets';
 import { useLanguage } from '../context/LanguageContext';
 import { DRUGS_DATA } from '../data/drugsData';
+import { DRUG_IMAGE_ENTRIES } from '../data/drugImages';
 import { FAQS_DATA } from '../data/awarenessData';
 import { KEY_STATISTICS } from '../data/statisticsData';
 import { CAMPAIGN_EVENTS } from '../data/campaignData';
@@ -239,48 +240,59 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {DRUGS_DATA.slice(0, 3).map((drug) => (
-            <div key={drug.id} className="charcoal-card p-6 border-charcoal-light flex flex-col justify-between charcoal-card-hover">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-midnight text-gold border border-gold/30 uppercase font-bold tracking-wider">
-                    {drug.classification}
-                  </span>
-                  <span className="text-[11px] text-emerald-400 font-semibold">
-                    Medically Reviewed
-                  </span>
-                </div>
+          {DRUGS_DATA.slice(0, 3).map((drug) => {
+            const imageEntry = DRUG_IMAGE_ENTRIES.find((entry) => entry.monographSlug === drug.slug);
+            return (
+              <div key={drug.id} className="charcoal-card p-6 border-charcoal-light flex flex-col justify-between charcoal-card-hover">
+                <div>
+                  {imageEntry && (
+                    <img
+                      src={`/assets/drugs/${imageEntry.file}`}
+                      alt={`${drug.name} awareness illustration`}
+                      className="mb-4 aspect-[4/3] w-full rounded-xl bg-midnight object-contain"
+                      loading="lazy"
+                    />
+                  )}
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-midnight text-gold border border-gold/30 uppercase font-bold tracking-wider">
+                      {drug.classification}
+                    </span>
+                    <span className="text-[11px] text-emerald-400 font-semibold">
+                      Medically Reviewed
+                    </span>
+                  </div>
 
-                <h3 className="font-heading font-bold text-lg text-ivory">
-                  {drug.name}
-                </h3>
-                <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
-                  {drug.nameSi}
-                </p>
+                  <h3 className="font-heading font-bold text-lg text-ivory">
+                    {drug.name}
+                  </h3>
+                  <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">
+                    {drug.nameSi}
+                  </p>
 
-                <p className="text-xs text-ivory/70 mt-3 line-clamp-3 leading-relaxed">
-                  {drug.description}
-                </p>
+                  <p className="text-xs text-ivory/70 mt-3 line-clamp-3 leading-relaxed">
+                    {drug.description}
+                  </p>
 
-                <div className="mt-4 pt-3 border-t border-charcoal-light text-xs text-ivory/60 space-y-1">
-                  <div>
-                    <strong className="text-red-300">Emergency Alert:</strong>{' '}
-                    <span>{drug.emergencySigns[0]}</span>
+                  <div className="mt-4 pt-3 border-t border-charcoal-light text-xs text-ivory/60 space-y-1">
+                    <div>
+                      <strong className="text-red-300">Emergency Alert:</strong>{' '}
+                      <span>{drug.emergencySigns[0]}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="mt-6 pt-3 border-t border-charcoal-light flex items-center justify-between">
-                <Link
-                  to={`/learn/${drug.slug}`}
-                  className="text-xs font-semibold text-gold hover:text-champagne flex items-center gap-1"
-                >
-                  <span>Read Clinical Monograph</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+                <div className="mt-6 pt-3 border-t border-charcoal-light flex items-center justify-between">
+                  <Link
+                    to={`/learn/${drug.slug}`}
+                    className="text-xs font-semibold text-gold hover:text-champagne flex items-center gap-1"
+                  >
+                    <span>Read Clinical Monograph</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 

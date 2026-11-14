@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { WizardAnswers, WizardPurpose, UserSituation, ConcernDuration, CurrentState, SupportPreference } from '../../types/wizard';
+import { WizardAnswers, WizardPurpose, UserSituation, ConcernDuration, CurrentState, SupportPreference, PersonNeedingSupport, UseFrequency, PreviousSupport } from '../../types/wizard';
 import { PROVINCES_AND_DISTRICTS } from '../../data/sriLankaData';
 import { DRUGS_DATA } from '../../data/drugsData';
 import { Check, Search, AlertCircle, Info, Sparkles, MapPin } from 'lucide-react';
@@ -69,7 +69,7 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
           <h2 className="text-2xl font-bold font-heading text-ivory mt-1">What brings you here today?</h2>
           <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">අද ඔබ මෙහි පැමිණීමට හේතුව කුමක්ද?</p>
           <p className="text-xs text-ivory/60 mt-2 max-w-md mx-auto">
-            Select the statement that best matches your current focus. Your answers are private and anonymous.
+            Select the statement that best matches your current focus. Your draft stays in this browser session unless you explicitly submit it.
           </p>
         </div>
 
@@ -112,6 +112,13 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
 
   // STEP 02 - SITUATION
   if (currentStep === 2) {
+    const personOptions: { id: PersonNeedingSupport; label: string }[] = [
+      { id: 'myself', label: 'Myself' },
+      { id: 'family_member', label: 'A family member' },
+      { id: 'friend', label: 'A friend' },
+      { id: 'someone_else', label: 'Someone else' },
+      { id: 'prefer_not_to_say', label: 'Prefer not to say' },
+    ];
     const situationOptions: { id: UserSituation; label: string; labelSi: string }[] = [
       { id: 'currently_using', label: 'Currently using regularly', labelSi: 'දැනට නිරන්තරයෙන් භාවිතා කරමි' },
       { id: 'recently_stopped', label: 'Recently stopped / in early recovery', labelSi: 'මෑතකදී භාවිතය නැවැත්වූවෙමි' },
@@ -125,11 +132,25 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
       <div className="space-y-4">
         <div className="text-center mb-6">
           <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 02 of 10</span>
-          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Which best describes your current situation?</h2>
+          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Who needs support, and what is happening?</h2>
           <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබේ වර්තමාන තත්ත්වය වඩාත්ම නිරූපණය කරන්නේ කුමක්ද?</p>
         </div>
 
         <div className="space-y-2.5 max-w-xl mx-auto">
+          <p className="text-xs font-semibold text-gold">Who are you seeking support for?</p>
+          <div className="flex flex-wrap gap-2">
+            {personOptions.map((option) => (
+              <button
+                type="button"
+                key={option.id}
+                onClick={() => onChange({ personNeedingSupport: option.id })}
+                className={`px-3 py-2 rounded-lg text-xs border ${answers.personNeedingSupport === option.id ? 'bg-charcoal border-gold text-gold' : 'bg-midnight border-charcoal-light text-ivory/70'}`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+          <p className="text-xs font-semibold text-gold pt-2">Which best describes the current situation?</p>
           {situationOptions.map((opt) => {
             const isSelected = answers.situation === opt.id;
             return (
@@ -305,6 +326,13 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
 
   // STEP 05 - CURRENT STATE (Checks for urgent symptoms)
   if (currentStep === 5) {
+    const frequencyOptions: { id: UseFrequency; label: string }[] = [
+      { id: 'daily', label: 'Daily or nearly daily' },
+      { id: 'several_times_week', label: 'Several times a week' },
+      { id: 'weekly_or_less', label: 'Weekly or less often' },
+      { id: 'unsure', label: 'Not sure' },
+      { id: 'prefer_not_to_say', label: 'Prefer not to say' },
+    ];
     const stateOptions: { id: CurrentState; label: string; labelSi: string; isUrgent?: boolean }[] = [
       { id: 'using_regularly', label: 'Using regularly / daily', labelSi: 'දිනපතා හෝ නිරන්තරයෙන් භාවිතා කරමි' },
       { id: 'using_occasionally', label: 'Using occasionally / on weekends', labelSi: 'වරින් වර / සති අන්තවල පමණක් භාවිතා කරමි' },
@@ -372,6 +400,21 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
             );
           })}
         </div>
+        <fieldset className="max-w-xl mx-auto pt-3">
+          <legend className="text-xs font-semibold text-gold mb-2">If relevant, how often has use been occurring?</legend>
+          <div className="flex flex-wrap gap-2">
+            {frequencyOptions.map((option) => (
+              <button
+                type="button"
+                key={option.id}
+                onClick={() => onChange({ useFrequency: option.id })}
+                className={`px-3 py-2 rounded-lg text-xs border ${answers.useFrequency === option.id ? 'bg-charcoal border-gold text-gold' : 'bg-midnight border-charcoal-light text-ivory/70'}`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </fieldset>
       </div>
     );
   }
@@ -595,29 +638,62 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
 
   // STEP 09 - ADDITIONAL CONTEXT
   if (currentStep === 9) {
+    const previousSupportOptions: { id: PreviousSupport; label: string }[] = [
+      { id: 'currently_receiving', label: 'Currently receiving support' },
+      { id: 'received_before', label: 'Received support before' },
+      { id: 'not_yet', label: 'Have not received support yet' },
+      { id: 'prefer_not_to_say', label: 'Prefer not to say' },
+    ];
     return (
       <div className="space-y-4 max-w-xl mx-auto">
         <div className="text-center mb-6">
           <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 09 of 10</span>
           <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Is there anything else you would like us to know?</h2>
           <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබට අප වෙත පැවසීමට වෙනත් යමක් තිබේද?</p>
-          <p className="text-xs text-ivory/60 mt-1">Optional. Write whatever feels comfortable.</p>
+          <p className="text-xs text-ivory/60 mt-1">Optional. Only share what you are comfortable including in a request.</p>
         </div>
+
+        <fieldset className="space-y-2">
+          <legend className="text-xs font-semibold text-gold">Have you received support before?</legend>
+          <div className="flex flex-wrap gap-2">
+            {previousSupportOptions.map((option) => (
+              <button
+                type="button"
+                key={option.id}
+                onClick={() => onChange({ previousSupport: option.id })}
+                className={`px-3 py-2 rounded-lg text-xs border ${answers.previousSupport === option.id ? 'bg-charcoal border-gold text-gold' : 'bg-midnight border-charcoal-light text-ivory/70'}`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </fieldset>
 
         <div className="p-3 rounded-lg bg-charcoal border border-gold/20 text-xs text-ivory/70 flex items-start gap-2 mb-2">
           <Info className="w-4 h-4 text-gold flex-shrink-0 mt-0.5" />
           <span>
-            <strong>Privacy Reminder:</strong> Do not include unnecessary personal identifiers such as your full legal name, national identity card number, or home address.
+            <strong>Privacy Reminder:</strong> This draft stays in the current browser session. Do not include unnecessary personal identifiers such as your full legal name, national identity card number, or home address.
           </span>
         </div>
 
         <textarea
           rows={5}
-          placeholder="Feel free to express your thoughts, questions, or specific circumstances here..."
+          placeholder="Optional context or anything important to your support..."
           value={answers.additionalContext || ''}
-          onChange={(e) => onChange({ additionalContext: e.target.value })}
+          onChange={(e) => onChange({ additionalContext: e.target.value.slice(0, 2000) })}
+          maxLength={2000}
           className="w-full p-4 rounded-xl bg-midnight border border-charcoal-light text-ivory text-sm focus:outline-none focus:border-gold leading-relaxed"
         />
+        <label className="block text-xs font-semibold text-ivory/80">
+          Optional health information relevant to support (do not enter identifying information)
+          <textarea
+            rows={3}
+            maxLength={1000}
+            value={answers.healthInfo || ''}
+            onChange={(event) => onChange({ healthInfo: event.target.value.slice(0, 1000) })}
+            className="mt-1 w-full p-3 rounded-xl bg-midnight border border-charcoal-light text-ivory"
+          />
+        </label>
       </div>
     );
   }
@@ -628,10 +704,10 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
       <div className="space-y-6 max-w-2xl mx-auto">
         <div className="text-center mb-6">
           <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 10 of 10</span>
-          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Review Your Preferences</h2>
+          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Review your answers</h2>
           <p className="text-xs text-gold/80 font-sinhalaSerif mt-0.5">ඔබ ලබාදුන් තොරතුරු සමාලෝචනය කරන්න</p>
           <p className="text-xs text-ivory/60 mt-1">
-            Check your choices before generating your personalized navigation pathway.
+            Check your choices. Nothing is sent to the support team unless you sign in and separately submit a request.
           </p>
         </div>
 
@@ -688,17 +764,32 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
           </div>
         </div>
 
-        {/* Consent Checkbox */}
+        <div className="charcoal-card divide-y divide-charcoal-light">
+          <div className="p-4 flex items-center justify-between">
+            <div><span className="text-xs text-gold uppercase font-semibold block">Who needs support?</span><span className="text-sm text-ivory">{answers.personNeedingSupport?.replace(/_/g, ' ') || 'Not specified'}</span></div>
+            <button type="button" onClick={() => onEditStep(2)} className="text-xs text-gold underline">Edit</button>
+          </div>
+          <div className="p-4 flex items-center justify-between">
+            <div><span className="text-xs text-gold uppercase font-semibold block">Current situation and frequency</span><span className="text-sm text-ivory">{answers.situation?.replace(/_/g, ' ') || 'Not specified'} · {answers.useFrequency?.replace(/_/g, ' ') || 'Frequency not specified'}</span></div>
+            <button type="button" onClick={() => onEditStep(2)} className="text-xs text-gold underline">Edit</button>
+          </div>
+          <div className="p-4 flex items-center justify-between">
+            <div><span className="text-xs text-gold uppercase font-semibold block">Previous support</span><span className="text-sm text-ivory">{answers.previousSupport?.replace(/_/g, ' ') || 'Not specified'}</span></div>
+            <button type="button" onClick={() => onEditStep(9)} className="text-xs text-gold underline">Edit</button>
+          </div>
+        </div>
+
+        {/* Session-only acknowledgement; support submission consent is requested separately. */}
         <div className="p-4 rounded-xl bg-charcoal border border-gold/30 space-y-3">
           <label className="flex items-start gap-3 cursor-pointer">
             <input
               type="checkbox"
-              checked={answers.consentedToReferral || false}
-              onChange={(e) => onChange({ consentedToReferral: e.target.checked })}
+              checked={answers.privacyNoticeAcknowledged || false}
+              onChange={(e) => onChange({ privacyNoticeAcknowledged: e.target.checked })}
               className="mt-1 h-4 w-4 rounded border-charcoal-light text-gold focus:ring-gold bg-midnight"
             />
             <span className="text-xs text-ivory/90 leading-relaxed">
-              I understand that <strong>Beyond the Darkness – අඳුරෙන් එළියට</strong> is an educational navigation platform and does not replace medical advice. I consent to receiving personalized suggestions based on these responses. My data remains anonymous.
+              I understand this tool provides educational navigation, not medical advice. My answers remain only in this browser session unless I separately sign in and consent to submit a support request.
             </span>
           </label>
         </div>

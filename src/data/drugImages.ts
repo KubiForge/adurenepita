@@ -1,0 +1,193 @@
+import type { SubstanceClassification } from '../types/drug';
+
+export interface DrugImageEntry {
+  name: string;
+  caption: string;
+  classification: SubstanceClassification;
+  file: string;
+  monographSlug?: string;
+}
+
+export const DRUG_IMAGE_ENTRIES: DrugImageEntry[] = [
+  {
+    name: 'Cannabis / Ganja',
+    caption: 'Natural Drug (Depressant)',
+    classification: 'Cannabinoid',
+    file: '01-cannabis-ganja.png',
+    monographSlug: 'cannabis',
+  },
+  {
+    name: 'Methamphetamine (“Ice”)',
+    caption: 'Stimulant',
+    classification: 'Stimulant',
+    file: '02-methamphetamine-ice.png',
+    monographSlug: 'methamphetamine',
+  },
+  {
+    name: 'Cocaine',
+    caption: 'Stimulant',
+    classification: 'Stimulant',
+    file: '03-cocaine.png',
+    monographSlug: 'cocaine',
+  },
+  {
+    name: 'Heroin',
+    caption: 'Opioid (Strong Depressant)',
+    classification: 'Opioid',
+    file: '04-heroin.png',
+    monographSlug: 'heroin',
+  },
+  {
+    name: 'MDMA / Ecstasy',
+    caption: 'Psychedelic / Stimulant',
+    classification: 'Stimulant',
+    file: '05-mdma-ecstasy.png',
+    monographSlug: 'mdma',
+  },
+  {
+    name: 'Amphetamine (Speed)',
+    caption: 'Stimulant',
+    classification: 'Stimulant',
+    file: '06-amphetamine-speed.png',
+    monographSlug: 'amphetamine',
+  },
+  {
+    name: 'Tobacco / Nicotine',
+    caption: 'Stimulant (Addictive)',
+    classification: 'Nicotine/Tobacco',
+    file: '07-tobacco-nicotine.png',
+    monographSlug: 'tobacco-nicotine',
+  },
+  {
+    name: 'Alcohol',
+    caption: 'Depressant',
+    classification: 'Depressant',
+    file: '08-alcohol.png',
+    monographSlug: 'alcohol',
+  },
+  {
+    name: 'Prescription Drugs (Misuse)',
+    caption: 'e.g., Painkillers, Sedatives',
+    classification: 'Prescription Medicine',
+    file: '09-prescription-drugs-misuse.png',
+    monographSlug: 'prescription-drugs',
+  },
+  {
+    name: 'Ritalin (Methylphenidate)',
+    caption: 'Stimulant (ADHD Medication)',
+    classification: 'Prescription Medicine',
+    file: '10-ritalin-methylphenidate.png',
+  },
+  {
+    name: 'Xanax (Alprazolam)',
+    caption: 'Depressant (Anti-Anxiety)',
+    classification: 'Prescription Medicine',
+    file: '11-xanax-alprazolam.png',
+    monographSlug: 'prescription-drugs',
+  },
+  {
+    name: 'Tramadol',
+    caption: 'Painkiller (Opioid-like)',
+    classification: 'Prescription Medicine',
+    file: '12-tramadol.png',
+    monographSlug: 'prescription-drugs',
+  },
+  {
+    name: 'Codeine (Cough Syrup Misuse)',
+    caption: 'Opioid (Depressant)',
+    classification: 'Opioid',
+    file: '13-codeine.png',
+  },
+  {
+    name: 'Diazepam (Valium)',
+    caption: 'Depressant (Anti-Anxiety)',
+    classification: 'Prescription Medicine',
+    file: '14-diazepam-valium.png',
+    monographSlug: 'prescription-drugs',
+  },
+  {
+    name: 'LSD (Acid)',
+    caption: 'Psychedelic',
+    classification: 'Hallucinogen',
+    file: '15-lsd-acid.png',
+  },
+  {
+    name: 'Magic Mushrooms (Psilocybin)',
+    caption: 'Psychedelic',
+    classification: 'Hallucinogen',
+    file: '16-magic-mushrooms-psilocybin.png',
+  },
+  {
+    name: 'Ketamine (Special K)',
+    caption: 'Dissociative',
+    classification: 'Dissociative',
+    file: '17-ketamine.png',
+  },
+  {
+    name: 'Synthetic Cannabinoids (Spice / K2)',
+    caption: 'Synthetic (Unpredictable)',
+    classification: 'Cannabinoid',
+    file: '18-synthetic-cannabinoids-spice-k2.png',
+  },
+  {
+    name: 'Synthetic Cathinones (Bath Salts)',
+    caption: 'Stimulant',
+    classification: 'Stimulant',
+    file: '19-synthetic-cathinones-bath-salts.png',
+  },
+  {
+    name: 'Methaqualone (Mandrax)',
+    caption: 'Sedative / Depressant',
+    classification: 'Depressant',
+    file: '20-methaqualone-mandrax.png',
+  },
+  {
+    name: 'Inhalants (e.g., Glue, Thinners)',
+    caption: 'Psychoactive (Toxic)',
+    classification: 'Inhalant',
+    file: '21-inhalants.png',
+  },
+  {
+    name: 'Nitrous Oxide (Laughing Gas)',
+    caption: 'Dissociative',
+    classification: 'Dissociative',
+    file: '22-nitrous-oxide.png',
+  },
+  {
+    name: 'NBOMe (Synthetic LSD)',
+    caption: 'Psychedelic (High Risk)',
+    classification: 'Hallucinogen',
+    file: '23-nbome.png',
+  },
+  {
+    name: 'Crystal Meth (“Yaba” / “Ice” Tablets)',
+    caption: 'High-Potency Stimulant',
+    classification: 'Stimulant',
+    file: '24-crystal-meth-yaba.png',
+    monographSlug: 'methamphetamine',
+  },
+  {
+    name: 'Mescaline (Peyote)',
+    caption: 'Psychedelic (Natural)',
+    classification: 'Hallucinogen',
+    file: '25-mescaline-peyote.png',
+  },
+  {
+    name: 'DMT (N,N-Dimethyltryptamine)',
+    caption: 'Powerful Psychedelic',
+    classification: 'Hallucinogen',
+    file: '26-dmt.png',
+  },
+  {
+    name: 'Khat (Qat)',
+    caption: 'Stimulant (Plant-based)',
+    classification: 'Stimulant',
+    file: '27-khat.png',
+  },
+  {
+    name: 'Kratom (Mitragyna speciosa)',
+    caption: 'Stimulant / Depressant (Mixed)',
+    classification: 'Mixed',
+    file: '28-kratom.png',
+  },
+];
