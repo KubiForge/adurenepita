@@ -11,6 +11,7 @@ export const ASSETS = {
   logo: '/assets/logo.png',
   logoIcon: '/assets/logo.png',
   leoLogoPlaceholder: '/assets/logo.png',
+  kubiForgeShowcase: '/assets/Kubi%20Forge%20Startup%20Hub%20Showcase.png',
 
   // Real Photographic Backgrounds
   heroBg: '/assets/hero-bg.png',
