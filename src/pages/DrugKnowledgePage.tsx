@@ -111,9 +111,15 @@ export const DrugKnowledgePage: React.FC = () => {
                     {entry.classification}
                   </span>
                   {monograph && (
-                    <span className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
+                    <span
+                      className={`text-[11px] font-semibold flex items-center gap-1 ${
+                        monograph.reviewStatus === 'approved'
+                          ? 'text-emerald-400'
+                          : 'text-amber-300'
+                      }`}
+                    >
                       <ShieldCheck className="w-3.5 h-3.5" />
-                      <span>Approved</span>
+                      <span>{monograph.reviewStatus === 'approved' ? 'Approved' : 'Pending Review'}</span>
                     </span>
                   )}
                 </div>

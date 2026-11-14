@@ -24,6 +24,7 @@ export const DrugDetailPage: React.FC<DrugDetailPageProps> = ({ onOpenAiChatWith
   const navigate = useNavigate();
 
   const drug = DRUGS_DATA.find((d) => d.slug === slug || d.id === slug);
+  const isApproved = drug?.reviewStatus === 'approved';
 
   if (!drug) {
     return (
@@ -55,9 +56,17 @@ export const DrugDetailPage: React.FC<DrugDetailPageProps> = ({ onOpenAiChatWith
           <span>Back to Knowledge Library</span>
         </Link>
 
-        <div className="flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800">
+        <div
+          className={`flex items-center gap-1.5 text-xs px-3 py-1 rounded-full border ${
+            isApproved
+              ? 'text-emerald-400 bg-emerald-950/60 border-emerald-800'
+              : 'text-amber-300 bg-amber-950/40 border-amber-700/60'
+          }`}
+        >
           <ShieldCheck className="w-4 h-4" />
-          <span>Medically Approved • Review Date: {drug.lastReviewDate}</span>
+          <span>
+            {isApproved ? 'Medically Approved' : 'Pending Review'} • Review Date: {drug.lastReviewDate}
+          </span>
         </div>
       </div>
 

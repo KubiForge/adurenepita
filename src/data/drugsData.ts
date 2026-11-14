@@ -1,4 +1,5 @@
 import { DrugKnowledge } from '../types/drug';
+import { ADDITIONAL_DRUGS_DATA } from './additionalDrugsData';
 
 export const DRUGS_DATA: DrugKnowledge[] = [
   {
@@ -999,4 +1000,5 @@ export const DRUGS_DATA: DrugKnowledge[] = [
     reviewerName: 'Clinical Addiction Advisory Board (Verified Review)',
     verifiedMedicalReview: true,
   },
+  ...ADDITIONAL_DRUGS_DATA,
 ];
