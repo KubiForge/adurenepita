@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSafety } from '../../context/SafetyContext';
 import { ChatMessage, SourceCitation } from '../../types/chat';
 import { grokService } from '../../services/grokService';
+import { CONTACT_INFO } from '../../config/contactInfo';
 import {
   Sparkles,
   Send,
@@ -119,7 +120,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
           id: `asst-${Date.now()}`,
           sender: 'assistant',
           content:
-            'I experienced a brief connection disruption. Please remember that if this is an emergency, you can always reach the NDDCB hotline at 1927 or the 1990 Suwaseriya free ambulance immediately.',
+            `I experienced a brief connection disruption. Please remember that if this is an emergency, you can always reach the NDDCB hotline at ${CONTACT_INFO.emergency.drugHelpline.number} or the ${CONTACT_INFO.emergency.ambulance.number} Suwaseriya free ambulance immediately.`,
           timestamp: new Date().toISOString(),
           safetyLevel: 1,
         },

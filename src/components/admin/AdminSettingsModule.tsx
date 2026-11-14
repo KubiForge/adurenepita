@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CONTACT_INFO } from '../../config/contactInfo';
 import {
   Settings, Users, Cpu, Shield, Database, Plus,
   CheckCircle2, AlertTriangle, Key, Lock, RefreshCw, X, Save
@@ -216,7 +217,7 @@ export const AdminSettingsModule: React.FC = () => {
             </div>
 
             <div className="p-3 rounded-xl bg-midnight/70 border border-charcoal-light text-xs text-ivory/60 leading-relaxed">
-              <strong>Emergency Override:</strong> All incoming messages containing crisis keywords (e.g. suicidal ideation, acute overdose, breathing arrest) trigger immediate escalation to <strong>1927</strong> and <strong>1990</strong> before model generation.
+              <strong>Emergency Override:</strong> All incoming messages containing crisis keywords (e.g. suicidal ideation, acute overdose, breathing arrest) trigger immediate escalation to <strong>{CONTACT_INFO.emergency.drugHelpline.number}</strong> and <strong>{CONTACT_INFO.emergency.ambulance.number}</strong> before model generation.
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from './Modal';
 import { useSafety } from '../../context/SafetyContext';
-import { BRAND } from '../../config/brand';
+import { CONTACT_INFO, telephoneHref } from '../../config/contactInfo';
 import { AlertOctagon, PhoneCall, HeartPulse, ShieldAlert, ArrowRight } from 'lucide-react';
 import { Button } from './Button';
 
@@ -36,10 +36,10 @@ export const EmergencyModal: React.FC = () => {
             Sri Lankan Emergency Hotlines (Toll-Free & Confidential)
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {BRAND.emergencyContacts.map((contact) => (
+            {Object.values(CONTACT_INFO.emergency).map((contact) => (
               <a
                 key={contact.id}
-                href={`tel:${contact.number.replace(/\s+/g, '')}`}
+                href={telephoneHref(contact.number)}
                 className={`p-4 rounded-xl border transition-all flex flex-col justify-between group ${
                   contact.primary
                     ? 'bg-charcoal border-gold/40 hover:border-gold hover:shadow-gold-subtle'
@@ -82,7 +82,7 @@ export const EmergencyModal: React.FC = () => {
             <span>If Someone Has Collapsed or Stopped Breathing (Overdose Protocol):</span>
           </h4>
           <ol className="list-decimal pl-4 space-y-1 text-ivory/70 leading-relaxed">
-            <li><strong>Call 1990 immediately</strong>. State your exact district, city, and nearest landmark clearly.</li>
+            <li><strong>Call {CONTACT_INFO.emergency.ambulance.number} immediately</strong>. State your exact district, city, and nearest landmark clearly.</li>
             <li><strong>Check breathing</strong>: If breathing has stopped, tilt head back gently to clear the airway.</li>
             <li><strong>Recovery Position</strong>: If unconscious but breathing, roll them onto their side with their top knee bent to prevent choking on fluids or vomit.</li>
             <li><strong>Stay with the person</strong>: Keep them warm and awake if possible. Never give alcohol, caffeine, or induce vomiting.</li>

@@ -1,4 +1,5 @@
 import { ProvinceWithDistricts, SupportCenter } from '../types/directory';
+import { CONTACT_INFO } from '../config/contactInfo';
 
 export const PROVINCES_AND_DISTRICTS: ProvinceWithDistricts[] = [
   {
@@ -113,7 +114,7 @@ export const SUPPORT_CENTERS_DATA: SupportCenter[] = [
     address: 'Thalangama South, Battaramulla, Sri Lanka',
     addressSi: 'තලංගම දකුණ, බත්තරමුල්ල, ශ්‍රී ලංකාව',
     phone: '011 278 8040',
-    alternativePhone: '1927',
+    alternativePhone: CONTACT_INFO.emergency.drugHelpline.number,
     email: 'info@nddcb.gov.lk',
     website: 'https://nddcb.gov.lk',
     serviceTypes: ['rehabilitation', 'counseling', 'medical', 'family_support'],
@@ -143,7 +144,7 @@ export const SUPPORT_CENTERS_DATA: SupportCenter[] = [
     address: '60, Horton Place, Colombo 07, Sri Lanka',
     addressSi: 'නො. 60, හෝර්ටන් පෙදෙස, කොළඹ 07',
     phone: '011 269 3460',
-    alternativePhone: '011 268 2535',
+    alternativePhone: CONTACT_INFO.emergency.sumithrayo.alternateNumber,
     email: 'melmedura@sltnet.lk',
     website: 'https://melmedura.org',
     serviceTypes: ['counseling', 'family_support', 'peer_support'],
@@ -173,7 +174,7 @@ export const SUPPORT_CENTERS_DATA: SupportCenter[] = [
     address: 'Kandy Road, Nittambuwa, Sri Lanka',
     addressSi: 'නුවර පාර, නිට්ටඹුව, ශ්‍රී ලංකාව',
     phone: '033 228 5035',
-    alternativePhone: '1927',
+    alternativePhone: CONTACT_INFO.emergency.drugHelpline.number,
     email: 'navodawa@nddcb.gov.lk',
     website: 'https://nddcb.gov.lk',
     serviceTypes: ['rehabilitation', 'counseling', 'medical', 'family_support'],
@@ -203,7 +204,7 @@ export const SUPPORT_CENTERS_DATA: SupportCenter[] = [
     address: 'National Institute of Mental Health, Angoda, Sri Lanka',
     addressSi: 'ජාතික මානසික විද්‍යායතනය, අංගොඩ, මුල්ලේරියාව',
     phone: '011 257 8234',
-    alternativePhone: '1926',
+    alternativePhone: CONTACT_INFO.emergency.mentalHealth.number,
     email: 'info@nimh.health.gov.lk',
     website: 'https://nimh.health.gov.lk',
     serviceTypes: ['medical', 'rehabilitation', 'counseling', 'hotline'],

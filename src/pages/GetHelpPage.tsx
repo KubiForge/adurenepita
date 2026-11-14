@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/common/Button';
+import { CONTACT_INFO, telephoneHref } from '../config/contactInfo';
 import {
   Sparkles,
   Compass,
@@ -35,7 +36,7 @@ export const GetHelpPage: React.FC<GetHelpPageProps> = ({ onOpenAiChat, onOpenWi
     },
     {
       title: 'I Have Urgent Health Concerns or Symptoms',
-      desc: 'Learn to recognize acute toxicity, severe withdrawal hazards, and when emergency 1990 medical assistance is essential.',
+      desc: `Learn to recognize acute toxicity, severe withdrawal hazards, and when emergency ${CONTACT_INFO.emergency.ambulance.number} medical assistance is essential.`,
       actionLabel: 'Check Emergency Guidance',
       actionType: 'chat',
       prompt: 'What are the urgent medical warning signs and withdrawal risks I should watch out for?',
@@ -107,22 +108,22 @@ export const GetHelpPage: React.FC<GetHelpPageProps> = ({ onOpenAiChat, onOpenWi
           <span>Need Immediate Life-Saving Assistance?</span>
         </div>
         <p className="text-xs sm:text-sm text-ivory/80 leading-relaxed">
-          If someone is unresponsive, having a seizure, experiencing severe chest pains, or having extreme difficulty breathing, call the <strong>Suwaseriya 1990 Free Ambulance Service</strong> immediately. For confidential substance crisis advice, call the <strong>NDDCB 1927 Hotline</strong> (toll-free).
+          If someone is unresponsive, having a seizure, experiencing severe chest pains, or having extreme difficulty breathing, call the <strong>Suwaseriya Free Ambulance Service</strong> immediately. For confidential substance crisis advice, call the <strong>NDDCB Hotline</strong> (toll-free).
         </p>
         <div className="pt-2 flex flex-wrap gap-3">
           <a
-            href="tel:1990"
+            href={telephoneHref(CONTACT_INFO.emergency.ambulance.number)}
             className="btn-gold px-4 py-2.5 rounded-lg text-xs font-bold inline-flex items-center gap-2"
           >
             <PhoneCall className="w-4 h-4" />
-            <span>Call 1990 (Medical Emergency)</span>
+            <span>Call {CONTACT_INFO.emergency.ambulance.number} (Medical Emergency)</span>
           </a>
           <a
-            href="tel:1927"
+            href={telephoneHref(CONTACT_INFO.emergency.drugHelpline.number)}
             className="btn-charcoal px-4 py-2.5 rounded-lg text-xs font-bold inline-flex items-center gap-2 text-champagne"
           >
             <PhoneCall className="w-4 h-4 text-gold" />
-            <span>Call 1927 (NDDCB Drug Helpline)</span>
+            <span>Call {CONTACT_INFO.emergency.drugHelpline.number} (NDDCB Drug Helpline)</span>
           </a>
         </div>
       </div>

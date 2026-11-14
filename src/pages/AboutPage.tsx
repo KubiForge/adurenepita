@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { ASSETS } from '../config/assets';
 import { BRAND } from '../config/brand';
+import { CONTACT_INFO } from '../config/contactInfo';
 import { ORGANIZATION_LOGOS } from '../data/organizationLogos';
 import { LogoPlaceholder } from '../components/common/LogoPlaceholder';
 
@@ -237,7 +238,7 @@ export const AboutPage: React.FC = () => (
                   In designing this platform, the project team studied leading global and Sri Lankan digital health platforms, including Shatterproof, Partnership to End Addiction (drugfree.org), SAMHSA, NDDCB Sri Lanka, and ADIC Sri Lanka. These references served purely as inspiration for empathetic navigation and data storytelling.
                 </p>
                 <p>
-                  <strong className="text-champagne">Important Disclosure:</strong> Mention of these organizations does not imply formal endorsement, legal partnership, or commercial affiliation unless an explicit bilateral agreement is formalized. All local service details and phone lines (such as NDDCB 1927) are independently verified before publication.
+                  <strong className="text-champagne">Important Disclosure:</strong> Mention of these organizations does not imply formal endorsement, legal partnership, or commercial affiliation unless an explicit bilateral agreement is formalized. All local service details and phone lines (such as NDDCB {CONTACT_INFO.emergency.drugHelpline.number}) are independently verified before publication.
                 </p>
               </div>
             </div>

@@ -2,8 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { BRAND } from '../config/brand';
 import { ASSETS } from '../config/assets';
+import { CONTACT_INFO, telephoneHref } from '../config/contactInfo';
 import { useLanguage } from '../context/LanguageContext';
 import { DRUGS_DATA } from '../data/drugsData';
+import { SUPPORT_CENTERS_DATA } from '../data/sriLankaData';
 import { DRUG_IMAGE_ENTRIES } from '../data/drugImages';
 import { FAQS_DATA } from '../data/awarenessData';
 import { KEY_STATISTICS } from '../data/statisticsData';
@@ -28,6 +30,13 @@ import {
 interface HomePageProps {
   onOpenAiChat: () => void;
   onOpenWizard: () => void;
+}
+
+const thalangamaCenter = SUPPORT_CENTERS_DATA.find((center) => center.id === 'cnt-nddcb-thalangama');
+const melMeduraCenter = SUPPORT_CENTERS_DATA.find((center) => center.id === 'cnt-mel-medura');
+
+if (!thalangamaCenter || !melMeduraCenter) {
+  throw new Error('Featured support center contact data is missing.');
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }) => {
@@ -334,12 +343,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
                 NDDCB Thalangama Rehabilitation Centre
               </h3>
               <p className="text-xs text-ivory/60 mt-2">
-                Battaramulla, Colombo • 24-hour residential facilities, multi-disciplinary detox, and counseling.
+                {thalangamaCenter.address} • 24-hour residential facilities, multi-disciplinary detox, and counseling.
               </p>
             </div>
             <div className="mt-4 pt-3 border-t border-charcoal-light flex items-center justify-between">
-              <span className="font-mono text-xs font-bold text-champagne">011 278 8040</span>
-              <a href="tel:0112788040" className="text-xs text-gold font-semibold hover:underline">
+              <span className="font-mono text-xs font-bold text-champagne">{thalangamaCenter.phone}</span>
+              <a href={telephoneHref(thalangamaCenter.phone)} className="text-xs text-gold font-semibold hover:underline">
                 Call Now
               </a>
             </div>
@@ -354,12 +363,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
                 Mel Medura (Sumithrayo Care)
               </h3>
               <p className="text-xs text-ivory/60 mt-2">
-                Horton Place, Colombo 07 • Free, confidential drop-in counseling, relapse prevention, and family healing.
+                {melMeduraCenter.address} • Free, confidential drop-in counseling, relapse prevention, and family healing.
               </p>
             </div>
             <div className="mt-4 pt-3 border-t border-charcoal-light flex items-center justify-between">
-              <span className="font-mono text-xs font-bold text-champagne">011 269 3460</span>
-              <a href="tel:0112693460" className="text-xs text-gold font-semibold hover:underline">
+              <span className="font-mono text-xs font-bold text-champagne">{melMeduraCenter.phone}</span>
+              <a href={telephoneHref(melMeduraCenter.phone)} className="text-xs text-gold font-semibold hover:underline">
                 Call Now
               </a>
             </div>
@@ -378,8 +387,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               </p>
             </div>
             <div className="mt-4 pt-3 border-t border-charcoal-light flex items-center justify-between">
-              <span className="font-mono text-xs font-bold text-champagne">1926</span>
-              <a href="tel:1926" className="text-xs text-gold font-semibold hover:underline">
+              <span className="font-mono text-xs font-bold text-champagne">{CONTACT_INFO.emergency.mentalHealth.number}</span>
+              <a href={telephoneHref(CONTACT_INFO.emergency.mentalHealth.number)} className="text-xs text-gold font-semibold hover:underline">
                 Call Now
               </a>
             </div>
@@ -511,7 +520,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               Leo Club of University of Sri Jayewardenepura
             </h3>
             <p className="text-xs text-ivory/60 mt-1">
-              Lions International • Leo District 306 D2 • Gangodawila, Nugegoda, Sri Lanka
+              Lions International • Leo District 306 D2 • {CONTACT_INFO.project.address}
             </p>
           </div>
 
@@ -522,7 +531,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               </Button>
             </Link>
             <a
-              href="mailto:contact@leousj.org"
+              href={`mailto:${CONTACT_INFO.project.email}`}
               className="btn-gold px-4 py-2 rounded-lg text-xs font-bold inline-flex items-center gap-1.5"
             >
               Contact Project Team

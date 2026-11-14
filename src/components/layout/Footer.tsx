@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowUp, ExternalLink, Heart, Mail, MapPin, PhoneCall, Shield } from 'lucide-react';
 import { BRAND } from '../../config/brand';
 import { ASSETS } from '../../config/assets';
+import { CONTACT_INFO, telephoneHref } from '../../config/contactInfo';
 import { ORGANIZATION_LOGOS } from '../../data/organizationLogos';
 import { LogoPlaceholder } from '../common/LogoPlaceholder';
 
@@ -109,34 +110,22 @@ export const Footer: React.FC = () => {
               <PhoneCall className="h-3.5 w-3.5" /> Emergency Helplines
             </h2>
             <ul className="grid grid-cols-2 gap-2 lg:grid-cols-1">
-              <li className="rounded-xl border border-ivory/10 bg-charcoal/45 px-3 py-2 transition hover:border-gold/25 hover:bg-charcoal/70">
-                <a className="flex items-center justify-between gap-2" href="tel:1927">
-                  <span className="text-[10px] leading-4 text-ivory/70">NDDCB Drug Helpline</span>
-                  <span className="font-mono text-sm font-bold text-champagne">1927</span>
-                </a>
-                <p className="mt-0.5 text-[9px] text-ivory/40">Toll-free 24/7 counseling & info</p>
-              </li>
-              <li className="rounded-xl border border-ivory/10 bg-charcoal/45 px-3 py-2 transition hover:border-gold/25 hover:bg-charcoal/70">
-                <a className="flex items-center justify-between gap-2" href="tel:1990">
-                  <span className="text-[10px] leading-4 text-ivory/70">Suwaseriya Ambulance</span>
-                  <span className="font-mono text-sm font-bold text-red-300">1990</span>
-                </a>
-                <p className="mt-0.5 text-[9px] text-ivory/40">Medical emergencies</p>
-              </li>
-              <li className="rounded-xl border border-ivory/10 bg-charcoal/45 px-3 py-2 transition hover:border-gold/25 hover:bg-charcoal/70">
-                <a className="flex items-center justify-between gap-2" href="tel:1333">
-                  <span className="text-[10px] leading-4 text-ivory/70">CCC Emotional Support</span>
-                  <span className="font-mono text-sm font-bold text-champagne">1333</span>
-                </a>
-                <p className="mt-0.5 text-[9px] text-ivory/40">Crisis and emotional support</p>
-              </li>
-              <li className="rounded-xl border border-ivory/10 bg-charcoal/45 px-3 py-2 transition hover:border-gold/25 hover:bg-charcoal/70">
-                <a className="flex items-center justify-between gap-2" href="tel:119">
-                  <span className="text-[10px] leading-4 text-ivory/70">Police Emergency</span>
-                  <span className="font-mono text-sm font-bold text-red-300">119</span>
-                </a>
-                <p className="mt-0.5 text-[9px] text-ivory/40">Immediate police assistance</p>
-              </li>
+              {[
+                CONTACT_INFO.emergency.drugHelpline,
+                CONTACT_INFO.emergency.ambulance,
+                CONTACT_INFO.emergency.crisisSupport,
+                CONTACT_INFO.emergency.police,
+              ].map((contact) => (
+                <li key={contact.id} className="rounded-xl border border-ivory/10 bg-charcoal/45 px-3 py-2 transition hover:border-gold/25 hover:bg-charcoal/70">
+                  <a className="flex items-center justify-between gap-2" href={telephoneHref(contact.number)}>
+                    <span className="text-[10px] leading-4 text-ivory/70">{contact.footerLabel}</span>
+                    <span className={`font-mono text-sm font-bold ${contact.id === 'ambulance' || contact.id === 'police' ? 'text-red-300' : 'text-champagne'}`}>
+                      {contact.number}
+                    </span>
+                  </a>
+                  <p className="mt-0.5 text-[9px] text-ivory/40">{contact.footerDescription}</p>
+                </li>
+              ))}
             </ul>
           </div>
         </section>
@@ -150,10 +139,10 @@ export const Footer: React.FC = () => {
             <span className="hidden text-gold/50 sm:inline">•</span>
             <span>{BRAND.parentOrg} • {BRAND.district}</span>
             <span className="hidden text-gold/50 sm:inline">•</span>
-            <span className="inline-flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-gold/75" />Gangodawila, Nugegoda, Sri Lanka</span>
+            <span className="inline-flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-gold/75" />{CONTACT_INFO.project.address}</span>
           </div>
           <a
-            href="mailto:contact@leousj.org"
+            href={`mailto:${CONTACT_INFO.project.email}`}
             className="inline-flex shrink-0 items-center gap-2 font-semibold text-champagne transition hover:text-white"
           >
             <Mail className="h-3.5 w-3.5" /> Contact Project Team
@@ -165,7 +154,7 @@ export const Footer: React.FC = () => {
             Clinical Governance & Legal Disclaimer
           </h2>
           <p className="mt-1.5 text-[11px] leading-5 text-ivory/45">
-            BEYOND THE DARKNESS is an educational, awareness, and support navigational digital platform organized by the Leo Club of University of Sri Jayewardenepura. The platform and its AI Assistant do not provide medical diagnosis, clinical treatment plans, pharmaceutical prescriptions, or emergency dispatch services. Always consult certified healthcare professionals or hospital psychiatry units for clinical concerns. If you or someone you know is in immediate life-threatening physical danger, contact emergency medical services (1990) or the police (119) immediately.
+            BEYOND THE DARKNESS is an educational, awareness, and support navigational digital platform organized by the Leo Club of University of Sri Jayewardenepura. The platform and its AI Assistant do not provide medical diagnosis, clinical treatment plans, pharmaceutical prescriptions, or emergency dispatch services. Always consult certified healthcare professionals or hospital psychiatry units for clinical concerns. If you or someone you know is in immediate life-threatening physical danger, contact emergency medical services ({CONTACT_INFO.emergency.ambulance.number}) or the police ({CONTACT_INFO.emergency.police.number}) immediately.
           </p>
         </section>
 
@@ -174,11 +163,11 @@ export const Footer: React.FC = () => {
             &copy; {new Date().getFullYear()} Beyond the Darkness. Organized by Leo Club of University of Sri Jayewardenepura (Leo District 306 D2).
           </p>
           <nav aria-label="Legal and contact links" className="flex flex-wrap items-center gap-x-3 gap-y-1 md:justify-center">
-            <a href="mailto:contact@leousj.org?subject=Privacy%20Policy%20Request" title="Request the privacy policy by email" className="transition hover:text-champagne">Privacy Policy</a>
+            <a href={`mailto:${CONTACT_INFO.project.email}?subject=Privacy%20Policy%20Request`} title="Request the privacy policy by email" className="transition hover:text-champagne">Privacy Policy</a>
             <span aria-hidden="true" className="text-gold/40">|</span>
-            <a href="mailto:contact@leousj.org?subject=Terms%20of%20Use%20Request" title="Request the terms of use by email" className="transition hover:text-champagne">Terms of Use</a>
+            <a href={`mailto:${CONTACT_INFO.project.email}?subject=Terms%20of%20Use%20Request`} title="Request the terms of use by email" className="transition hover:text-champagne">Terms of Use</a>
             <span aria-hidden="true" className="text-gold/40">|</span>
-            <a href="mailto:contact@leousj.org" className="transition hover:text-champagne">Contact</a>
+            <a href={`mailto:${CONTACT_INFO.project.email}`} className="transition hover:text-champagne">Contact</a>
           </nav>
           <div className="flex items-center justify-between gap-4 md:justify-end">
             <p>

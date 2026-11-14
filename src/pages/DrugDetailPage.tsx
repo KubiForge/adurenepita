@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { DRUGS_DATA } from '../data/drugsData';
 import { Button } from '../components/common/Button';
+import { CONTACT_INFO } from '../config/contactInfo';
 import {
   ArrowLeft,
   ShieldCheck,
@@ -123,7 +124,7 @@ export const DrugDetailPage: React.FC<DrugDetailPageProps> = ({ onOpenAiChatWith
           <span>Critical Emergency Warning Signs (Overdose / Severe Toxicity)</span>
         </div>
         <p className="text-ivory/80">
-          If someone displays any of these life-threatening indicators, call <strong>1990 (Suwaseriya Free Ambulance)</strong> immediately:
+          If someone displays any of these life-threatening indicators, call <strong>{CONTACT_INFO.emergency.ambulance.number} (Suwaseriya Free Ambulance)</strong> immediately:
         </p>
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 list-disc pl-5 text-ivory/70">
           {drug.emergencySigns.map((sign, i) => (

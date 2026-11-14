@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { CONTACT_INFO, telephoneHref } from '../config/contactInfo';
 import {
   BookOpen,
   Bookmark,
@@ -261,7 +262,7 @@ export const JourneyPage: React.FC = () => {
                 </div>
 
                 <div className="p-3.5 rounded-xl bg-midnight/80 border border-charcoal-light text-xs text-ivory/70 leading-relaxed">
-                  Your referral request has been reviewed. An authorized professional counsellor will reach out via your preferred method within 24-48 business hours. For urgent needs, call toll-free hotline <strong>1927</strong>.
+                  Your referral request has been reviewed. An authorized professional counsellor will reach out via your preferred method within 24-48 business hours. For urgent needs, call toll-free hotline <strong>{CONTACT_INFO.emergency.drugHelpline.number}</strong>.
                 </div>
               </div>
             </div>
@@ -403,10 +404,10 @@ export const JourneyPage: React.FC = () => {
               Experiencing severe distress, cravings, or anxiety? Call the NDDCB 24/7 hotline free of charge.
             </p>
             <a
-              href="tel:1927"
+              href={telephoneHref(CONTACT_INFO.emergency.drugHelpline.number)}
               className="inline-block font-mono font-bold text-sm text-gold hover:underline"
             >
-              📞 Call 1927 Toll-Free
+              📞 Call {CONTACT_INFO.emergency.drugHelpline.number} Toll-Free
             </a>
           </div>
         </div>

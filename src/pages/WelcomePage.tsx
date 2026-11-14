@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, UserPlus, AlertTriangle, Shield, Eye, Lock } from 'lucide-react';
 import { ASSETS } from '../config/assets';
+import { CONTACT_INFO, telephoneHref } from '../config/contactInfo';
 
 export const WelcomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export const WelcomePage: React.FC = () => {
       title: 'I Need Immediate Help',
       desc: 'If you or someone you know is in crisis or experiencing an acute medical emergency right now, view verified urgent support options immediately.',
       action: () => {
-        window.location.href = 'tel:1927';
+        window.location.href = telephoneHref(CONTACT_INFO.emergency.ambulance.number);
       },
       style: {
         border: '1.5px solid rgba(220,50,50,0.4)',

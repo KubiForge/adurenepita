@@ -25,6 +25,7 @@ export const ASSETS = {
 
   // Real Photographic Backgrounds
   heroBg: '/assets/hero-bg.webp',
+  heroVideo: '/assets/herobg.mp4',
   knowledgeBg: '/assets/knowledge-bg.webp',
   servicesBg: '/assets/services-bg.webp',
   campaignsBg: '/assets/campaigns-bg.webp',

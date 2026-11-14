@@ -3,6 +3,7 @@ import { useSafety } from '../context/SafetyContext';
 import { ChatMessage, SourceCitation } from '../types/chat';
 import { grokService } from '../services/grokService';
 import { ASSETS } from '../config/assets';
+import { CONTACT_INFO } from '../config/contactInfo';
 import {
   Sparkles,
   Send,
@@ -97,7 +98,7 @@ export const AssistantPage: React.FC = () => {
         {
           id: `err-${Date.now()}`,
           sender: 'assistant',
-          content: 'I apologize, but I am temporarily unable to connect to the knowledge engine. If you require immediate guidance, please call the NDDCB hotline at 1927 or 1990 for emergency medical care.',
+          content: `I apologize, but I am temporarily unable to connect to the knowledge engine. If you require immediate guidance, please call the NDDCB hotline at ${CONTACT_INFO.emergency.drugHelpline.number} or ${CONTACT_INFO.emergency.ambulance.number} for emergency medical care.`,
           timestamp: new Date().toISOString(),
           safetyLevel: 1,
         },
@@ -270,7 +271,7 @@ export const AssistantPage: React.FC = () => {
               <Lock className="w-3 h-3 text-gold" />
               <span>Confidential • AI Assistant does not replace medical or psychological diagnosis.</span>
             </span>
-            <span>Emergency? Call <strong>1927 (NDDCB)</strong> or <strong>1990 (Suwa Seriya)</strong></span>
+            <span>Emergency? Call <strong>{CONTACT_INFO.emergency.drugHelpline.number} (NDDCB)</strong> or <strong>{CONTACT_INFO.emergency.ambulance.number} (Suwa Seriya)</strong></span>
           </div>
         </div>
       </div>

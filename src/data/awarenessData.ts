@@ -1,3 +1,5 @@
+import { CONTACT_INFO } from '../config/contactInfo';
+
 export interface Article {
   id: string;
   slug: string;
@@ -52,14 +54,14 @@ export const ARTICLES_DATA: Article[] = [
       '1. Choose a calm, private, and sober moment: Never initiate an emotionally charged conversation when the person is actively intoxicated or undergoing severe withdrawal.',
       '2. Use "I" statements rather than "You" accusations: Say "I have noticed you seem overwhelmed and I am worried about your health", rather than "You are destroying this family".',
       '3. Listen with empathy rather than preaching: Recovery begins when an individual feels understood rather than cornered.',
-      '4. Offer practical connection to professional support: Offer to accompany them to a confidential counseling appointment or call the 1927 hotline together.',
+      `4. Offer practical connection to professional support: Offer to accompany them to a confidential counseling appointment or call the ${CONTACT_INFO.emergency.drugHelpline.number} hotline together.`,
     ],
     contentSi: [
       'මිතුරෙකු හෝ පවුලේ අයෙකු මත්ද්‍රව්‍යවලට ඇබ්බැහිවී ඇති බව දැනගත් විට බැනවැදීම හෝ තරවටු කිරීම ඔවුන්ව තව තවත් ඒ තුළ සඟවා තැබීමට හේතුවේ.',
       '1. සන්සුන් අවස්ථාවක් තෝරාගන්න: ඔහු හෝ ඇය මත්ද්‍රව්‍ය භාවිත කර සිටින හෝ උද්වේගකර අවස්ථාවකදී කතා කිරීමෙන් වළකින්න.',
       '2. චෝදනා නොකර ඔබේ ආදරය හා කනස්සල්ල ප්‍රකාශ කරන්න: "ඔයා ඔක්කොම විනාශ කරනවා" වෙනුවට "ඔයාගේ සෞඛ්‍යය ගැන මට ලොකු බයක් දැනෙනවා, මම ඔයාට උදව් කරන්න කැමතියි" වැනි වදන් භාවිතා කරන්න.',
       '3. සවන්දෙන්න: ඔවුන්ගේ වේදනාවට සහ ගැටලුවලට සාවධානව සවන් දෙන්න.',
-      '4. වෘත්තීය සහය වෙත මඟපෙන්වන්න: ඔවුන් සමඟ 1927 අංකයට කතා කිරීමට හෝ මෙල් මැදුර වැනි උපදේශන මධ්‍යස්ථානයකට යාමට උදව් වන්න.',
+      `4. වෘත්තීය සහය වෙත මඟපෙන්වන්න: ඔවුන් සමඟ ${CONTACT_INFO.emergency.drugHelpline.number} අංකයට කතා කිරීමට හෝ මෙල් මැදුර වැනි උපදේශන මධ්‍යස්ථානයකට යාමට උදව් වන්න.`,
     ],
     publishedDate: '2026-11-01',
     author: 'Leo Club Clinical Advisory Team',
@@ -135,13 +137,13 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
     question: 'What is the official toll-free hotline of Sri Lanka’s National Dangerous Drugs Control Board (NDDCB) for free, confidential guidance?',
     questionSi: 'ශ්‍රී ලංකාවේ අන්තරායකර ඖෂධ පාලක ජාතික මණ්ඩලයේ (NDDCB) නොමිලේ උපදේශනය සපයන නිල හදිසි අංකය කුමක්ද?',
     options: [
-      { text: '119', textSi: '119', isCorrect: false },
-      { text: '1927', textSi: '1927', isCorrect: true },
-      { text: '1990', textSi: '1990', isCorrect: false },
+      { text: CONTACT_INFO.emergency.police.number, textSi: CONTACT_INFO.emergency.police.number, isCorrect: false },
+      { text: CONTACT_INFO.emergency.drugHelpline.number, textSi: CONTACT_INFO.emergency.drugHelpline.number, isCorrect: true },
+      { text: CONTACT_INFO.emergency.ambulance.number, textSi: CONTACT_INFO.emergency.ambulance.number, isCorrect: false },
       { text: '100', textSi: '100', isCorrect: false },
     ],
-    explanation: '1927 is the NDDCB dedicated confidential hotline. 1990 is for emergency ambulance dispatch, and 119 is for police.',
-    explanationSi: '1927 යනු NDDCB මත්ද්‍රව්‍ය නිවාරණ සහ උපදේශන ක්ෂණික දුරකථන අංකයයි. 1990 යනු සුවසැරිය ගිලන්රථ සේවයයි.',
+    explanation: `${CONTACT_INFO.emergency.drugHelpline.number} is the NDDCB dedicated confidential hotline. ${CONTACT_INFO.emergency.ambulance.number} is for emergency ambulance dispatch, and ${CONTACT_INFO.emergency.police.number} is for police.`,
+    explanationSi: `${CONTACT_INFO.emergency.drugHelpline.number} යනු NDDCB මත්ද්‍රව්‍ය නිවාරණ සහ උපදේශන ක්ෂණික දුරකථන අංකයයි. ${CONTACT_INFO.emergency.ambulance.number} යනු සුවසැරිය ගිලන්රථ සේවයයි.`,
     citation: 'National Dangerous Drugs Control Board Sri Lanka.',
   },
   {
@@ -159,8 +161,8 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
   },
   {
     id: 'q4',
-    question: 'Which of the following is an emergency sign of an acute opioid (heroin) overdose requiring immediate 1990 ambulance dispatch?',
-    questionSi: 'හෙරොයින් අධිමාත්‍රාවක් ශරීරගත වූ විට (Overdose) වහාම 1990 ගිලන්රථය ඇමතිය යුතු හදිසි අනතුරු ඇඟවීමේ ලක්ෂණය කුමක්ද?',
+    question: `Which of the following is an emergency sign of an acute opioid (heroin) overdose requiring immediate ${CONTACT_INFO.emergency.ambulance.number} ambulance dispatch?`,
+    questionSi: `හෙරොයින් අධිමාත්‍රාවක් ශරීරගත වූ විට (Overdose) වහාම ${CONTACT_INFO.emergency.ambulance.number} ගිලන්රථය ඇමතිය යුතු හදිසි අනතුරු ඇඟවීමේ ලක්ෂණය කුමක්ද?`,
     options: [
       { text: 'Extremely slow or stopped breathing, blue lips, and unresponsiveness.', textSi: 'හුස්ම ගැනීම අතිශය මන්දගාමී වීම, තොල් නිල් පැහැවීම සහ සිහිසුන් වීම.', isCorrect: true },
       { text: 'Mild headache after eating food.', textSi: 'කෑම ගැනීමෙන් පසු ඇතිවන සුළු හිසරදය.', isCorrect: false },

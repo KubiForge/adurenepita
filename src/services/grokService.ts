@@ -3,6 +3,7 @@ import { DRUGS_DATA } from '../data/drugsData';
 import { SUPPORT_CENTERS_DATA } from '../data/sriLankaData';
 import { apiService } from './apiService';
 import { API_CONFIG } from '../config/api';
+import { CONTACT_INFO } from '../config/contactInfo';
 
 export interface AIResponseResult {
   content: string;
@@ -173,6 +174,7 @@ class GrokService {
   ): Promise<AIResponseResult> {
     const { level, reason } = this.classifySafetyLevel(message);
     const { contextSummary, sources } = this.retrieveKnowledgeContext(message);
+    const { drugHelpline, ambulance, crisisSupport, sumithrayo, mentalHealth } = CONTACT_INFO.emergency;
 
     // LEVEL 4 CRISIS RESPONSE
     if (level === 4) {
@@ -183,23 +185,23 @@ class GrokService {
           content: `ඔබ විඳින වේදනාව මට තේරෙනවා. කරුණාකර තනිවම මේ පීඩනය දරාගන්න එපා. ඔබේ ජීවිතය අතිශය වටිනවා.
 
 වහාම මෙම ක්ෂණික සහන සේවාවන් අමතන්න (නොමිලේ හා පූර්ණ රහසිගතයි):
-• CCC මානසික සුවතා දුරකථන සේවය: 1333 (පැය 24 පුරා)
-• මිත්‍රයෝ සංවිධානය (Sumithrayo): 011 269 2909 / 011 268 2535
-• ජාතික මානසික සුවතා සේවය (NIMH): 1926
-• හදිසි වෛද්‍ය ගිලන්රථ සේවය: 1990
+• CCC මානසික සුවතා දුරකථන සේවය: ${crisisSupport.number} (පැය 24 පුරා)
+• මිත්‍රයෝ සංවිධානය (Sumithrayo): ${sumithrayo.number} / ${sumithrayo.alternateNumber}
+• ජාතික මානසික සුවතා සේවය (NIMH): ${mentalHealth.number}
+• හදිසි වෛද්‍ය ගිලන්රථ සේවය: ${ambulance.number}
 
 කරුණාකර දැන්ම ඔබට සමීප විශ්වාසවන්ත අයෙකුට කතා කරන්න, නැතහොත් ළඟම ඇති රෝහලේ හදිසි ප්‍රතිකාර ඒකකයට යොමුවන්න. මම AI සහායකයෙකු බැවින් ක්ෂණික හදිසි සේවා යැවීමට මට නොහැකිය.`,
           sources: [
             {
               id: 'crisis-ccc-1333',
-              title: 'CCCline 1333 Crisis Support Service',
+              title: `${crisisSupport.name}`,
               organization: 'CCC Foundation Sri Lanka',
               url: 'https://1333.lk',
             },
           ],
           suggestedQuickActions: [
-            { label: '1333 අමතන්න (නොමිලේ)', action: 'call', payload: '1333' },
-            { label: '1990 ගිලන්රථය', action: 'call', payload: '1990' },
+            { label: `${crisisSupport.number} අමතන්න (නොමිලේ)`, action: 'call', payload: crisisSupport.number },
+            { label: `${ambulance.number} ගිලන්රථය`, action: 'call', payload: ambulance.number },
           ],
         };
       }
@@ -210,23 +212,23 @@ class GrokService {
         content: `I hear how much pain you are experiencing right now. Please know you do not have to carry this alone, and your life matters deeply.
 
 Please connect immediately with trained professionals who can help you right this second:
-• CCC Crisis & Emotional Support Helpline: 1333 (Toll-Free, 24/7)
-• Sumithrayo Crisis Befriending: 011 269 2909 / 011 268 2535
-• National Mental Health Helpline (NIMH): 1926 (24/7)
-• Suwaseriya Emergency Medical Ambulance: 1990
+• CCC Crisis & Emotional Support Helpline: ${crisisSupport.number} (Toll-Free, 24/7)
+• Sumithrayo Crisis Befriending: ${sumithrayo.number} / ${sumithrayo.alternateNumber}
+• National Mental Health Helpline (NIMH): ${mentalHealth.number} (24/7)
+• Suwaseriya Emergency Medical Ambulance: ${ambulance.number}
 
 Please reach out to a trusted family member, close friend, or proceed immediately to the nearest hospital emergency department. As an AI assistant, I cannot dispatch emergency crews or guarantee human monitoring.`,
         sources: [
           {
             id: 'crisis-ccc-1333',
-            title: 'CCCline 1333 Crisis Support Service',
+            title: `${crisisSupport.name}`,
             organization: 'CCC Foundation Sri Lanka',
             url: 'https://1333.lk',
           },
         ],
         suggestedQuickActions: [
-          { label: 'Call 1333 (Crisis Line)', action: 'call', payload: '1333' },
-          { label: 'Call 1990 (Ambulance)', action: 'call', payload: '1990' },
+          { label: `Call ${crisisSupport.number} (Crisis Line)`, action: 'call', payload: crisisSupport.number },
+          { label: `Call ${ambulance.number} (Ambulance)`, action: 'call', payload: ambulance.number },
         ],
       };
     }
@@ -240,12 +242,12 @@ Please reach out to a trusted family member, close friend, or proceed immediatel
           content: `අවධානය යොමුකරන්න: ඔබ සඳහන් කළ ලක්ෂණ (හුස්ම ගැනීමේ අපහසුව, සිහිය නැතිවීම, අධික මාත්‍රාව හෝ වලිප්පුව) ක්ෂණික වෛද්‍ය මැදිහත්වීමක් අවශ්‍ය හදිසි අවස්ථාවක් පෙන්නුම් කරයි.
 
 ප්‍රමාද නොවී දැන්ම ක්‍රියාත්මක වන්න:
-1. වහාම 1990 (සුවසැරිය නොමිලේ ගිලන්රථ සේවය) අමතන්න.
+1. වහාම ${ambulance.number} (සුවසැරිය නොමිලේ ගිලන්රථ සේවය) අමතන්න.
 2. පුද්ගලයා සිහිසුන් නම්, සිරුර පැත්තකට හරවා තබන්න (Recovery Position) එවිට වමනය නිසා හුස්ම හිරවීම වළකී.
 3. කෘත්‍රිමව වමනය කරවීමට හෝ කෝපි/මත්පැන් දීමට උත්සාහ නොකරන්න.
 4. සහය පැමිණෙන තෙක් ඔවුන් සමඟ රැඳී සිටින්න.
 
-මත්ද්‍රව්‍ය පිළිබඳ ක්ෂණික උපදෙස් සඳහා NDDCB 1927 අමතන්න. මා සමඟ කතා කිරීමට කාලය නාස්ති නොකර වෛද්‍ය සහය ලබාගන්න!`,
+මත්ද්‍රව්‍ය පිළිබඳ ක්ෂණික උපදෙස් සඳහා NDDCB ${drugHelpline.number} අමතන්න. මා සමඟ කතා කිරීමට කාලය නාස්ති නොකර වෛද්‍ය සහය ලබාගන්න!`,
           sources: [
             {
               id: 'who-overdose',
@@ -255,8 +257,8 @@ Please reach out to a trusted family member, close friend, or proceed immediatel
             },
           ],
           suggestedQuickActions: [
-            { label: '1990 ගිලන්රථය අමතන්න', action: 'call', payload: '1990' },
-            { label: '1927 NDDCB අමතන්න', action: 'call', payload: '1927' },
+            { label: `${ambulance.number} ගිලන්රථය අමතන්න`, action: 'call', payload: ambulance.number },
+            { label: `${drugHelpline.number} NDDCB අමතන්න`, action: 'call', payload: drugHelpline.number },
           ],
         };
       }
@@ -267,12 +269,12 @@ Please reach out to a trusted family member, close friend, or proceed immediatel
         content: `URGENT MEDICAL ALERT: The symptoms you described (difficulty breathing, loss of consciousness, chest pain, or suspected overdose) require IMMEDIATE emergency medical attention.
 
 Take immediate action right now:
-1. Call 1990 (Suwaseriya Free National Ambulance) immediately.
+1. Call ${ambulance.number} (Suwaseriya Free National Ambulance) immediately.
 2. If the person is unconscious, place them into the recovery position (on their side) to keep their airway clear.
 3. Do not attempt to induce vomiting or give them home remedies.
 4. Stay with the person until medical responders arrive.
 
-For urgent substance guidance, call NDDCB hotline 1927. Do not delay emergency care to chat with an AI!`,
+For urgent substance guidance, call NDDCB hotline ${drugHelpline.number}. Do not delay emergency care to chat with an AI!`,
         sources: [
           {
             id: 'who-overdose',
@@ -282,8 +284,8 @@ For urgent substance guidance, call NDDCB hotline 1927. Do not delay emergency c
           },
         ],
         suggestedQuickActions: [
-          { label: 'Call 1990 Ambulance Now', action: 'call', payload: '1990' },
-          { label: 'Call 1927 NDDCB Hotline', action: 'call', payload: '1927' },
+          { label: `Call ${ambulance.number} Ambulance Now`, action: 'call', payload: ambulance.number },
+          { label: `Call ${drugHelpline.number} NDDCB Hotline`, action: 'call', payload: drugHelpline.number },
         ],
       };
     }
@@ -299,7 +301,7 @@ For urgent substance guidance, call NDDCB hotline 1927. Do not delay emergency c
 මත්පැන් හෝ ඇතැම් නිදිපෙති (Benzodiazepines) වසර ගණනාවක් භාවිතා කර ඇත්නම්, කිසිදු වෛද්‍ය උපදෙසක් නොමැතිව එකවර හදිසියේ නැවැත්වීම (Cold Turkey) ශාරීරිකව අනතුරුදායක විය හැක. එබැවින් වෛද්‍යවරයෙකුගේ උපදෙස් මත ආරක්ෂිතව විෂහරණය සිදුකිරීම ඉතා වැදගත්ය.
 
 ඔබට ලබාගත හැකි මඟපෙන්වීම්:
-• NDDCB නිල උපදේශන සේවය (1927) අමතා රහසිගතව කතා කරන්න.
+• NDDCB නිල උපදේශන සේවය (${drugHelpline.number}) අමතා රහසිගතව කතා කරන්න.
 • කොළඹ හෝ ප්‍රදේශයේ පිළිගත් ප්‍රතිකාර මධ්‍යස්ථානයක් (උදා: මෙල් මැදුර හෝ රජයේ ශික්ෂණ රෝහල් මනෝ වෛද්‍ය ඒකක) වෙත යොමුවන්න.
 • අපගේ "Creative Wizard" මඟින් ඔබේ ප්‍රදේශයේ ඇති සේවාවන් සොයාගන්න.
 
@@ -313,7 +315,7 @@ For urgent substance guidance, call NDDCB hotline 1927. Do not delay emergency c
             },
           ],
           suggestedQuickActions: [
-            { label: '1927 අමතන්න (NDDCB)', action: 'call', payload: '1927' },
+            { label: `${drugHelpline.number} අමතන්න (NDDCB)`, action: 'call', payload: drugHelpline.number },
             { label: 'ප්‍රතිකාර මධ්‍යස්ථාන සොයන්න', action: 'navigate', payload: '/support-directory' },
             { label: 'මඟපෙන්වූ පියවර අරඹන්න', action: 'wizard' },
           ],
@@ -328,7 +330,7 @@ Important Clinical Safety Note:
 If you have been using heavy alcohol or sedatives/benzodiazepines daily, stopping abruptly on your own ("cold turkey") can be medically dangerous due to seizure risks. Medically supervised detoxification under psychiatric care ensures you can withdraw safely and comfortably.
 
 Constructive next steps you can take today:
-1. Speak confidentially with a counselor at the NDDCB Hotline: 1927 (Toll-Free).
+1. Speak confidentially with a counselor at the NDDCB Hotline: ${drugHelpline.number} (Toll-Free).
 2. Visit a trusted center such as Mel Medura or a government hospital psychiatric unit for confidential consultation.
 3. Use our Creative Wizard to explore tailored local services across Sri Lanka's 25 districts.
 
@@ -342,7 +344,7 @@ Reminder: I am an AI assistant, not a doctor. I cannot generate an individual de
           },
         ],
         suggestedQuickActions: [
-          { label: 'Call 1927 (NDDCB Hotline)', action: 'call', payload: '1927' },
+          { label: `Call ${drugHelpline.number} (NDDCB Hotline)`, action: 'call', payload: drugHelpline.number },
           { label: 'Find Support Centers', action: 'navigate', payload: '/support-directory' },
           { label: 'Launch Guided Wizard', action: 'wizard' },
         ],
