@@ -23,6 +23,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
     { to: '/about', label: t('nav.about') },
     { to: '/learn', label: t('nav.learn') },
     { to: '/get-help', label: t('nav.getHelp') },
+    { to: '/assessment', label: 'Assessment' },
     { to: '/support-directory', label: t('nav.findSupport') },
     { to: '/awareness-hub', label: t('nav.awarenessHub') },
     { to: '/campaigns', label: t('nav.campaigns') },
@@ -39,7 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
     >
       <div className="h-px bg-gradient-to-r from-transparent via-gold/70 to-transparent" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-[76px] items-center justify-between gap-4">
+        <div className="flex h-[64px] items-center justify-between gap-3 sm:h-[76px] sm:gap-4">
           <Logo size="md" className="min-w-0" />
 
           <div className="hidden items-center gap-2.5 lg:flex">
@@ -120,7 +121,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
       </div>
 
       {mobileMenuOpen && (
-        <div id="mobile-navigation" className="border-t border-gold/15 bg-midnight/98 px-4 pb-6 pt-3 backdrop-blur-xl lg:hidden">
+        <div id="mobile-navigation" className="max-h-[calc(100dvh-64px)] overflow-y-auto overscroll-contain border-t border-gold/15 bg-midnight/98 px-4 pb-6 pt-3 backdrop-blur-xl sm:max-h-[calc(100dvh-76px)] lg:hidden">
           <nav className="mx-auto flex max-w-7xl flex-col gap-1" aria-label="Main Navigation">
             {navLinks.map((link) => (
               <NavLink

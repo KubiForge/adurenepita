@@ -1,6 +1,6 @@
 import React from 'react';
 import { SupportCenter } from '../../types/directory';
-import { PhoneCall, MapPin, Clock, Globe, ShieldCheck, Flag, ArrowUpRight } from 'lucide-react';
+import { PhoneCall, MapPin, Clock, Globe, ShieldCheck, Flag, ArrowUpRight, MessageSquareText, Navigation } from 'lucide-react';
 import { Button } from '../common/Button';
 
 interface SupportCenterCardProps {
@@ -64,6 +64,18 @@ export const SupportCenterCard: React.FC<SupportCenterCardProps> = ({
 
         <div className="flex items-center gap-2">
           <Globe className="w-3.5 h-3.5 text-gold flex-shrink-0" />
+          {center.website ? (
+            <a
+              href={center.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gold hover:underline"
+            >
+              Official website
+            </a>
+          ) : (
+            <span>Official contact details available</span>
+          )}
         </div>
       </div>
 
@@ -77,10 +89,27 @@ export const SupportCenterCard: React.FC<SupportCenterCardProps> = ({
             <PhoneCall className="w-3.5 h-3.5" />
             <span>{center.phone}</span>
           </a>
+          <a
+            href={`sms:${center.phone.replace(/\s+/g, '')}?body=${encodeURIComponent('I need confidential information about rehabilitation or support. Please advise.')}`}
+            className="btn-charcoal px-3 py-1.5 rounded-lg text-xs font-bold inline-flex items-center gap-1.5"
+            aria-label={`Send SMS to ${center.name}`}
+          >
+            <MessageSquareText className="w-3.5 h-3.5 text-gold" />
+            <span>SMS</span>
+          </a>
 
           <Button variant="charcoal" size="sm" onClick={onSelect}>
             View on Map
           </Button>
+          <a
+            href={`https://www.google.com/maps/dir/?api=1&destination=${center.latitude},${center.longitude}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-charcoal px-3 py-1.5 rounded-lg text-xs font-bold inline-flex items-center gap-1.5"
+          >
+            <Navigation className="h-3.5 w-3.5 text-gold" />
+            Directions
+          </a>
         </div>
 
         <div className="flex items-center gap-3">

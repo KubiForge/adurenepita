@@ -71,8 +71,44 @@ export const CONTACT_INFO = {
       description: 'National Institute of Mental Health helpline.',
       footerDescription: 'Mental health support',
     },
+    samurdhi: {
+      id: 'samurdhi',
+      name: 'Samurdhi National Helpline',
+      footerLabel: 'Samurdhi Helpline',
+      number: '1961',
+      hours: 'Public social-welfare assistance',
+      badge: 'Social Support',
+      primary: false,
+      description: 'Sri Lankan public social-welfare and Samurdhi assistance information line.',
+      footerDescription: 'Social welfare assistance',
+    },
+    womenProtection: {
+      id: 'women',
+      name: 'Women Helpline',
+      footerLabel: 'Women Helpline',
+      number: '1938',
+      hours: 'National helpline',
+      badge: 'Women Protection',
+      primary: false,
+      description: 'National service for women seeking safety, protection, or urgent assistance.',
+      footerDescription: 'Women protection and safety',
+    },
+    childProtection: {
+      id: 'child',
+      name: 'Child Helpline',
+      footerLabel: 'Child Helpline',
+      number: '1929',
+      hours: 'National helpline',
+      badge: 'Child Protection',
+      primary: false,
+      description: 'Sri Lankan child protection and support helpline for children and concerned adults.',
+      footerDescription: 'Child protection support',
+    },
   },
 } as const;
 
 export const telephoneHref = (number: string): string =>
   `tel:${number.replace(/\s+/g, '')}`;
+
+export const smsHref = (number: string, message = ''): string =>
+  `sms:${number.replace(/\s+/g, '')}${message ? `?body=${encodeURIComponent(message)}` : ''}`;

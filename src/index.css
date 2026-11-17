@@ -384,6 +384,24 @@
 }
 
 @media (max-width: 639px) {
+  h1 {
+    overflow-wrap: anywhere;
+  }
+
+  main,
+  section,
+  article,
+  aside,
+  footer {
+    min-width: 0;
+  }
+
+  table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
   .cinematic-backdrop__video {
     object-position: 100% center;
   }

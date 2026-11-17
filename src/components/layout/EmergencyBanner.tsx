@@ -1,37 +1,28 @@
 import React from 'react';
-import { AlertTriangle, PhoneCall } from 'lucide-react';
+import { AlertTriangle, Siren } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
-import { CONTACT_INFO, telephoneHref } from '../../config/contactInfo';
+import { useSafety } from '../../context/SafetyContext';
 
 export const EmergencyBanner: React.FC = () => {
   const { t } = useLanguage();
-
-  const contacts = [
-    { contact: CONTACT_INFO.emergency.drugHelpline, label: t('emergency.call1927') },
-    { contact: CONTACT_INFO.emergency.ambulance, label: t('emergency.call1990') },
-    { contact: CONTACT_INFO.emergency.crisisSupport, label: t('emergency.call1333') },
-  ];
+  const { openEmergencyModal } = useSafety();
 
   return (
-    <header className="relative z-10 bg-[#8b0000] text-ivory/90 border-b border-red-900 flex flex-col sm:flex-row items-center justify-between px-4 py-2 text-sm">
-      {/* Left side – warning icon + message */}
-      <div className="flex items-center gap-2">
-        <AlertTriangle className="w-4 h-4 text-gold/80 flex-shrink-0" />
-        <span>{t('emergency.banner')}</span>
-      </div>
+    <header className="relative z-10 border-b border-red-900/80 bg-[#8b0000] px-3 py-1.5 text-ivory/90 sm:px-4 sm:py-2">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
+        <div className="hidden min-w-0 items-center gap-2 text-xs md:flex">
+          <AlertTriangle className="h-4 w-4 shrink-0 text-gold/80" />
+          <span className="truncate">{t('emergency.banner')}</span>
+        </div>
 
-      {/* Right side – contact buttons */}
-      <div className="mt-2 sm:mt-0 flex flex-wrap gap-2">
-        {contacts.map((c) => (
-          <a
-            key={c.contact.id}
-            href={telephoneHref(c.contact.number)}
-            className="inline-flex items-center gap-1 rounded-full bg-charcoal/30 px-2.5 py-1 text-xs text-ivory/80 hover:bg-charcoal/50 hover:text-gold transition-colors"
-          >
-            <PhoneCall className='w-3 h-3'/>
-            <span>{c.label} ({c.contact.number})</span>
-          </a>
-        ))}
+        <button
+          type="button"
+          onClick={() => openEmergencyModal('Immediate emergency support requested')}
+          className="mx-auto inline-flex h-8 items-center justify-center gap-1.5 rounded-full bg-red-950/70 px-3.5 text-xs font-bold text-white ring-1 ring-red-200/40 transition hover:bg-red-950 md:mx-0 sm:px-4"
+        >
+          <Siren className="h-3.5 w-3.5" />
+          <span>Get Emergency Help</span>
+        </button>
       </div>
     </header>
   );

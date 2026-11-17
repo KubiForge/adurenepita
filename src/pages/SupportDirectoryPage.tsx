@@ -5,9 +5,27 @@ import { SriLankaMap } from '../components/directory/SriLankaMap';
 import { SupportCenterCard } from '../components/directory/SupportCenterCard';
 import { DirectoryFilters } from '../components/directory/DirectoryFilters';
 import { ReferralRequestModal } from '../components/directory/ReferralRequestModal';
-import { Map, List, ShieldCheck, PhoneCall } from 'lucide-react';
+import { MapPin, Navigation, LocateFixed } from 'lucide-react';
 import { Button } from '../components/common/Button';
 import { ASSETS } from '../config/assets';
+
+const distanceKm = (
+  latitudeA: number,
+  longitudeA: number,
+  latitudeB: number,
+  longitudeB: number
+) => {
+  const toRadians = (value: number) => (value * Math.PI) / 180;
+  const earthRadiusKm = 6371;
+  const latitudeDelta = toRadians(latitudeB - latitudeA);
+  const longitudeDelta = toRadians(longitudeB - longitudeA);
+  const a =
+    Math.sin(latitudeDelta / 2) ** 2 +
+    Math.cos(toRadians(latitudeA)) *
+      Math.cos(toRadians(latitudeB)) *
+      Math.sin(longitudeDelta / 2) ** 2;
+  return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+};
 
 export const SupportDirectoryPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,6 +36,8 @@ export const SupportDirectoryPage: React.FC = () => {
   const [selectedCenter, setSelectedCenter] = useState<SupportCenter | null>(null);
   const [referralCenter, setReferralCenter] = useState<SupportCenter | null>(null);
   const [viewMode, setViewMode] = useState<'both' | 'map' | 'list'>('both');
+  const [locationStatus, setLocationStatus] = useState<'idle' | 'loading' | 'ready' | 'denied'>('idle');
+  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
 
   const filteredCenters = SUPPORT_CENTERS_DATA.filter((center) => {
     const matchQuery =
@@ -30,6 +50,12 @@ export const SupportDirectoryPage: React.FC = () => {
     const matchType = !selectedServiceType || (center.serviceTypes as string[]).includes(selectedServiceType);
 
     return matchQuery && matchProvince && matchDistrict && matchType;
+  }).sort((a, b) => {
+    if (!userLocation) return 0;
+    return (
+      distanceKm(userLocation.latitude, userLocation.longitude, a.latitude, a.longitude) -
+      distanceKm(userLocation.latitude, userLocation.longitude, b.latitude, b.longitude)
+    );
   });
 
   const handleResetFilters = () => {
@@ -37,6 +63,37 @@ export const SupportDirectoryPage: React.FC = () => {
     setSelectedProvince('');
     setSelectedDistrict('');
     setSelectedServiceType('');
+  };
+
+  const handleUseLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationStatus('denied');
+      return;
+    }
+
+    setLocationStatus('loading');
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const location = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        setUserLocation(location);
+        setLocationStatus('ready');
+        setSelectedProvince('');
+        setSelectedDistrict('');
+        setSelectedServiceType('');
+
+        const nearest = [...SUPPORT_CENTERS_DATA].sort(
+          (a, b) =>
+            distanceKm(location.latitude, location.longitude, a.latitude, a.longitude) -
+            distanceKm(location.latitude, location.longitude, b.latitude, b.longitude)
+        )[0];
+        if (nearest) setSelectedCenter(nearest);
+      },
+      () => setLocationStatus('denied'),
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
+    );
   };
 
   const handleReportError = (center: SupportCenter) => {
@@ -68,6 +125,40 @@ export const SupportDirectoryPage: React.FC = () => {
           </p>
         </div>
       </div>
+
+      <section
+        aria-label="Nearest support facility"
+        className="grid gap-3 rounded-2xl border border-gold/20 bg-charcoal/45 p-4 sm:grid-cols-[1fr_auto] sm:items-center"
+      >
+        <div>
+          <p className="flex items-center gap-2 text-sm font-bold text-ivory">
+            <Navigation className="h-4 w-4 text-gold" />
+            Find the nearest verified facility
+          </p>
+          <p className="mt-1 text-xs leading-5 text-ivory/55">
+            Uses your browser location once and does not store it. You can continue with manual province and district filters instead.
+          </p>
+          {locationStatus === 'ready' && userLocation && (
+            <p className="mt-2 text-xs font-semibold text-emerald-300">
+              Location found. Facilities are sorted by shortest estimated distance.
+            </p>
+          )}
+          {locationStatus === 'denied' && (
+            <p className="mt-2 text-xs font-semibold text-red-300">
+              Location permission was unavailable. Please use the district filters or enable location permission.
+            </p>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={handleUseLocation}
+          disabled={locationStatus === 'loading'}
+          className="btn-gold inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-xs font-bold disabled:cursor-wait disabled:opacity-70"
+        >
+          <LocateFixed className={`h-4 w-4 ${locationStatus === 'loading' ? 'animate-pulse' : ''}`} />
+          {locationStatus === 'loading' ? 'Finding location...' : 'Use My Location'}
+        </button>
+      </section>
 
       {/* Directory Filter Component */}
       <DirectoryFilters

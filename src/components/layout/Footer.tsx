@@ -163,11 +163,11 @@ export const Footer: React.FC = () => {
             &copy; {new Date().getFullYear()} Beyond the Darkness. Organized by Leo Club of University of Sri Jayewardenepura (Leo District 306 D2).
           </p>
           <nav aria-label="Legal and contact links" className="flex flex-wrap items-center gap-x-3 gap-y-1 md:justify-center">
-            <a href={`mailto:${CONTACT_INFO.project.email}?subject=Privacy%20Policy%20Request`} title="Request the privacy policy by email" className="transition hover:text-champagne">Privacy Policy</a>
+            <Link to="/privacy" className="transition hover:text-champagne">Privacy Policy</Link>
             <span aria-hidden="true" className="text-gold/40">|</span>
-            <a href={`mailto:${CONTACT_INFO.project.email}?subject=Terms%20of%20Use%20Request`} title="Request the terms of use by email" className="transition hover:text-champagne">Terms of Use</a>
+            <Link to="/terms" className="transition hover:text-champagne">Terms of Use</Link>
             <span aria-hidden="true" className="text-gold/40">|</span>
-            <a href={`mailto:${CONTACT_INFO.project.email}`} className="transition hover:text-champagne">Contact</a>
+            <Link to="/legal-policy" className="transition hover:text-champagne">Legal & Rights</Link>
           </nav>
           <div className="flex items-center justify-between gap-4 md:justify-end">
             <p>

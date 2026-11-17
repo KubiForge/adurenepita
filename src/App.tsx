@@ -28,6 +28,8 @@ import { AssistantPage } from './pages/AssistantPage';
 import { JourneyPage } from './pages/JourneyPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { AdminPortalPage } from './pages/AdminPortalPage';
+import { LegalPolicyPage } from './pages/LegalPolicyPage';
+import { ConfidentialAssessmentPage } from './pages/ConfidentialAssessmentPage';
 
 import { Sparkles, Compass } from 'lucide-react';
 
@@ -157,6 +159,10 @@ export const AppContent: React.FC = () => {
           />
           <Route path="/awareness-hub" element={<AwarenessHubPage />} />
           <Route path="/statistics" element={<StatisticsPage />} />
+          <Route path="/legal-policy" element={<LegalPolicyPage />} />
+          <Route path="/privacy" element={<LegalPolicyPage />} />
+          <Route path="/terms" element={<LegalPolicyPage />} />
+          <Route path="/assessment" element={<ConfidentialAssessmentPage />} />
 
           {/* Administrator Portal */}
           <Route path="/admin/*" element={<AdminPortalPage />} />

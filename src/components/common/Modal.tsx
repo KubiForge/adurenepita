@@ -42,7 +42,7 @@ export const Modal: React.FC<ModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-midnight/80 backdrop-blur-md transition-opacity"
@@ -52,22 +52,22 @@ export const Modal: React.FC<ModalProps> = ({
 
       {/* Modal Surface */}
       <div
-        className={`relative w-full ${maxWidthStyles[maxWidth]} charcoal-card border border-gold/30 bg-charcoal shadow-2xl p-6 sm:p-8 z-10 my-8`}
+        className={`relative z-10 flex max-h-[calc(100dvh-1rem)] w-full flex-col overflow-hidden rounded-2xl border border-gold/30 bg-charcoal shadow-2xl sm:max-h-[calc(100dvh-3rem)] ${maxWidthStyles[maxWidth]}`}
         role="dialog"
         aria-modal="true"
       >
-        <div className="flex items-center justify-between pb-4 mb-4 border-b border-charcoal-light">
-          {title && <div className="font-heading text-xl font-bold text-ivory">{title}</div>}
+        <div className="flex shrink-0 items-center justify-between border-b border-charcoal-light px-4 py-3 sm:px-6">
+          {title && <div className="min-w-0 pr-3 font-heading text-base font-bold text-ivory sm:text-xl">{title}</div>}
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-ivory/60 hover:text-gold hover:bg-charcoal-light transition-colors ml-auto"
+            className="ml-auto shrink-0 rounded-lg p-1.5 text-ivory/60 transition-colors hover:bg-charcoal-light hover:text-gold"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div>{children}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-6">{children}</div>
       </div>
     </div>
   );

@@ -1,18 +1,27 @@
 import React from 'react';
 import { Modal } from './Modal';
 import { useSafety } from '../../context/SafetyContext';
-import { CONTACT_INFO, telephoneHref } from '../../config/contactInfo';
-import { AlertOctagon, PhoneCall, HeartPulse, ShieldAlert, ArrowRight } from 'lucide-react';
+import { CONTACT_INFO, telephoneHref, smsHref } from '../../config/contactInfo';
+import { AlertOctagon, PhoneCall, HeartPulse, ShieldAlert, MessageSquareText } from 'lucide-react';
 import { Button } from './Button';
 
 export const EmergencyModal: React.FC = () => {
   const { isEmergencyModalOpen, closeEmergencyModal, emergencyReason } = useSafety();
+  const essentialContacts = [
+    CONTACT_INFO.emergency.ambulance,
+    CONTACT_INFO.emergency.drugHelpline,
+    CONTACT_INFO.emergency.crisisSupport,
+    CONTACT_INFO.emergency.mentalHealth,
+    CONTACT_INFO.emergency.police,
+    CONTACT_INFO.emergency.womenProtection,
+    CONTACT_INFO.emergency.childProtection,
+  ];
 
   return (
     <Modal
       isOpen={isEmergencyModalOpen}
       onClose={closeEmergencyModal}
-      maxWidth="2xl"
+      maxWidth="4xl"
       title={
         <div className="flex items-center gap-2.5 text-red-400">
           <AlertOctagon className="w-6 h-6 animate-pulse" />
@@ -35,11 +44,10 @@ export const EmergencyModal: React.FC = () => {
           <h3 className="text-sm font-semibold text-gold uppercase tracking-wider mb-3">
             Sri Lankan Emergency Hotlines (Toll-Free & Confidential)
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {Object.values(CONTACT_INFO.emergency).map((contact) => (
-              <a
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+            {essentialContacts.map((contact) => (
+              <div
                 key={contact.id}
-                href={telephoneHref(contact.number)}
                 className={`p-4 rounded-xl border transition-all flex flex-col justify-between group ${
                   contact.primary
                     ? 'bg-charcoal border-gold/40 hover:border-gold hover:shadow-gold-subtle'
@@ -61,16 +69,43 @@ export const EmergencyModal: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="mt-3 pt-2 border-t border-charcoal-light flex items-center justify-between">
+                <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-charcoal-light pt-2">
                   <span className="font-mono text-lg font-bold text-champagne">
                     {contact.number}
                   </span>
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-gold group-hover:underline">
-                    <PhoneCall className="w-3.5 h-3.5" />
-                    <span>Call Now</span>
+                  <span className="flex flex-wrap items-center gap-2">
+                    <a
+                      href={`https://wa.me/?text=${encodeURIComponent(`I need emergency support in Sri Lanka. Please help me contact ${contact.name} (${contact.number}).`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-ivory/70 hover:text-gold"
+                      aria-label={`Share ${contact.name} details through WhatsApp`}
+                    >
+                      <MessageSquareText className="w-3.5 h-3.5" />
+                      WhatsApp
+                    </a>
+                    {contact.primary && (
+                      <a
+                        href={smsHref(contact.number, 'I need emergency support assistance. My district and landmark are: ')}
+                        onClick={(event) => event.stopPropagation()}
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-ivory/70 hover:text-gold"
+                        aria-label={`Send an SMS to ${contact.name}`}
+                      >
+                        <MessageSquareText className="w-3.5 h-3.5" />
+                        SMS
+                      </a>
+                    )}
+                    <a
+                      href={telephoneHref(contact.number)}
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-gold group-hover:underline"
+                      aria-label={`Call ${contact.name}`}
+                    >
+                      <PhoneCall className="w-3.5 h-3.5" />
+                      <span>Call</span>
+                    </a>
                   </span>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </div>

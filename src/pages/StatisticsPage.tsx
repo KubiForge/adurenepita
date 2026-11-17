@@ -1,6 +1,6 @@
 import React from 'react';
 import { InteractiveCharts } from '../components/stats/InteractiveCharts';
-import { BarChart3, ShieldCheck, Database, Calendar } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 
 export const StatisticsPage: React.FC = () => {
   return (
@@ -20,6 +20,38 @@ export const StatisticsPage: React.FC = () => {
 
       {/* Interactive Charts Component */}
       <InteractiveCharts />
+
+      <section
+        aria-labelledby="statistics-sources-title"
+        className="rounded-2xl border border-gold/20 bg-midnight p-6"
+      >
+        <h2 id="statistics-sources-title" className="font-heading text-xl font-bold text-ivory">
+          Verified Institutional Sources
+        </h2>
+        <p className="mt-2 text-xs leading-5 text-ivory/60">
+          Figures must be interpreted with the methodology and publication date shown above. Statistics
+          are not individual risk predictions and do not replace professional clinical assessment.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {[
+            ['National Dangerous Drugs Control Board', 'https://www.nddcb.gov.lk/'],
+            ['World Health Organization', 'https://www.who.int/health-topics/mental-health'],
+            ['Sri Lanka Ministry of Health', 'https://health.gov.lk/'],
+            ['NIMH Sri Lanka', 'https://nimh.health.gov.lk/'],
+          ].map(([name, url]) => (
+            <a
+              key={name}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-ivory/10 px-3 py-2 text-xs text-champagne transition hover:border-gold/40"
+            >
+              {name}
+              <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };

@@ -22,6 +22,13 @@ interface GetHelpPageProps {
 export const GetHelpPage: React.FC<GetHelpPageProps> = ({ onOpenAiChat, onOpenWizard }) => {
   const pathways = [
     {
+      title: 'Check Your Substance-Use Risk',
+      desc: 'A private, non-diagnostic questionnaire with mild, moderate, severe, and emergency risk guidance.',
+      actionLabel: 'Start Confidential Assessment',
+      actionType: 'navigate',
+      link: '/assessment',
+    },
+    {
       title: 'I Want to Stop Using Substances',
       desc: 'You are taking a brave, life-changing step. We provide compassionate guidance without judgment, safe medical detox advice, and links to free local clinics.',
       actionLabel: 'Explore Personal Recovery',

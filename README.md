@@ -68,6 +68,15 @@ An accessible, conversational intake pathway for first-time visitors:
 - Filter by province, district, and care type.
 - Confidential referral requests with explicit user consent.
 
+### 3.1 Public Awareness & Prevention
+- Substance-specific evidence-based monographs with short-term and long-term effects, emergency signs, withdrawal risks, myths versus facts, and institutional sources.
+- Audience-specific guidance for children, university and school students, families, friends, employers, and workplace leaders.
+- Overdose recognition and emergency-response guidance.
+- Plain-language rehabilitation and supervised withdrawal explanations.
+- Downloadable family, overdose, and youth-prevention guides.
+- Evidence literacy quiz with source citations.
+- Statistics pages with publication dates, methodology disclosures, and links to NDDCB, WHO, Ministry of Health, and NIMH Sri Lanka.
+
 ### 4. Admin & Technical Crew Portals (STRICTLY TWO ROLES)
 - **Admin**: Content management, drug monograph review, support directory verification, and donation reconciliation with CSV export.
 - **Technical Crew**: Frontend deployment health, Apps Script latency, Google Sheets connection status, Grok token/cost monitoring, and system diagnostics.
@@ -77,6 +86,19 @@ An accessible, conversational intake pathway for first-time visitors:
 - Transparent campaign allocations.
 - Payment provider adapter (PayHere, WebXPay, Stripe).
 - Automated receipt recording in Google Drive. Zero card data stored on platform.
+
+### 6. Legal, Rights & Policy Centre
+- Sri Lankan drug-law, rehabilitation, privacy, consent, safeguarding, insurance, employment, and legal-aid guidance.
+- Links to verified government, statutory, and human-rights organizations.
+- Medical disclaimer and terms of use with clear notices that general information is not legal or clinical advice.
+- Emergency assistance and project contact routes are available from the policy page.
+
+### 7. Confidential Support & Assessment
+- Anonymous substance-use self-assessment without required identity details.
+- Mild, moderate, severe, and immediate-support risk states.
+- Overdose, dangerous withdrawal, and self-harm emergency escalation.
+- Clear notice that assessment is not a diagnosis.
+- Direct paths to confidential AI chat and verified professional support.
 
 ---
 
@@ -140,6 +162,12 @@ npm run build
 1. **Grok API Key Protection**: The `GROK_API_KEY` is stored **strictly** in Google Apps Script Script Properties. It is never placed in the React client, environment variables, or GitHub.
 2. **Anonymous Browsing**: Users are never required to provide identifying personal data for general education or AI guidance.
 3. **Clinical Boundaries**: The platform explicitly disclaims emergency dispatch capabilities and instructs immediate contact with **1990 (Suwaseriya)** or **1927 (NDDCB)** in life-threatening scenarios.
+
+---
+
+## 📚 Project Requirements and Handover
+
+The complete feature scope, launch requirements, role model, safety requirements, test plan, maintenance plan, and future roadmap are documented in [docs/PROJECT_REQUIREMENTS_AND_HANDOVER_DOCUMENT.md](docs/PROJECT_REQUIREMENTS_AND_HANDOVER_DOCUMENT.md).
 
 ---
 
