@@ -1,6 +1,6 @@
 /**
  * Database & Google Sheets Connector
- * Maps logical entities to the 10 physical workbook tabs.
+ * Maps logical entities to Google Sheets workbook tabs.
  */
 
 function getSpreadsheet() {

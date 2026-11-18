@@ -3,7 +3,11 @@ import { QUIZ_QUESTIONS } from '../../data/awarenessData';
 import { Button } from '../common/Button';
 import { CheckCircle2, XCircle, RotateCcw, HelpCircle, Award, ArrowRight } from 'lucide-react';
 
-export const InteractiveQuiz: React.FC = () => {
+interface InteractiveQuizProps {
+  language?: 'en' | 'si';
+}
+
+export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ language = 'en' }) => {
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
   const [selectedOptionIdx, setSelectedOptionIdx] = useState<number | null>(null);
   const [hasAnswered, setHasAnswered] = useState(false);
@@ -56,7 +60,7 @@ export const InteractiveQuiz: React.FC = () => {
 
           <div>
             <h3 className="text-xl font-bold font-heading text-ivory">
-              {currentQ.question}
+              {language === 'si' ? currentQ.questionSi : currentQ.question}
             </h3>
           </div>
 
@@ -82,7 +86,7 @@ export const InteractiveQuiz: React.FC = () => {
                   className={`w-full p-4 rounded-xl text-left border transition-all text-xs flex items-center justify-between ${btnStyle}`}
                 >
                   <div>
-                    <span className="font-medium text-sm block mb-0.5">{opt.text}</span>
+                    <span className="font-medium text-sm block mb-0.5">{language === 'si' ? opt.textSi : opt.text}</span>
                   </div>
 
                   {hasAnswered && opt.isCorrect && (
@@ -100,7 +104,7 @@ export const InteractiveQuiz: React.FC = () => {
           {hasAnswered && (
             <div className="p-4 rounded-xl bg-midnight border border-gold/30 text-xs space-y-2 animate-fade-in">
               <div className="font-bold text-champagne">Clinical Scientific Explanation:</div>
-              <p className="text-ivory/80 leading-relaxed">{currentQ.explanation}</p>
+              <p className="text-ivory/80 leading-relaxed">{language === 'si' ? currentQ.explanationSi : currentQ.explanation}</p>
               <div className="text-[10px] text-ivory/40 pt-1 border-t border-charcoal-light">
                 <strong>Citation:</strong> {currentQ.citation}
               </div>

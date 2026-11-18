@@ -97,6 +97,15 @@ function doPost(e) {
     if (endpoint === '/api/support-requests') {
       return jsonResponse(handleSupportRequest(payload));
     }
+    if (endpoint === '/api/campaign-registrations') {
+      return jsonResponse(handleCampaignRegistration(payload));
+    }
+    if (endpoint === '/api/campaign-feedback') {
+      return jsonResponse(handleCampaignFeedback(payload));
+    }
+    if (endpoint === '/api/volunteer-applications') {
+      return jsonResponse(handleVolunteerApplication(payload));
+    }
     if (endpoint === '/api/users/profile') {
       return jsonResponse(handleProfileUpdate(payload));
     }

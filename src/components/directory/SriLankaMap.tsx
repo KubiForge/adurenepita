@@ -103,7 +103,7 @@ export const SriLankaMap: React.FC<SriLankaMapProps> = ({
   }, [centers, selectedCenter, onSelectCenter]);
 
   return (
-    <div className="relative w-full h-[450px] lg:h-[550px] rounded-2xl overflow-hidden border border-gold/30 shadow-2xl">
+    <div className="relative h-[360px] w-full overflow-hidden rounded-2xl border border-gold/30 shadow-2xl sm:h-[450px] lg:h-[550px]">
       <div ref={mapContainerRef} className="w-full h-full" />
       <div className="absolute bottom-3 left-3 bg-midnight/90 border border-charcoal-light p-2.5 rounded-lg text-[11px] text-ivory/80 z-[1000] backdrop-blur-md shadow-md max-w-xs">
         <p className="font-semibold text-gold">Sri Lanka Support Locator</p>

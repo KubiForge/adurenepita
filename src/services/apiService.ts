@@ -11,6 +11,14 @@ interface ApiRequestOptions {
   idToken?: string;
 }
 
+const persistentSubmissionEndpoints = new Set([
+  '/api/campaign-registrations',
+  '/api/campaign-feedback',
+  '/api/volunteer-applications',
+  '/api/donations/initiate',
+  '/api/donations/verify',
+]);
+
 class ApiService {
   private baseUrl = API_CONFIG.appsScriptUrl;
 
@@ -23,10 +31,17 @@ class ApiService {
       endpoint === '/api/auth/me' ||
       endpoint === '/api/support-requests' ||
       endpoint === '/api/wizard/submit';
+    const requiresPersistentSubmission = persistentSubmissionEndpoints.has(endpoint);
 
     if (!this.baseUrl || API_CONFIG.isDemoMode) {
-      if (requiresAuthentication) {
-        throw new Error('Secure account services are unavailable until the backend is configured.');
+      if (requiresAuthentication || requiresPersistentSubmission) {
+        throw new Error(
+          requiresPersistentSubmission
+            ? endpoint.startsWith('/api/donations/')
+              ? 'Donation intake is paused until a verified payment gateway is configured.'
+              : 'Campaign submissions are unavailable because the secure submission service is not configured.'
+            : 'Secure account services are unavailable until the backend is configured.'
+        );
       }
       return this.mockResponseHandler<T>(endpoint, options);
     }
@@ -66,7 +81,7 @@ class ApiService {
       }
       return json;
     } catch (error) {
-      if (requiresAuthentication) {
+      if (requiresAuthentication || requiresPersistentSubmission) {
         throw error;
       }
       console.warn(`[ApiService] Apps Script request failed for ${endpoint}; using local read-only demo data.`);
@@ -118,7 +133,6 @@ class ApiService {
               totalEducationalVisits: 14280,
               wizardCompletions: 1845,
               aiConversationsCount: 3412,
-              verifiedDonationsLKR: 845000,
               verifiedCentersCount: SUPPORT_CENTERS_DATA.length,
               approvedKnowledgeRecords: DRUGS_DATA.length,
               pendingReferralRequests: 3,

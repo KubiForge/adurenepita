@@ -30,14 +30,21 @@ import { ProfilePage } from './pages/ProfilePage';
 import { AdminPortalPage } from './pages/AdminPortalPage';
 import { LegalPolicyPage } from './pages/LegalPolicyPage';
 import { ConfidentialAssessmentPage } from './pages/ConfidentialAssessmentPage';
+import { ProfessionalNetworkPage } from './pages/ProfessionalNetworkPage';
 
 import { Sparkles, Compass } from 'lucide-react';
 
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   React.useEffect(() => {
+    if (hash) {
+      window.requestAnimationFrame(() => {
+        document.getElementById(decodeURIComponent(hash.slice(1)))?.scrollIntoView({ behavior: 'smooth' });
+      });
+      return;
+    }
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [pathname, hash]);
   return null;
 };
 
@@ -111,6 +118,7 @@ export const AppContent: React.FC = () => {
 
           {/* Screen 05: Awareness & Campaigns */}
           <Route path="/campaigns" element={<CampaignsPage />} />
+          <Route path="/network" element={<ProfessionalNetworkPage />} />
 
           {/* Screen 06: Community & Volunteering */}
           <Route path="/community" element={<CommunityPage />} />
@@ -173,7 +181,7 @@ export const AppContent: React.FC = () => {
 
       {/* Floating AI Action Button (Always Accessible on Public Pages) */}
       {!isAdmin && (
-        <div className={`fixed bottom-6 right-6 z-40 ${isHome ? 'hidden sm:block' : ''}`}>
+        <div className="fixed bottom-6 right-6 z-40 hidden sm:block">
           <button
             onClick={() => handleOpenAiChat()}
             className="btn-gold px-4 py-3 rounded-full font-bold shadow-gold-glow flex items-center gap-2 hover:scale-105 active:scale-95 transition-all"

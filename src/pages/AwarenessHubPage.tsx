@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ARTICLES_DATA, Article } from '../data/awarenessData';
+import { Link } from 'react-router-dom';
+import { ARTICLES_DATA, Article, FAQS_DATA } from '../data/awarenessData';
 import { InteractiveQuiz } from '../components/awareness/InteractiveQuiz';
 import { Button } from '../components/common/Button';
 import {
@@ -17,8 +18,45 @@ import {
   ExternalLink,
   PhoneCall,
   X,
+  Search,
+  ShieldAlert,
+  ChevronDown,
 } from 'lucide-react';
 import { CONTACT_INFO, telephoneHref } from '../config/contactInfo';
+import { ASSETS } from '../config/assets';
+
+type ResourceLanguage = 'en' | 'si';
+
+const GLOSSARY_ENTRIES = [
+  {
+    term: 'Substance use disorder',
+    definition: 'A health condition involving continued substance use despite significant harm or difficulty controlling use. A qualified health professional makes any diagnosis.',
+  },
+  {
+    term: 'Tolerance',
+    definition: 'A reduced response to a substance after repeated use. Tolerance does not mean a person is safe from overdose or other harm.',
+  },
+  {
+    term: 'Withdrawal',
+    definition: 'Physical or psychological symptoms that can occur when a person reduces or stops a substance after repeated use. Alcohol and some sedative withdrawal can be life-threatening.',
+  },
+  {
+    term: 'Overdose',
+    definition: 'A medical emergency caused by a toxic amount or combination of substances. Call 1990 immediately if someone is unresponsive, having seizures, or struggling to breathe.',
+  },
+  {
+    term: 'Naloxone',
+    definition: 'A medicine that can temporarily reverse an opioid overdose. Public availability and access pathways in Sri Lanka have not been verified for this resource.',
+  },
+  {
+    term: 'Recovery',
+    definition: 'A personal process of improving health and wellbeing. It can involve professional treatment, social support, and changes over time; there is no single path.',
+  },
+  {
+    term: 'Stigma',
+    definition: 'Negative stereotypes or unfair treatment that can make it harder for people to seek support. Respectful, person-first language helps reduce stigma.',
+  },
+];
 
 interface AudienceGuidance {
   title: string;
@@ -32,8 +70,11 @@ interface AudienceGuidance {
 
 export const AwarenessHubPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'articles' | 'quiz' | 'downloads'>('articles');
+  const [resourceLanguage, setResourceLanguage] = useState<ResourceLanguage>('en');
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [selectedGuidance, setSelectedGuidance] = useState<AudienceGuidance | null>(null);
+  const [glossaryQuery, setGlossaryQuery] = useState('');
+  const [openFaqId, setOpenFaqId] = useState<string | null>(FAQS_DATA[0]?.id ?? null);
 
   useEffect(() => {
     if (!selectedGuidance) return;
@@ -55,21 +96,33 @@ export const AwarenessHubPage: React.FC = () => {
   const downloadableResources = [
     {
       title: 'Family Guide: Recognizing Early Signs of Substance Distress in Students',
-      size: 'PDF • 1.4 MB',
+      size: 'Plain-text guide',
       category: 'Family Guide',
       content: 'BEYOND THE DARKNESS - FAMILY GUIDE\n\nEarly warning signs:\n- Sudden behavioral or relationship changes\n- Unexplained sleep, appetite, weight or attendance changes\n- Secretiveness, missing money or confiscated items\n- Mood swings, agitation or unusual paranoia\n\nRecommended response:\n1. Choose a calm and private moment.\n2. Use "I am concerned" statements rather than accusations.\n3. Listen without threats or humiliation.\n4. Seek professional support through a verified service.\n5. For immediate danger, call 1990 or attend the nearest hospital emergency department.\n\nNDDCB confidential drug counseling: 1927',
     },
     {
       title: 'Emergency Overdose Protocol & Recovery Position One-Pager',
-      size: 'PDF • 850 KB',
+      size: 'Plain-text guide',
       category: 'Clinical Protocol',
       content: 'BEYOND THE DARKNESS - OVERDOSE RESPONSE\n\nEmergency signs:\n- Slow, shallow or stopped breathing\n- Unresponsiveness or inability to wake\n- Blue or grey lips and fingertips\n- Seizures or collapse\n\nImmediate actions:\n1. Call 1990 now.\n2. Follow the dispatcher instructions.\n3. If breathing is absent, begin CPR if trained.\n4. Place an unconscious breathing person in the recovery position.\n5. Do not leave the person alone.\n\nDo not induce vomiting or give food, drink or unknown medicines.',
     },
     {
       title: 'Methamphetamine (ICE) Facts for University Students',
-      size: 'PDF • 2.1 MB',
+      size: 'Plain-text guide',
       category: 'Youth Prevention',
       content: 'BEYOND THE DARKNESS - METHAMPHETAMINE AWARENESS\n\nKey facts:\n- Crystal methamphetamine ("ICE") strongly activates the brain reward system.\n- It can cause severe agitation, psychosis, overheating and cardiac danger.\n- Dependence can develop quickly.\n- There is no safe dosage or "purity" assumption.\n\nPrevention:\n- Know peer and social-media pressure warning signs.\n- Leave a setting immediately if illegal drugs are present.\n- Tell a trusted adult or counselor early.\n- Contact NDDCB 1927 for confidential guidance.',
+    },
+    {
+      title: 'School & College Prevention Session Outline',
+      size: 'Plain-text guide',
+      category: 'School & College',
+      content: 'BEYOND THE DARKNESS - PREVENTION SESSION OUTLINE\n\nSuggested 30-minute discussion:\n1. Set a respectful, stigma-free ground rule; do not ask students to disclose personal or family experiences.\n2. Discuss health effects, peer pressure, myths, and how to seek help from a trusted adult.\n3. Practice safe ways to leave an unsafe situation and support a peer without confrontation.\n4. Review emergency signs and call 1990 for an immediate medical emergency.\n5. Share current, verified local support contacts.\n\nThis outline is educational, not a clinical intervention or safeguarding protocol. Schools should follow their own child-protection policies.',
+    },
+    {
+      title: 'Workplace Prevention & Support Checklist',
+      size: 'Plain-text guide',
+      category: 'Workplace',
+      content: 'BEYOND THE DARKNESS - WORKPLACE CHECKLIST\n\n- Publish a clear, health-focused substance-use and safety policy.\n- Train supervisors to respond to immediate danger and contact emergency services.\n- Provide a private route to occupational health or a qualified support service.\n- Do not ask managers to diagnose a medical condition or promise absolute confidentiality.\n- Limit information-sharing to a legitimate need and follow applicable Sri Lankan law.\n- Review procedures with qualified legal and occupational-health advisers.\n\nThis checklist is a starting point, not legal advice or a substitute for professional training.',
     },
   ];
 
@@ -151,7 +204,7 @@ export const AwarenessHubPage: React.FC = () => {
         <span className="text-xs uppercase tracking-wider text-gold font-bold">
           Educational Knowledge Platform
         </span>
-        <h1 className="text-4xl font-bold font-heading text-ivory">
+        <h1 className="break-words text-3xl font-bold font-heading text-ivory sm:text-4xl">
           Awareness Hub & Community Resources
         </h1>
         <p className="text-sm text-ivory/70 leading-relaxed">
@@ -161,10 +214,13 @@ export const AwarenessHubPage: React.FC = () => {
 
       <section aria-labelledby="audience-guidance-title" className="space-y-5">
         <div className="max-w-2xl">
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Prevention by audience</span>
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Self-guided learning modules</span>
           <h2 id="audience-guidance-title" className="mt-2 text-2xl font-heading font-bold text-ivory">
             Practical Guidance for Every Community
           </h2>
+          <p className="mt-2 text-xs leading-5 text-ivory/50">
+            These are informational modules, not accredited clinical or professional training.
+          </p>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {audienceGuides.map((guide) => {
@@ -229,6 +285,78 @@ export const AwarenessHubPage: React.FC = () => {
             suddenly without supervised medical advice.
           </p>
         </article>
+      </section>
+
+      <section aria-labelledby="safe-disposal-title" className="grid gap-4 lg:grid-cols-2">
+        <article className="rounded-2xl border border-gold/20 bg-charcoal/55 p-5 sm:p-6">
+          <div className="flex items-start gap-3">
+            <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0 text-gold" aria-hidden="true" />
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-gold">Safe disposal</span>
+              <h2 id="safe-disposal-title" className="mt-1 font-heading text-xl font-bold text-ivory">
+                Unused medicines and unknown substances
+              </h2>
+            </div>
+          </div>
+          <ul className="mt-4 space-y-2 text-xs leading-5 text-ivory/65">
+            <li>Do not share, sell, flush, burn, or pour medicines into drains. Ask a licensed pharmacist or hospital pharmacy for the currently accepted local disposal route.</li>
+            <li>Do not touch, taste, crush, burn, or move an unknown or suspected illicit substance. Keep others away and seek appropriate emergency or police assistance if there is an immediate risk.</li>
+            <li>Keep medicines away from children and pets while arranging safe advice. Do not put loose needles or sharps into ordinary waste.</li>
+          </ul>
+          <a href="https://www.nmra.gov.lk/" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-10 items-center gap-2 text-xs font-semibold text-champagne underline">
+            Ask the National Medicines Regulatory Authority <ExternalLink className="h-3.5 w-3.5" />
+          </a>
+          <p className="mt-2 text-[10px] leading-4 text-ivory/40">
+            This page does not confirm that a medicine take-back program is available near you.
+          </p>
+        </article>
+
+        <article className="rounded-2xl border border-red-400/20 bg-red-950/15 p-5 sm:p-6">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-red-200" aria-hidden="true" />
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-red-200">Opioid overdose response</span>
+              <h2 className="mt-1 font-heading text-xl font-bold text-ivory">Naloxone and local availability</h2>
+            </div>
+          </div>
+          <p className="mt-4 text-xs leading-5 text-ivory/65">
+            WHO notes that naloxone can reverse an opioid overdose when given in time. We have not
+            verified a Sri Lankan public access or distribution pathway for naloxone, so do not assume it
+            is available. If an overdose is suspected, call 1990 immediately and follow the dispatcher’s
+            directions; do not delay emergency care.
+          </p>
+          <a href="https://www.who.int/news-room/fact-sheets/detail/opioid-overdose" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-10 items-center gap-2 text-xs font-semibold text-champagne underline">
+            WHO: opioid overdose information <ExternalLink className="h-3.5 w-3.5" />
+          </a>
+        </article>
+      </section>
+
+      <section aria-labelledby="glossary-title" className="space-y-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-gold">Plain-language terminology</span>
+            <h2 id="glossary-title" className="mt-1 font-heading text-2xl font-bold text-ivory">Substance-use glossary</h2>
+            <p className="mt-1 max-w-2xl text-xs leading-5 text-ivory/50">
+              Definitions are educational, not diagnostic. Ask a qualified health professional about personal concerns.
+            </p>
+          </div>
+          <div className="relative w-full sm:max-w-xs">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-ivory/40" aria-hidden="true" />
+            <label htmlFor="glossary-search" className="sr-only">Search glossary terms</label>
+            <input id="glossary-search" type="search" value={glossaryQuery} onChange={(event) => setGlossaryQuery(event.target.value)} placeholder="Search a term..." className="min-h-11 w-full rounded-xl border border-charcoal-light bg-midnight pl-10 pr-3 text-sm text-ivory placeholder:text-ivory/40 focus:border-gold focus:outline-none" />
+          </div>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {GLOSSARY_ENTRIES.filter((entry) => `${entry.term} ${entry.definition}`.toLowerCase().includes(glossaryQuery.trim().toLowerCase())).map((entry) => (
+            <article key={entry.term} className="rounded-xl border border-charcoal-light bg-charcoal/45 p-4">
+              <h3 className="text-sm font-bold text-champagne">{entry.term}</h3>
+              <p className="mt-2 text-xs leading-5 text-ivory/65">{entry.definition}</p>
+            </article>
+          ))}
+        </div>
+        {GLOSSARY_ENTRIES.every((entry) => !`${entry.term} ${entry.definition}`.toLowerCase().includes(glossaryQuery.trim().toLowerCase())) && (
+          <p className="rounded-xl border border-charcoal-light bg-charcoal/45 p-4 text-xs text-ivory/60">No glossary terms match that search.</p>
+        )}
       </section>
 
       {selectedGuidance && (
@@ -332,6 +460,27 @@ export const AwarenessHubPage: React.FC = () => {
         </div>
       </div>
 
+      <div className="flex flex-col gap-3 rounded-xl border border-charcoal-light bg-charcoal/45 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold text-ivory">Article, quiz and FAQ language</p>
+            <p className="mt-1 text-[11px] leading-5 text-ivory/50">
+              English and Sinhala content is available in these sections. Tamil translations are not
+              published until reviewed. Downloadable guides remain in English.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2" role="group" aria-label="Choose resource language">
+            <button type="button" aria-pressed={resourceLanguage === 'en'} onClick={() => setResourceLanguage('en')} className={`min-h-10 rounded-lg border px-3 py-2 text-xs font-semibold ${resourceLanguage === 'en' ? 'border-gold/50 bg-gold/10 text-champagne' : 'border-charcoal-light text-ivory/65'}`}>
+              English
+            </button>
+            <button type="button" aria-pressed={resourceLanguage === 'si'} onClick={() => setResourceLanguage('si')} className={`min-h-10 rounded-lg border px-3 py-2 text-xs font-semibold ${resourceLanguage === 'si' ? 'border-gold/50 bg-gold/10 text-champagne' : 'border-charcoal-light text-ivory/65'}`}>
+              සිංහල
+            </button>
+            <button type="button" disabled title="Tamil translations are not yet reviewed" className="min-h-10 cursor-not-allowed rounded-lg border border-charcoal-light px-3 py-2 text-xs font-semibold text-ivory/35">
+              தமிழ் · review pending
+            </button>
+          </div>
+      </div>
+
       {/* TAB 1: ARTICLES */}
       {activeTab === 'articles' && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -346,11 +495,11 @@ export const AwarenessHubPage: React.FC = () => {
                 </div>
 
                 <h3 className="font-heading font-bold text-lg text-ivory leading-snug">
-                  {art.title}
+                  {resourceLanguage === 'si' ? art.titleSi : art.title}
                 </h3>
 
                 <p className="text-xs text-ivory/70 leading-relaxed line-clamp-3">
-                  {art.summary}
+                  {resourceLanguage === 'si' ? art.summarySi : art.summary}
                 </p>
               </div>
 
@@ -372,13 +521,13 @@ export const AwarenessHubPage: React.FC = () => {
       {/* TAB 2: INTERACTIVE QUIZ */}
       {activeTab === 'quiz' && (
         <div className="py-4">
-          <InteractiveQuiz />
+          <InteractiveQuiz language={resourceLanguage} />
         </div>
       )}
 
       {/* TAB 3: DOWNLOADABLE MATERIALS */}
       {activeTab === 'downloads' && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {downloadableResources.map((res, i) => (
             <div key={i} className="charcoal-card p-6 border-charcoal-light flex flex-col justify-between charcoal-card-hover">
               <div>
@@ -399,13 +548,63 @@ export const AwarenessHubPage: React.FC = () => {
                   onClick={() => downloadResource(res.title, res.content)}
                   leftIcon={<Download className="w-3.5 h-3.5 text-gold" />}
                 >
-                  Download Free Guide
+                  Download Plain-text Guide
                 </Button>
               </div>
             </div>
           ))}
+          <article className="charcoal-card flex flex-col justify-between border-charcoal-light p-5">
+            <div>
+              <img src={ASSETS.campaignPoster} alt="Beyond the Darkness prevention campaign poster" className="aspect-square w-full rounded-xl border border-charcoal-light object-contain" loading="lazy" />
+              <h3 className="mt-3 font-heading text-base font-bold text-ivory">Prevention campaign poster</h3>
+              <p className="mt-1 text-xs leading-5 text-ivory/55">Existing project poster image. Check current dates and contacts before printing or sharing.</p>
+            </div>
+            <a href={ASSETS.campaignPoster} download="beyond-the-darkness-campaign-poster.webp" className="btn-charcoal mt-4 inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold">
+              <Download className="h-3.5 w-3.5 text-gold" /> Download Poster
+            </a>
+          </article>
+          <article className="charcoal-card flex flex-col justify-between border-charcoal-light p-5">
+            <div>
+              <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-gold/20 bg-gold/10 text-gold">
+                <BookOpen className="h-6 w-6" aria-hidden="true" />
+              </span>
+              <h3 className="mt-3 font-heading text-base font-bold text-ivory">NDDCB public education video</h3>
+              <p className="mt-1 text-xs leading-5 text-ivory/55">External video linked from the National Dangerous Drugs Control Board website. Check its language and date before using it in a class.</p>
+            </div>
+            <a href="https://www.youtube.com/watch?v=UQjIzVlRlNk" target="_blank" rel="noopener noreferrer" className="btn-charcoal mt-4 inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold">
+              Watch official resource <ExternalLink className="h-3.5 w-3.5 text-gold" />
+            </a>
+          </article>
         </div>
       )}
+
+      <section aria-labelledby="education-faq-title" className="mx-auto w-full max-w-4xl space-y-3">
+        <div className="mb-4">
+          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-gold">Frequently asked questions</span>
+          <h2 id="education-faq-title" className="mt-1 font-heading text-2xl font-bold text-ivory">
+            Common questions about support and privacy
+          </h2>
+        </div>
+        {FAQS_DATA.map((faq) => {
+          const isOpen = openFaqId === faq.id;
+          return (
+            <article key={faq.id} className="overflow-hidden rounded-xl border border-charcoal-light bg-charcoal/45">
+              <button type="button" onClick={() => setOpenFaqId(isOpen ? null : faq.id)} aria-expanded={isOpen} aria-controls={`awareness-faq-${faq.id}`} className="flex min-h-12 w-full items-center justify-between gap-3 p-4 text-left">
+                <span className="text-sm font-semibold text-ivory">{resourceLanguage === 'si' ? faq.questionSi : faq.question}</span>
+                <ChevronDown className={`h-4 w-4 shrink-0 text-gold transition-transform ${isOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
+              </button>
+              {isOpen && (
+                <p id={`awareness-faq-${faq.id}`} className="border-t border-charcoal-light px-4 py-3 text-xs leading-5 text-ivory/65">
+                  {resourceLanguage === 'si' ? faq.answerSi : faq.answer}
+                </p>
+              )}
+            </article>
+          );
+        })}
+        <Link to="/#faq" className="inline-flex min-h-10 items-center gap-2 text-xs font-semibold text-champagne underline">
+          Visit all website FAQs <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
+      </section>
 
       {/* Article Reader Modal */}
       {selectedArticle && (
@@ -428,11 +627,11 @@ export const AwarenessHubPage: React.FC = () => {
             </div>
 
             <h2 className="text-2xl font-bold font-heading text-ivory mb-1">
-              {selectedArticle.title}
+              {resourceLanguage === 'si' ? selectedArticle.titleSi : selectedArticle.title}
             </h2>
 
             <div className="space-y-4 text-xs sm:text-sm text-ivory/80 leading-relaxed">
-              {selectedArticle.content.map((p, i) => (
+              {(resourceLanguage === 'si' ? selectedArticle.contentSi : selectedArticle.content).map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
             </div>

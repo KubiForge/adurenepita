@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { DRUGS_DATA } from '../../data/drugsData';
 import { SUPPORT_CENTERS_DATA } from '../../data/sriLankaData';
-import { paymentService } from '../../services/paymentService';
 import {
   Users,
   MessageSquare,

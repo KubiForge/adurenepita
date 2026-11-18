@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { SUPPORT_CENTERS_DATA } from '../data/sriLankaData';
 import { SupportCenter } from '../types/directory';
 import { SriLankaMap } from '../components/directory/SriLankaMap';
@@ -103,7 +104,7 @@ export const SupportDirectoryPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+    <div className="support-directory-page mx-auto w-full max-w-7xl space-y-8 px-4 py-8 sm:space-y-10 sm:px-6 sm:py-12 lg:px-8">
       {/* Page Header */}
       <div
         className="relative isolate overflow-hidden rounded-3xl border border-gold/20 px-6 py-10 sm:px-10 sm:py-14"
@@ -117,12 +118,15 @@ export const SupportDirectoryPage: React.FC = () => {
           <span className="text-xs uppercase tracking-wider text-gold font-bold">
             Verified Sri Lankan Directory
           </span>
-          <h1 className="text-4xl font-bold font-heading text-ivory">
+          <h1 className="break-words text-3xl font-bold font-heading text-ivory sm:text-4xl">
             Find Rehabilitation & Professional Support
           </h1>
           <p className="text-sm text-ivory/80 leading-relaxed">
             Locate verified government hospitals, NDDCB residential rehabilitation centers, and non-profit counseling facilities across all 9 provinces and 25 districts.
           </p>
+          <Link to="/network" className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-gold/30 bg-midnight/60 px-3 py-2 text-xs font-semibold text-champagne hover:bg-gold/10">
+            Professional & NGO network <MapPin className="h-3.5 w-3.5 text-gold" />
+          </Link>
         </div>
       </div>
 
@@ -174,31 +178,37 @@ export const SupportDirectoryPage: React.FC = () => {
       />
 
       {/* View Mode Toggle Controls */}
-      <div className="flex items-center justify-between">
+      <div className="grid gap-3 sm:flex sm:items-center sm:justify-between">
         <span className="text-xs text-ivory/60 font-semibold">
           Showing <strong>{filteredCenters.length}</strong> verified facilities
         </span>
 
-        <div className="flex p-1 rounded-xl bg-charcoal border border-charcoal-light">
+        <div className="grid grid-cols-3 gap-1 rounded-xl border border-charcoal-light bg-charcoal p-1">
           <button
+            type="button"
+            aria-pressed={viewMode === 'both'}
             onClick={() => setViewMode('both')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`min-h-10 min-w-0 rounded-lg px-2 py-1.5 text-[11px] font-semibold transition-all sm:px-3 sm:text-xs ${
               viewMode === 'both' ? 'bg-gold text-midnight' : 'text-ivory/60 hover:text-ivory'
             }`}
           >
             Split View
           </button>
           <button
+            type="button"
+            aria-pressed={viewMode === 'map'}
             onClick={() => setViewMode('map')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`min-h-10 min-w-0 rounded-lg px-2 py-1.5 text-[11px] font-semibold transition-all sm:px-3 sm:text-xs ${
               viewMode === 'map' ? 'bg-gold text-midnight' : 'text-ivory/60 hover:text-ivory'
             }`}
           >
             Map Only
           </button>
           <button
+            type="button"
+            aria-pressed={viewMode === 'list'}
             onClick={() => setViewMode('list')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            className={`min-h-10 min-w-0 rounded-lg px-2 py-1.5 text-[11px] font-semibold transition-all sm:px-3 sm:text-xs ${
               viewMode === 'list' ? 'bg-gold text-midnight' : 'text-ivory/60 hover:text-ivory'
             }`}
           >

@@ -18,7 +18,6 @@ function handleAdminAction(endpoint, payload) {
         totalEducationalVisits: 14280,
         wizardCompletions: 1845,
         aiConversationsCount: 3412,
-        verifiedDonationsTotal: 845000,
         pendingReferrals: 3,
         systemHealth: 'nominal'
       }

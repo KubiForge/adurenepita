@@ -39,7 +39,7 @@ const policySections: PolicySection[] = [
     ],
     sources: [
       { name: 'Sri Lanka Ministry of Health', url: 'https://health.gov.lk/' },
-      { name: 'National Dangerous Drugs Control Board', url: 'https://www.nddcb.gov.lk/' },
+      { name: 'National Dangerous Drugs Control Board', url: 'https://nddcb.gov.lk/' },
     ],
   },
   {
@@ -92,7 +92,7 @@ const policySections: PolicySection[] = [
       'Users should review the platform’s privacy notice and data deletion process before creating an account.',
     ],
     sources: [
-      { name: 'Personal Data Protection Act information', url: 'https://www.pdpa.lk/' },
+      { name: 'Data Protection Authority, Sri Lanka', url: 'https://www.dpa.gov.lk/' },
       { name: 'Human Rights Commission of Sri Lanka', url: 'https://hrcsl.lk/' },
     ],
   },

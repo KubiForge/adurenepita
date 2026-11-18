@@ -16,22 +16,25 @@ export const Footer: React.FC = () => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
-    <footer className="relative overflow-hidden border-t border-gold/15 bg-midnight text-ivory/80">
+    <footer className="footer-shell relative overflow-hidden border-t border-gold/15 bg-midnight text-ivory/80">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_at_50%_0%,rgba(216,190,130,0.08),transparent_68%)]"
       />
-      <div className="relative mx-auto max-w-7xl px-4 pb-6 pt-8 sm:px-6 lg:px-8 lg:pt-10">
-        <section aria-labelledby="footer-showcase-title" className="border-b border-ivory/10 pb-7">
-          <div className="mb-5 text-center">
-            <h2 id="footer-showcase-title" className="font-heading text-2xl font-semibold text-ivory sm:text-3xl">
+      <div className="footer-inner relative mx-auto max-w-7xl px-4 pb-5 pt-7 sm:px-6 lg:px-8 lg:pt-8">
+        <section aria-labelledby="footer-showcase-title" className="footer-showcase border-b border-ivory/10 pb-6">
+          <div className="footer-showcase__heading mb-4 text-center">
+            <span className="footer-showcase__mark" aria-hidden="true">
+              <Heart className="h-5 w-5 fill-current" />
+            </span>
+            <h2 id="footer-showcase-title" className="mt-1 font-heading text-xl font-semibold text-ivory sm:text-2xl">
               Together for a Brighter Tomorrow
             </h2>
-            <p className="mt-1.5 text-xs text-ivory/50">
-              Organization and Leo identity marks supplied for this initiative.
+            <p className="mt-1 text-[10px] text-ivory/50 sm:text-xs">
+              A shared commitment to prevention, support, and recovery.
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="footer-logo-grid grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-8">
             {ORGANIZATION_LOGOS.map((item) => (
               <LogoPlaceholder
                 key={item.label}
@@ -39,7 +42,7 @@ export const Footer: React.FC = () => {
                 category={item.category}
                 src={item.src}
                 showcase
-                className="rounded-xl border-gold/20 bg-charcoal/35 hover:bg-charcoal/60"
+                className="footer-logo-item rounded-lg border-gold/20 bg-charcoal/35 hover:bg-charcoal/60"
               />
             ))}
           </div>
@@ -47,20 +50,20 @@ export const Footer: React.FC = () => {
 
         <section
           aria-label="Footer navigation and support"
-          className="grid grid-cols-1 gap-7 border-b border-ivory/10 py-7 md:grid-cols-2 lg:grid-cols-4 lg:gap-8"
+          className="footer-main-grid grid grid-cols-1 gap-6 border-b border-ivory/10 py-6 md:grid-cols-2 lg:grid-cols-[1.25fr_0.8fr_0.95fr_1.25fr] lg:gap-7"
         >
-          <div>
-            <h2 className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Project Identity</h2>
-            <div className="flex items-center gap-3">
+          <div className="footer-column">
+            <h2 className="footer-column__title mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Project Identity</h2>
+            <div className="footer-project-lockup flex items-center gap-3">
               <LogoPlaceholder
                 label="Beyond the Darkness"
                 category="Project identity"
                 src={ASSETS.logo}
                 compact
-                className="w-16 shrink-0 rounded-xl border-gold/25 bg-charcoal/60"
+                className="footer-project-logo w-14 shrink-0 rounded-lg border-gold/25 bg-charcoal/60"
               />
               <div>
-                <p className="font-heading text-lg font-semibold leading-tight tracking-wide text-ivory">
+                <p className="font-heading text-base font-semibold leading-tight tracking-wide text-ivory">
                   BEYOND THE DARKNESS
                 </p>
                 <p className="mt-1 text-[9px] uppercase tracking-[0.16em] text-ivory/45">A Youth-Led Initiative</p>
@@ -74,21 +77,22 @@ export const Footer: React.FC = () => {
             </span>
           </div>
 
-          <div>
-            <h2 className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Navigation</h2>
-            <ul className="space-y-2.5">
+          <div className="footer-column">
+            <h2 className="footer-column__title mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Navigation</h2>
+            <ul className="footer-link-list space-y-2">
               <li><Link to="/" className={footerLinkClass}>Home</Link></li>
               <li><Link to="/about" className={footerLinkClass}>About Us</Link></li>
               <li><Link to="/learn" className={footerLinkClass}>Drug Education</Link></li>
               <li><Link to="/get-help" className={footerLinkClass}>Get Help</Link></li>
               <li><Link to="/support-directory" className={footerLinkClass}>Find Support</Link></li>
+              <li><Link to="/network" className={footerLinkClass}>Professional Network</Link></li>
               <li><Link to="/awareness-hub" className={footerLinkClass}>Awareness Hub</Link></li>
             </ul>
           </div>
 
-          <div>
-            <h2 className="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Community & Action</h2>
-            <ul className="space-y-2.5">
+          <div className="footer-column">
+            <h2 className="footer-column__title mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Community & Action</h2>
+            <ul className="footer-link-list space-y-2">
               <li><Link to="/campaigns" className={footerLinkClass}>Campaigns</Link></li>
               <li><Link to="/community" className={footerLinkClass}>Community</Link></li>
               <li><Link to="/statistics" className={footerLinkClass}>Data & Impact</Link></li>
@@ -105,18 +109,18 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
 
-          <div>
-            <h2 className="mb-4 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-red-300">
+          <div className="footer-column footer-emergency-column">
+            <h2 className="footer-column__title mb-3 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-red-300">
               <PhoneCall className="h-3.5 w-3.5" /> Emergency Helplines
             </h2>
-            <ul className="grid grid-cols-2 gap-2 lg:grid-cols-1">
+            <ul className="footer-emergency-list grid grid-cols-2 gap-2">
               {[
                 CONTACT_INFO.emergency.drugHelpline,
                 CONTACT_INFO.emergency.ambulance,
                 CONTACT_INFO.emergency.crisisSupport,
                 CONTACT_INFO.emergency.police,
               ].map((contact) => (
-                <li key={contact.id} className="rounded-xl border border-ivory/10 bg-charcoal/45 px-3 py-2 transition hover:border-gold/25 hover:bg-charcoal/70">
+                <li key={contact.id} className="footer-emergency-item rounded-lg border border-ivory/10 bg-charcoal/45 px-2.5 py-2 transition hover:border-gold/25 hover:bg-charcoal/70">
                   <a className="flex items-center justify-between gap-2" href={telephoneHref(contact.number)}>
                     <span className="text-[10px] leading-4 text-ivory/70">{contact.footerLabel}</span>
                     <span className={`font-mono text-sm font-bold ${contact.id === 'ambulance' || contact.id === 'police' ? 'text-red-300' : 'text-champagne'}`}>
@@ -132,7 +136,7 @@ export const Footer: React.FC = () => {
 
         <section
           aria-label="Organization headquarters"
-          className="flex flex-col gap-3 border-b border-ivory/10 py-5 text-xs md:flex-row md:items-center md:justify-between"
+          className="footer-org-info flex flex-col gap-3 border-b border-ivory/10 py-4 text-xs md:flex-row md:items-center md:justify-between"
         >
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-ivory/55">
             <span className="font-semibold text-ivory/80">{BRAND.orgName}</span>
@@ -149,7 +153,7 @@ export const Footer: React.FC = () => {
           </a>
         </section>
 
-        <section aria-labelledby="footer-disclaimer-title" className="border-b border-ivory/10 py-5">
+        <section aria-labelledby="footer-disclaimer-title" className="footer-disclaimer border-b border-ivory/10 py-4">
           <h2 id="footer-disclaimer-title" className="text-[10px] font-bold uppercase tracking-[0.18em] text-ivory/65">
             Clinical Governance & Legal Disclaimer
           </h2>
@@ -158,7 +162,7 @@ export const Footer: React.FC = () => {
           </p>
         </section>
 
-        <div className="grid grid-cols-1 gap-3 pt-4 text-[10px] text-ivory/45 md:grid-cols-[1fr_auto_1fr] md:items-center">
+        <div className="footer-bottom grid grid-cols-1 gap-3 pt-4 text-[10px] text-ivory/45 md:grid-cols-[1fr_auto_1fr] md:items-center">
           <p className="leading-5">
             &copy; {new Date().getFullYear()} Beyond the Darkness. Organized by Leo Club of University of Sri Jayewardenepura (Leo District 306 D2).
           </p>

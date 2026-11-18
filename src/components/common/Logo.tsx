@@ -11,13 +11,13 @@ interface LogoProps {
 export const Logo: React.FC<LogoProps> = ({ size = 'md', showSubtitle = true, className = '' }) => {
   const iconSizes = {
     sm: 'w-7 h-7',
-    md: 'w-9 h-9',
+    md: 'w-8 h-8 sm:w-9 sm:h-9',
     lg: 'w-12 h-12',
   };
 
   const textSizes = {
     sm: 'text-sm',
-    md: 'text-base',
+    md: 'text-sm sm:text-base',
     lg: 'text-xl',
   };
 
@@ -39,7 +39,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showSubtitle = true, cl
         </span>
         {showSubtitle && (
           <span className="text-[10px] uppercase tracking-wider text-ivory/60 font-sans hidden sm:block">
-            Leo Club of University of Sri Jayewardenepura
+            Drug Abuse Prevention Portal
           </span>
         )}
       </div>
