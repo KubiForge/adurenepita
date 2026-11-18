@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, Siren } from 'lucide-react';
+import { AlertTriangle, Siren, WifiOff } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useSafety } from '../../context/SafetyContext';
 
@@ -16,17 +16,30 @@ export const EmergencyBanner: React.FC = () => {
         </div>
 
         <p className="max-w-[210px] text-[9.5px] leading-[1.35] text-ivory/85 md:hidden">
-          If experiencing an overdose or severe medical danger, get help immediately.
+          {t('emergency.mobileBanner')}
         </p>
 
-        <button
-          type="button"
-          onClick={() => openEmergencyModal('Immediate emergency support requested')}
-          className="ml-auto inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-full bg-red-950/70 px-2.5 text-[10px] font-bold text-white ring-1 ring-red-200/40 transition hover:bg-red-950 sm:px-3 sm:text-xs md:mx-0"
-        >
-          <Siren className="h-3.5 w-3.5" />
-          <span>Get Emergency Help</span>
-        </button>
+        <div className="ml-auto flex shrink-0 items-center gap-1.5 md:ml-0">
+          <a
+            href="/offline-emergency.html"
+            aria-label={t('emergency.offline')}
+            title={t('emergency.offline')}
+            className="inline-flex h-8 items-center justify-center gap-1.5 rounded-full border border-red-100/40 px-2 text-[10px] font-bold text-white hover:bg-red-950/70 sm:px-3 sm:text-xs"
+          >
+            <WifiOff className="h-3.5 w-3.5" aria-hidden="true" />
+            <span className="hidden sm:inline">{t('emergency.offline')}</span>
+          </a>
+          <button
+            type="button"
+            onClick={() => openEmergencyModal('Immediate emergency support requested')}
+            className="inline-flex h-8 items-center justify-center gap-1.5 rounded-full bg-red-950/70 px-2.5 text-[10px] font-bold text-white ring-1 ring-red-200/40 transition hover:bg-red-950 sm:px-3 sm:text-xs"
+            aria-label={t('emergency.btn')}
+          >
+            <Siren className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">{t('emergency.getHelp')}</span>
+            <span className="sm:hidden">{t('emergency.mobileBtn')}</span>
+          </button>
+        </div>
       </div>
     </header>
   );

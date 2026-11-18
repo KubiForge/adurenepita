@@ -40,7 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
     { to: '/about', label: t('nav.about') },
     { to: '/learn', label: t('nav.learn') },
     { to: '/get-help', label: t('nav.getHelp') },
-    { to: '/assessment', label: 'Assessment' },
+    { to: '/assessment', label: t('nav.assessment') },
     { to: '/support-directory', label: t('nav.findSupport') },
     { to: '/awareness-hub', label: t('nav.awarenessHub') },
     { to: '/campaigns', label: t('nav.campaigns') },

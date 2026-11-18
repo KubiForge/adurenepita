@@ -4,8 +4,10 @@ import { useSafety } from '../../context/SafetyContext';
 import { CONTACT_INFO, telephoneHref, smsHref } from '../../config/contactInfo';
 import { AlertOctagon, PhoneCall, HeartPulse, ShieldAlert, MessageSquareText } from 'lucide-react';
 import { Button } from './Button';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const EmergencyModal: React.FC = () => {
+  const { language, t } = useLanguage();
   const { isEmergencyModalOpen, closeEmergencyModal, emergencyReason } = useSafety();
   const essentialContacts = [
     CONTACT_INFO.emergency.ambulance,
@@ -25,16 +27,16 @@ export const EmergencyModal: React.FC = () => {
       title={
         <div className="flex items-center gap-2.5 text-red-400">
           <AlertOctagon className="w-6 h-6 animate-pulse" />
-          <span>Immediate Emergency & Crisis Support</span>
+          <span lang={language}>{t('emergency.modalTitle')}</span>
         </div>
       }
     >
-      <div className="space-y-6">
+      <div lang="en" className="space-y-6">
         {emergencyReason && (
           <div className="p-4 rounded-lg bg-red-950/60 border border-red-500/40 text-sm text-red-200">
             <p className="font-semibold text-red-100 flex items-center gap-2">
               <ShieldAlert className="w-4 h-4 text-red-400" />
-              <span>Safety Engine Alert:</span>
+              <span lang={language}>{t('emergency.safetyAlert')}:</span>
             </p>
             <p className="mt-1">{emergencyReason}</p>
           </div>
@@ -42,7 +44,7 @@ export const EmergencyModal: React.FC = () => {
 
         <div>
           <h3 className="text-sm font-semibold text-gold uppercase tracking-wider mb-3">
-            Sri Lankan Emergency Hotlines (Toll-Free & Confidential)
+            <span lang={language}>{t('emergency.hotlinesHeading')}</span>
           </h3>
           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
             {essentialContacts.map((contact) => (
@@ -101,7 +103,7 @@ export const EmergencyModal: React.FC = () => {
                       aria-label={`Call ${contact.name}`}
                     >
                       <PhoneCall className="w-3.5 h-3.5" />
-                      <span>Call</span>
+                      <span lang={language}>{t('emergency.call')}</span>
                     </a>
                   </span>
                 </div>
@@ -114,7 +116,7 @@ export const EmergencyModal: React.FC = () => {
         <div className="p-4 rounded-xl bg-charcoal-light/60 border border-charcoal-light text-xs text-ivory/80 space-y-2">
           <h4 className="font-bold text-champagne flex items-center gap-1.5 text-sm">
             <HeartPulse className="w-4 h-4 text-red-400" />
-            <span>If Someone Has Collapsed or Stopped Breathing (Overdose Protocol):</span>
+            <span lang={language}>{t('emergency.overdoseProtocol')}:</span>
           </h4>
           <ol className="list-decimal pl-4 space-y-1 text-ivory/70 leading-relaxed">
             <li><strong>Call {CONTACT_INFO.emergency.ambulance.number} immediately</strong>. State your exact district, city, and nearest landmark clearly.</li>
@@ -126,7 +128,7 @@ export const EmergencyModal: React.FC = () => {
 
         <div className="flex justify-end pt-2">
           <Button variant="charcoal" onClick={closeEmergencyModal} size="sm">
-            Close Notice
+            <span lang={language}>{t('cta.close')}</span>
           </Button>
         </div>
       </div>

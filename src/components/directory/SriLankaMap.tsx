@@ -107,7 +107,7 @@ export const SriLankaMap: React.FC<SriLankaMapProps> = ({
       <div ref={mapContainerRef} className="w-full h-full" />
       <div className="absolute bottom-3 left-3 bg-midnight/90 border border-charcoal-light p-2.5 rounded-lg text-[11px] text-ivory/80 z-[1000] backdrop-blur-md shadow-md max-w-xs">
         <p className="font-semibold text-gold">Sri Lanka Support Locator</p>
-        <p className="text-ivory/60">Click any marker pin to inspect verified hospital or rehabilitation facilities.</p>
+        <p className="text-ivory/60">Click a marker for listed facility details; confirm information directly with the provider.</p>
       </div>
     </div>
   );

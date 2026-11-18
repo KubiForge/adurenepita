@@ -8,6 +8,22 @@ export type ServiceType =
 
 export type VerificationStatus = 'verified' | 'pending' | 'needs_recheck' | 'suspended';
 
+export const SUPPORT_PROGRAM_FILTERS = [
+  { id: 'detoxification', label: 'Detoxification' },
+  { id: 'inpatient', label: 'Inpatient' },
+  { id: 'outpatient', label: 'Outpatient' },
+  { id: 'counseling_psychiatry', label: 'Counseling & psychiatry' },
+  { id: 'twelve_step', label: '12-step support' },
+  { id: 'evidence_based', label: 'Evidence-based treatment' },
+  { id: 'youth_family', label: 'Youth & family rehabilitation' },
+  { id: 'lgbtq', label: 'LGBTQ+ inclusive' },
+  { id: 'women', label: 'Women-specific programs' },
+  { id: 'men', label: 'Men-specific programs' },
+  { id: 'social_reintegration', label: 'Social reintegration' },
+] as const;
+
+export type SupportProgram = (typeof SUPPORT_PROGRAM_FILTERS)[number]['id'];
+
 export interface SupportCenter {
   id: string;
   name: string;
@@ -35,6 +51,18 @@ export interface SupportCenter {
   verificationStatus: VerificationStatus;
   lastVerifiedDate: string;
   verifiedBy: string;
+  programs?: SupportProgram[];
+  lastUpdatedDate?: string;
+  accreditation?: {
+    label: string;
+    authority: string;
+    lastVerifiedDate: string;
+  };
+  waitingTime?: string;
+  costInformation?: string;
+  insuranceInformation?: string;
+  referralProcess?: string;
+  appointmentUrl?: string;
   description: string;
   descriptionSi: string;
 }

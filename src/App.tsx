@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { LanguageProvider } from './context/LanguageContext';
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
 import { SafetyProvider } from './context/SafetyContext';
 
@@ -9,6 +9,7 @@ import { Footer } from './components/layout/Footer';
 import { EmergencyBanner } from './components/layout/EmergencyBanner';
 import { CinematicBackground } from './components/layout/CinematicBackground';
 import { EmergencyModal } from './components/common/EmergencyModal';
+import { AccessibilityPanel } from './components/common/AccessibilityPanel';
 import { CreativeWizardModal } from './components/wizard/CreativeWizardModal';
 import { AiChatDrawer } from './components/ai/AiChatDrawer';
 
@@ -50,6 +51,7 @@ const ScrollToTop = () => {
 
 export const AppContent: React.FC = () => {
   const location = useLocation();
+  const { t } = useLanguage();
   const isHome = location.pathname === '/';
   const isAdmin = location.pathname.startsWith('/admin');
   const [isAiChatOpen, setIsAiChatOpen] = useState(false);
@@ -68,6 +70,9 @@ export const AppContent: React.FC = () => {
   return (
     <div className={`relative isolate min-h-screen text-ivory flex flex-col font-sans ${isHome ? 'bg-transparent' : 'bg-midnight'}`}>
       <ScrollToTop />
+      <a className="accessibility-skip-link" href="#main-content">
+        {t('accessibility.skip')}
+      </a>
       {isHome && <CinematicBackground />}
       {!isAdmin && <EmergencyBanner />}
       {!isAdmin && (
@@ -77,7 +82,7 @@ export const AppContent: React.FC = () => {
         />
       )}
 
-      <main className="relative z-10 flex-1 w-full overflow-x-hidden">
+      <main id="main-content" lang="en" tabIndex={-1} className="relative z-10 flex-1 w-full overflow-x-hidden">
         <Routes>
           {/* Public User Platform (12 Core Screens + Home, About, Stats) */}
           <Route
@@ -178,6 +183,7 @@ export const AppContent: React.FC = () => {
       </main>
 
       {!isAdmin && <Footer />}
+      <AccessibilityPanel />
 
       {/* Floating AI Action Button (Always Accessible on Public Pages) */}
       {!isAdmin && (
@@ -189,7 +195,7 @@ export const AppContent: React.FC = () => {
           >
             <Sparkles className="w-5 h-5 text-midnight animate-pulse" />
             <span className="text-xs sm:text-sm font-semibold text-midnight">
-              Talk to AI Assistant
+              {t('cta.talkToAi')}
             </span>
           </button>
         </div>

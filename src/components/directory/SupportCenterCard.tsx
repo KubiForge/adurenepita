@@ -1,7 +1,8 @@
 import React from 'react';
 import { SupportCenter } from '../../types/directory';
-import { PhoneCall, MapPin, Clock, Globe, ShieldCheck, Flag, ArrowUpRight, MessageSquareText, Navigation } from 'lucide-react';
+import { PhoneCall, MapPin, Clock, Globe, ShieldCheck, Flag, ArrowUpRight, MessageSquareText, Navigation, ExternalLink } from 'lucide-react';
 import { Button } from '../common/Button';
+import { SUPPORT_PROGRAM_FILTERS } from '../../types/directory';
 
 interface SupportCenterCardProps {
   center: SupportCenter;
@@ -36,11 +37,21 @@ export const SupportCenterCard: React.FC<SupportCenterCardProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-semibold bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-800">
-          <ShieldCheck className="w-3.5 h-3.5" />
-          <span>Verified: {center.lastVerifiedDate}</span>
-        </div>
+        {center.verificationStatus === 'verified' ? (
+          <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-semibold bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-800">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>Last verified: {center.lastVerifiedDate}</span>
+          </div>
+        ) : (
+          <span className="text-xs text-amber-200 font-semibold bg-amber-950/50 px-2.5 py-0.5 rounded-full border border-amber-700">
+            Verification: {center.verificationStatus.replace('_', ' ')}
+          </span>
+        )}
       </div>
+      <p className="mb-2 text-[10px] text-ivory/45">
+        Last updated: {center.lastUpdatedDate || 'Not recorded'}
+        {center.verificationStatus === 'verified' && ` · Verified by ${center.verifiedBy}`}
+      </p>
 
       <h3 className="text-lg font-bold font-heading text-ivory leading-snug">
         {center.name}
@@ -79,6 +90,65 @@ export const SupportCenterCard: React.FC<SupportCenterCardProps> = ({
         </div>
       </div>
 
+      <div className="mb-4 space-y-3">
+        <div>
+          <h4 className="text-[10px] font-bold uppercase tracking-wider text-gold">Services listed</h4>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {center.serviceTypes.map((service) => (
+              <span key={service} className="capitalize rounded-full border border-ivory/10 bg-midnight px-2.5 py-1 text-[10px] text-ivory/70">
+                {service.replace('_', ' ')}
+              </span>
+            ))}
+            {center.programs?.map((program) => {
+              const label = SUPPORT_PROGRAM_FILTERS.find((option) => option.id === program)?.label || program;
+              return (
+                <span key={program} className="rounded-full border border-gold/20 bg-gold/5 px-2.5 py-1 text-[10px] text-champagne">
+                  {label}
+                </span>
+              );
+            })}
+          </div>
+          {!center.programs?.length && (
+            <p className="mt-2 text-[10px] text-ivory/45">
+              No additional program or population tags have been confirmed for this listing.
+            </p>
+          )}
+        </div>
+
+        <dl className="grid gap-2 rounded-xl border border-charcoal-light bg-midnight/50 p-3 text-[11px] sm:grid-cols-2">
+          <div>
+            <dt className="font-semibold text-ivory/65">Licensing / accreditation</dt>
+            <dd className="mt-0.5 text-ivory/50">
+              {center.accreditation
+                ? `${center.accreditation.label} — ${center.accreditation.authority} (verified ${center.accreditation.lastVerifiedDate})`
+                : 'No verified details listed; contact the facility to confirm.'}
+            </dd>
+          </div>
+          <div>
+            <dt className="font-semibold text-ivory/65">Waiting time</dt>
+            <dd className="mt-0.5 text-ivory/50">{center.waitingTime || 'Not published; contact the facility.'}</dd>
+          </div>
+          <div>
+            <dt className="font-semibold text-ivory/65">Cost</dt>
+            <dd className="mt-0.5 text-ivory/50">{center.costInformation || 'Not published; confirm directly.'}</dd>
+          </div>
+          <div>
+            <dt className="font-semibold text-ivory/65">Insurance</dt>
+            <dd className="mt-0.5 text-ivory/50">{center.insuranceInformation || 'Not listed; confirm directly.'}</dd>
+          </div>
+          <div className="sm:col-span-2">
+            <dt className="font-semibold text-ivory/65">Referral process</dt>
+            <dd className="mt-0.5 text-ivory/50">
+              {center.referralProcess || center.admissionRequirements || 'Not published; contact the facility.'}
+            </dd>
+          </div>
+        </dl>
+        <p className="text-[10px] leading-relaxed text-ivory/45">
+          Listing verification does not confirm licensing, service availability, cost, or eligibility.
+          Please confirm these details with the provider before making plans.
+        </p>
+      </div>
+
       {/* Action Buttons */}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
@@ -110,6 +180,17 @@ export const SupportCenterCard: React.FC<SupportCenterCardProps> = ({
             <Navigation className="h-3.5 w-3.5 text-gold" />
             Directions
           </a>
+          {center.appointmentUrl && (
+            <a
+              href={center.appointmentUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-charcoal px-3 py-1.5 rounded-lg text-xs font-bold inline-flex items-center gap-1.5"
+            >
+              Online appointment
+              <ExternalLink className="h-3.5 w-3.5 text-gold" />
+            </a>
+          )}
         </div>
 
         <div className="flex items-center gap-3">

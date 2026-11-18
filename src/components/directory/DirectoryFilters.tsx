@@ -1,7 +1,7 @@
 import React from 'react';
 import { PROVINCES_AND_DISTRICTS } from '../../data/sriLankaData';
 import { Search, Filter, RotateCcw } from 'lucide-react';
-import { ServiceType } from '../../types/directory';
+import { SUPPORT_PROGRAM_FILTERS, SupportProgram } from '../../types/directory';
 
 interface DirectoryFiltersProps {
   searchQuery: string;
@@ -12,6 +12,8 @@ interface DirectoryFiltersProps {
   onDistrictChange: (district: string) => void;
   selectedServiceType: string;
   onServiceTypeChange: (type: string) => void;
+  selectedProgram: SupportProgram | '';
+  onProgramChange: (program: SupportProgram | '') => void;
   onReset: () => void;
 }
 
@@ -24,6 +26,8 @@ export const DirectoryFilters: React.FC<DirectoryFiltersProps> = ({
   onDistrictChange,
   selectedServiceType,
   onServiceTypeChange,
+  selectedProgram,
+  onProgramChange,
   onReset,
 }) => {
   const currentProvinceObj = PROVINCES_AND_DISTRICTS.find((p) => p.name === selectedProvince);
@@ -44,7 +48,7 @@ export const DirectoryFilters: React.FC<DirectoryFiltersProps> = ({
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
         {/* Search */}
         <div className="relative">
           <Search className="w-4 h-4 text-ivory/40 absolute left-3.5 top-3.5" />
@@ -103,13 +107,39 @@ export const DirectoryFilters: React.FC<DirectoryFiltersProps> = ({
             className="w-full px-3.5 py-2.5 rounded-xl bg-midnight border border-charcoal-light text-ivory text-xs focus:outline-none focus:border-gold"
           >
             <option value="">All Care Types</option>
-            <option value="rehabilitation">Inpatient Rehabilitation</option>
+            <option value="rehabilitation">Rehabilitation</option>
             <option value="counseling">Psychosocial Counseling</option>
-            <option value="medical">Hospital Medical Detox</option>
-            <option value="family_support">Family & Peer Support</option>
+            <option value="medical">Medical Care</option>
+            <option value="family_support">Family Support</option>
+            <option value="peer_support">Peer Support</option>
+            <option value="hotline">Helpline</option>
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="support-program-filter" className="sr-only">Filter by program or population</label>
+          <select
+            id="support-program-filter"
+            value={selectedProgram}
+            onChange={(e) => {
+              const program = SUPPORT_PROGRAM_FILTERS.find((option) => option.id === e.target.value)?.id || '';
+              onProgramChange(program);
+            }}
+            className="w-full px-3.5 py-2.5 rounded-xl bg-midnight border border-charcoal-light text-ivory text-xs focus:outline-none focus:border-gold"
+          >
+            <option value="">All Programs & Populations</option>
+            {SUPPORT_PROGRAM_FILTERS.map((program) => (
+              <option key={program.id} value={program.id}>
+                {program.label}
+              </option>
+            ))}
           </select>
         </div>
       </div>
+      <p className="text-[11px] leading-relaxed text-ivory/50">
+        Program filters include only listings with confirmed tags. A missing result does not mean a
+        facility cannot provide that service; contact the facility to confirm.
+      </p>
     </div>
   );
 };

@@ -79,6 +79,59 @@ const policySections: PolicySection[] = [
     ],
   },
   {
+    id: 'crisis-response',
+    title: 'Crisis Handling & Suicide Prevention',
+    icon: AlertTriangle,
+    summary:
+      'This website is not an emergency service and does not monitor conversations or submissions in real time. Use direct emergency and crisis services when immediate help is needed.',
+    points: [
+      'For overdose, serious injury, loss of consciousness, or immediate medical danger, call Suwaseriya ambulance at 1990.',
+      'If someone may act on thoughts of suicide or self-harm, help them contact CCC at 1333, stay with a trusted person if safe, and seek urgent in-person care. Call 1990 for immediate medical danger.',
+      'NDDCB at 1927 can provide drug-related information and support; it is not an emergency dispatch service.',
+      'Do not wait for a website response, account message, or group moderator during a crisis. If there is immediate danger to someone else, contact emergency services.',
+    ],
+    sources: [
+      { name: 'Suwaseriya Ambulance Service', url: 'https://www.1990.lk/' },
+      { name: 'National Dangerous Drugs Control Board', url: 'https://nddcb.gov.lk/' },
+      { name: 'National Institute of Mental Health', url: 'https://nimh.health.gov.lk/' },
+    ],
+  },
+  {
+    id: 'content-review',
+    title: 'Evidence, Authors & Content Review',
+    icon: FileText,
+    summary:
+      'Health information should be traceable to reliable sources and clearly distinguish editorial updates from clinical review.',
+    points: [
+      'Medically substantive pages should name the author or responsible organization, identify a qualified reviewer and their role, show the review date, and link to source references.',
+      'A named clinical reviewer and professional review date are not listed for this page; its content should not be treated as professionally reviewed medical advice.',
+      'Use current, evidence-based and non-stigmatizing language. Do not use sensational imagery, fabricated testimonials, or imply that one recovery path works for everyone.',
+      'Sources support general education only. They do not establish an individual diagnosis or replace advice from a qualified health professional.',
+    ],
+    sources: [
+      { name: 'WHO mhGAP Intervention Guide', url: 'https://www.who.int/publications/i/item/9789241549790' },
+      { name: 'Sri Lanka Ministry of Health', url: 'https://health.gov.lk/' },
+      { name: 'National Dangerous Drugs Control Board', url: 'https://nddcb.gov.lk/' },
+    ],
+  },
+  {
+    id: 'community-moderation',
+    title: 'Community Standards & Moderation',
+    icon: UserCheck,
+    summary:
+      'Peer and family support should be respectful, privacy-conscious, and clear about its limits. This website does not currently host a live forum or user-posted group.',
+    points: [
+      'No shaming, harassment, discrimination, stigmatizing language, or pressure to disclose personal experiences.',
+      'Do not share another person’s identity, health information, or recovery story without their explicit consent.',
+      'Peer support is not clinical care. Do not post diagnoses, treatment instructions, dangerous withdrawal advice, or promises of recovery.',
+      'Before any online community launches, it must have published rules, trained moderation, reporting and removal processes, and a crisis escalation plan. These controls are not currently offered on this site.',
+    ],
+    sources: [
+      { name: 'Data Protection Authority, Sri Lanka', url: 'https://www.dpa.gov.lk/' },
+      { name: 'National Dangerous Drugs Control Board', url: 'https://nddcb.gov.lk/' },
+    ],
+  },
+  {
     id: 'privacy',
     title: 'Privacy, Confidentiality & Consent',
     icon: ShieldCheck,
@@ -89,7 +142,10 @@ const policySections: PolicySection[] = [
       'Referral consent should identify what is being shared, with whom, and for what purpose.',
       'Administrative staff may access only records needed for the assigned role and lawful process.',
       'AI conversations are not a private clinical record unless the platform clearly states otherwise.',
-      'Users should review the platform’s privacy notice and data deletion process before creating an account.',
+      'When configured, account sign-in uses Firebase Authentication with email verification. This does not mean the site provides an encrypted clinical-record vault; no such health-record feature is claimed here.',
+      'Guided assessment answers remain in the browser unless a user explicitly submits a support request. Account or support-service records may be held by their respective services; this page does not specify their retention period.',
+      'The profile page cannot currently delete a Firebase account or support-service records. Clearing browser data only removes local browser data and does not delete server-held records.',
+      'Ask the project team about retention, access, correction, or deletion before submitting personal information. Do not create an account or submit health details if you are uncomfortable with the available information.',
     ],
     sources: [
       { name: 'Data Protection Authority, Sri Lanka', url: 'https://www.dpa.gov.lk/' },
@@ -250,9 +306,13 @@ export const LegalPolicyPage: React.FC = () => {
         insurance, employment, legal aid, and safeguarding. This page is not legal advice and does
         not replace a qualified lawyer or official government guidance.
       </p>
+      <p className="mt-4 max-w-3xl text-xs leading-5 text-ivory/50">
+        Content owner: Beyond the Darkness project team. Named clinical reviewer and professional
+        review date: not listed; clinical review has not been verified.
+      </p>
     </header>
 
-    <section className="mt-8 grid gap-3 md:grid-cols-3" aria-label="Important notices">
+    <section className="mt-8 grid gap-3 md:grid-cols-2 xl:grid-cols-4" aria-label="Important notices">
       <div className="rounded-2xl border border-gold/15 bg-charcoal/35 p-5">
         <Scale className="h-5 w-5 text-gold" />
         <h2 className="mt-3 font-semibold text-ivory">Legal rights vary by case</h2>
@@ -280,6 +340,21 @@ export const LegalPolicyPage: React.FC = () => {
             {CONTACT_INFO.emergency.police.number}
           </a>{' '}
           for emergency assistance.
+        </p>
+      </div>
+      <div className="rounded-2xl border border-red-400/25 bg-red-950/20 p-5">
+        <AlertTriangle className="h-5 w-5 text-red-300" />
+        <h2 className="mt-3 font-semibold text-ivory">Suicide or emotional crisis</h2>
+        <p className="mt-2 text-xs leading-5 text-ivory/55">
+          Call{' '}
+          <a className="font-bold text-red-200" href={telephoneHref(CONTACT_INFO.emergency.crisisSupport.number)}>
+            {CONTACT_INFO.emergency.crisisSupport.number}
+          </a>{' '}
+          for crisis support. For immediate medical danger, call{' '}
+          <a className="font-bold text-red-200" href={telephoneHref(CONTACT_INFO.emergency.ambulance.number)}>
+            {CONTACT_INFO.emergency.ambulance.number}
+          </a>
+          . Do not wait for this website to respond.
         </p>
       </div>
     </section>
@@ -318,8 +393,8 @@ export const LegalPolicyPage: React.FC = () => {
     </section>
 
     <p className="mt-6 text-xs leading-5 text-ivory/45">
-      Last reviewed: 18 November 2026. Laws and official contacts may change. The project team should
-      confirm every legal and helpline source with a qualified reviewer before public distribution.
+      Content updated: 18 November 2026; this is not a professional review date. Laws, services, and
+      helpline availability may change. Verify current details with the relevant authority.
     </p>
   </div>
   );

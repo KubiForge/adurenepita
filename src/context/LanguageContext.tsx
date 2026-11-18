@@ -1,24 +1,54 @@
-import React, { createContext, useContext, useEffect } from 'react';
-import english from '../locales/en.json';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import i18n from '../i18n';
+
+export type AppLanguage = 'en' | 'si' | 'ta';
 
 interface LanguageContextType {
+  language: AppLanguage;
+  setLanguage: (language: AppLanguage) => void;
   t: (key: string) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType>({
-  t: (key: string) => english[key as keyof typeof english] || key,
+  language: 'en',
+  setLanguage: () => undefined,
+  t: (key: string) => String(i18n.t(key)),
 });
 
-export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  useEffect(() => {
-    localStorage.setItem('btd_lang', 'en');
-    document.documentElement.lang = 'en';
-  }, []);
+const isAppLanguage = (value: string | null): value is AppLanguage =>
+  value === 'en' || value === 'si' || value === 'ta';
 
-  const t = (key: string): string => english[key as keyof typeof english] || key;
+const getSavedLanguage = (): AppLanguage => {
+  try {
+    const savedLanguage = window.localStorage.getItem('btd_lang');
+    return isAppLanguage(savedLanguage) ? savedLanguage : 'en';
+  } catch (error) {
+    console.warn('Saved language preference could not be read.', error);
+    return 'en';
+  }
+};
+
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [language, setLanguage] = useState<AppLanguage>(getSavedLanguage);
+  const [languageRevision, setLanguageRevision] = useState(0);
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+    try {
+      window.localStorage.setItem('btd_lang', language);
+    } catch (error) {
+      console.warn('Language preference could not be saved.', error);
+    }
+    void i18n.changeLanguage(language).then(() => {
+      document.title = String(i18n.t('app.documentTitle'));
+      setLanguageRevision((revision) => revision + 1);
+    });
+  }, [language]);
+
+  const t = useCallback((key: string): string => String(i18n.t(key)), [languageRevision]);
 
   return (
-    <LanguageContext.Provider value={{ t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );

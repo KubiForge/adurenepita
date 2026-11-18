@@ -6,9 +6,11 @@ import { SriLankaMap } from '../components/directory/SriLankaMap';
 import { SupportCenterCard } from '../components/directory/SupportCenterCard';
 import { DirectoryFilters } from '../components/directory/DirectoryFilters';
 import { ReferralRequestModal } from '../components/directory/ReferralRequestModal';
-import { MapPin, Navigation, LocateFixed } from 'lucide-react';
+import { MapPin, Navigation, LocateFixed, PhoneCall } from 'lucide-react';
 import { Button } from '../components/common/Button';
 import { ASSETS } from '../config/assets';
+import { CONTACT_INFO, telephoneHref } from '../config/contactInfo';
+import { SupportProgram } from '../types/directory';
 
 const distanceKm = (
   latitudeA: number,
@@ -33,6 +35,7 @@ export const SupportDirectoryPage: React.FC = () => {
   const [selectedProvince, setSelectedProvince] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedServiceType, setSelectedServiceType] = useState('');
+  const [selectedProgram, setSelectedProgram] = useState<SupportProgram | ''>('');
 
   const [selectedCenter, setSelectedCenter] = useState<SupportCenter | null>(null);
   const [referralCenter, setReferralCenter] = useState<SupportCenter | null>(null);
@@ -44,13 +47,15 @@ export const SupportDirectoryPage: React.FC = () => {
     const matchQuery =
       center.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       center.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      center.district.toLowerCase().includes(searchQuery.toLowerCase());
+      center.district.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      center.description.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchProvince = !selectedProvince || center.province.toLowerCase() === selectedProvince.toLowerCase();
     const matchDistrict = !selectedDistrict || center.district.toLowerCase() === selectedDistrict.toLowerCase();
     const matchType = !selectedServiceType || (center.serviceTypes as string[]).includes(selectedServiceType);
+    const matchProgram = !selectedProgram || Boolean(center.programs?.includes(selectedProgram));
 
-    return matchQuery && matchProvince && matchDistrict && matchType;
+    return matchQuery && matchProvince && matchDistrict && matchType && matchProgram;
   }).sort((a, b) => {
     if (!userLocation) return 0;
     return (
@@ -64,6 +69,7 @@ export const SupportDirectoryPage: React.FC = () => {
     setSelectedProvince('');
     setSelectedDistrict('');
     setSelectedServiceType('');
+    setSelectedProgram('');
   };
 
   const handleUseLocation = () => {
@@ -84,6 +90,7 @@ export const SupportDirectoryPage: React.FC = () => {
         setSelectedProvince('');
         setSelectedDistrict('');
         setSelectedServiceType('');
+        setSelectedProgram('');
 
         const nearest = [...SUPPORT_CENTERS_DATA].sort(
           (a, b) =>
@@ -98,9 +105,11 @@ export const SupportDirectoryPage: React.FC = () => {
   };
 
   const handleReportError = (center: SupportCenter) => {
-    alert(
-      `Thank you for helping us maintain data accuracy. A verification ticket for "${center.name}" has been logged for the Technical Crew.`
+    const subject = encodeURIComponent(`Directory correction request: ${center.name}`);
+    const body = encodeURIComponent(
+      `Please review the support directory listing for ${center.name} (${center.district}, ${center.province}).\n\nCorrection or update:`
     );
+    window.location.href = `mailto:${CONTACT_INFO.project.email}?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -116,13 +125,13 @@ export const SupportDirectoryPage: React.FC = () => {
       >
         <div className="max-w-2xl space-y-3">
           <span className="text-xs uppercase tracking-wider text-gold font-bold">
-            Verified Sri Lankan Directory
+            Sri Lankan Support Directory
           </span>
           <h1 className="break-words text-3xl font-bold font-heading text-ivory sm:text-4xl">
             Find Rehabilitation & Professional Support
           </h1>
           <p className="text-sm text-ivory/80 leading-relaxed">
-            Locate verified government hospitals, NDDCB residential rehabilitation centers, and non-profit counseling facilities across all 9 provinces and 25 districts.
+            Browse listed government hospitals, rehabilitation programs, and counseling providers. Coverage and service availability vary; contact each provider to confirm current details.
           </p>
           <Link to="/network" className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-gold/30 bg-midnight/60 px-3 py-2 text-xs font-semibold text-champagne hover:bg-gold/10">
             Professional & NGO network <MapPin className="h-3.5 w-3.5 text-gold" />
@@ -164,6 +173,20 @@ export const SupportDirectoryPage: React.FC = () => {
         </button>
       </section>
 
+      <section className="flex flex-col gap-3 rounded-2xl border border-gold/20 bg-charcoal/45 p-4 sm:flex-row sm:items-center sm:justify-between" aria-label="Directory help">
+        <p className="text-xs leading-relaxed text-ivory/65">
+          Need help finding an appropriate service? Call the NDDCB drug helpline. A referral request
+          through this site is reviewed by the project team and does not book an appointment.
+        </p>
+        <a
+          href={telephoneHref(CONTACT_INFO.emergency.drugHelpline.number)}
+          className="btn-gold inline-flex shrink-0 items-center justify-center gap-2 rounded-xl px-4 py-3 text-xs font-bold"
+        >
+          <PhoneCall className="h-4 w-4" />
+          Call {CONTACT_INFO.emergency.drugHelpline.number}
+        </a>
+      </section>
+
       {/* Directory Filter Component */}
       <DirectoryFilters
         searchQuery={searchQuery}
@@ -174,13 +197,15 @@ export const SupportDirectoryPage: React.FC = () => {
         onDistrictChange={setSelectedDistrict}
         selectedServiceType={selectedServiceType}
         onServiceTypeChange={setSelectedServiceType}
+        selectedProgram={selectedProgram}
+        onProgramChange={setSelectedProgram}
         onReset={handleResetFilters}
       />
 
       {/* View Mode Toggle Controls */}
       <div className="grid gap-3 sm:flex sm:items-center sm:justify-between">
         <span className="text-xs text-ivory/60 font-semibold">
-          Showing <strong>{filteredCenters.length}</strong> verified facilities
+          Showing <strong>{filteredCenters.length}</strong> listings
         </span>
 
         <div className="grid grid-cols-3 gap-1 rounded-xl border border-charcoal-light bg-charcoal p-1">
@@ -246,8 +271,15 @@ export const SupportDirectoryPage: React.FC = () => {
               ))
             ) : (
               <div className="charcoal-card p-8 text-center space-y-3">
-                <p className="text-sm font-semibold text-ivory">No facilities matched your filters.</p>
-                <p className="text-xs text-ivory/60">Try clearing your district or care type filters.</p>
+                <p className="text-sm font-semibold text-ivory">
+                  {selectedProgram
+                    ? 'No listings currently have this confirmed program tag.'
+                    : 'No facilities matched your filters.'}
+                </p>
+                <p className="text-xs text-ivory/60">
+                  A missing tag does not mean the service is unavailable. Contact a facility or call
+                  NDDCB to confirm; you can also clear filters and browse all listings.
+                </p>
                 <Button variant="charcoal" size="sm" onClick={handleResetFilters}>
                   Clear Filters
                 </Button>

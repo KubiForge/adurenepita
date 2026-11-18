@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUp, ExternalLink, Heart, Mail, MapPin, PhoneCall, Shield } from 'lucide-react';
+import { ArrowUp, ExternalLink, Heart, Mail, MapPin, PhoneCall, Shield, WifiOff } from 'lucide-react';
 import { BRAND } from '../../config/brand';
 import { ASSETS } from '../../config/assets';
 import { CONTACT_INFO, telephoneHref } from '../../config/contactInfo';
 import { ORGANIZATION_LOGOS } from '../../data/organizationLogos';
+import { useLanguage } from '../../context/LanguageContext';
 import { LogoPlaceholder } from '../common/LogoPlaceholder';
 
 const KUBI_FORGE_URL = 'https://kubiforge.vercel.app';
@@ -13,6 +14,7 @@ const footerLinkClass =
   'inline-flex text-sm text-ivory/60 transition duration-200 hover:translate-x-0.5 hover:text-champagne';
 
 export const Footer: React.FC = () => {
+  const { t } = useLanguage();
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
@@ -78,27 +80,27 @@ export const Footer: React.FC = () => {
           </div>
 
           <div className="footer-column">
-            <h2 className="footer-column__title mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Navigation</h2>
+            <h2 className="footer-column__title mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">{t('footer.navigation')}</h2>
             <ul className="footer-link-list space-y-2">
-              <li><Link to="/" className={footerLinkClass}>Home</Link></li>
-              <li><Link to="/about" className={footerLinkClass}>About Us</Link></li>
-              <li><Link to="/learn" className={footerLinkClass}>Drug Education</Link></li>
-              <li><Link to="/get-help" className={footerLinkClass}>Get Help</Link></li>
-              <li><Link to="/support-directory" className={footerLinkClass}>Find Support</Link></li>
-              <li><Link to="/network" className={footerLinkClass}>Professional Network</Link></li>
-              <li><Link to="/awareness-hub" className={footerLinkClass}>Awareness Hub</Link></li>
+              <li><Link to="/" className={footerLinkClass}>{t('nav.home')}</Link></li>
+              <li><Link to="/about" className={footerLinkClass}>{t('nav.about')}</Link></li>
+              <li><Link to="/learn" className={footerLinkClass}>{t('nav.learn')}</Link></li>
+              <li><Link to="/get-help" className={footerLinkClass}>{t('nav.getHelp')}</Link></li>
+              <li><Link to="/support-directory" className={footerLinkClass}>{t('nav.findSupport')}</Link></li>
+              <li><Link to="/network" className={footerLinkClass}>{t('nav.network')}</Link></li>
+              <li><Link to="/awareness-hub" className={footerLinkClass}>{t('nav.awarenessHub')}</Link></li>
             </ul>
           </div>
 
           <div className="footer-column">
-            <h2 className="footer-column__title mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Community & Action</h2>
+            <h2 className="footer-column__title mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">{t('footer.communityAction')}</h2>
             <ul className="footer-link-list space-y-2">
-              <li><Link to="/campaigns" className={footerLinkClass}>Campaigns</Link></li>
-              <li><Link to="/community" className={footerLinkClass}>Community</Link></li>
-              <li><Link to="/statistics" className={footerLinkClass}>Data & Impact</Link></li>
+              <li><Link to="/campaigns" className={footerLinkClass}>{t('nav.campaigns')}</Link></li>
+              <li><Link to="/community" className={footerLinkClass}>{t('nav.community')}</Link></li>
+              <li><Link to="/statistics" className={footerLinkClass}>{t('nav.statistics')}</Link></li>
               <li>
                 <Link to="/donate" className={`${footerLinkClass} items-center gap-2 text-champagne`}>
-                  <Heart className="h-3.5 w-3.5 text-gold" /> Donate
+                  <Heart className="h-3.5 w-3.5 text-gold" /> {t('nav.donate')}
                 </Link>
               </li>
               <li>
@@ -111,7 +113,7 @@ export const Footer: React.FC = () => {
 
           <div className="footer-column footer-emergency-column">
             <h2 className="footer-column__title mb-3 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-red-300">
-              <PhoneCall className="h-3.5 w-3.5" /> Emergency Helplines
+              <PhoneCall className="h-3.5 w-3.5" /> {t('footer.emergencyHelplines')}
             </h2>
             <ul className="footer-emergency-list grid grid-cols-2 gap-2">
               {[
@@ -131,6 +133,13 @@ export const Footer: React.FC = () => {
                 </li>
               ))}
             </ul>
+            <a
+              href="/offline-emergency.html"
+              className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-lg border border-red-300/30 px-3 py-2 text-xs font-semibold text-red-100 hover:bg-red-950/50"
+            >
+              <WifiOff className="h-4 w-4" aria-hidden="true" />
+              {t('emergency.offline')}
+            </a>
           </div>
         </section>
 

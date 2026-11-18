@@ -73,7 +73,13 @@ The public platform must include:
 - medical and emergency disclaimers;
 - content owner, source, review, and last-updated information;
 - keyboard and screen-reader accessibility;
+- a persistent Sinhala, Tamil, and English language selector that covers all public page content, forms, validation messages, navigation, and emergency guidance;
+- site-wide text resizing, high-contrast and easy-read display settings, with optional browser-based read-aloud;
+- a keyboard-accessible skip link, visible focus indicators, meaningful landmarks, labels, and status announcements;
+- an offline emergency page with essential Sri Lankan contacts in all three languages, available after the service worker has installed;
 - pages for a 404 state and unavailable-service state.
+
+The offline emergency page is a safety fallback, not an offline copy of the full website. Maps, directory updates, referral requests, AI support, and other network services require connectivity.
 
 ### 3.2 Drug Prevention and Awareness
 

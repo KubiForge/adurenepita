@@ -3,6 +3,90 @@
 @tailwind utilities;
 
 @layer base {
+  :focus-visible {
+    outline: 3px solid #F1DFA5;
+    outline-offset: 3px;
+  }
+
+  html[data-text-size='large'] {
+    font-size: 125%;
+  }
+
+  html[data-text-size='large'] [class*='text-['] {
+    font-size: 1.15em !important;
+  }
+
+  html[data-high-contrast='true'] body {
+    background: #000 !important;
+    color: #fff !important;
+  }
+
+  html[data-high-contrast='true'] [class*='text-ivory/'],
+  html[data-high-contrast='true'] [class*='text-gold/'],
+  html[data-high-contrast='true'] [class*='text-red-'],
+  html[data-high-contrast='true'] [class*='text-purple-'],
+  html[data-high-contrast='true'] [class*='text-teal-'],
+  html[data-high-contrast='true'] [class*='text-emerald-'],
+  html[data-high-contrast='true'] [class*='text-amber-'],
+  html[data-high-contrast='true'] [class*='text-blue-'] {
+    color: #fff !important;
+  }
+
+  html[data-high-contrast='true'] [class*='border-charcoal'] {
+    border-color: #fff !important;
+  }
+
+  html[data-easy-read='true'] body {
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
+
+  html[data-easy-read='true'] p,
+  html[data-easy-read='true'] li,
+  html[data-easy-read='true'] label {
+    letter-spacing: 0.02em;
+    line-height: 1.8 !important;
+  }
+
+  html:lang(si) body {
+    font-family: 'Noto Sans Sinhala', 'Iskoola Pota', Arial, sans-serif;
+  }
+
+  html:lang(ta) body {
+    font-family: 'Noto Sans Tamil', Latha, Arial, sans-serif;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .accessibility-skip-link {
+    position: fixed;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 100;
+    transform: translateY(-160%);
+    border-radius: 0.5rem;
+    background: #fff;
+    padding: 0.75rem 1rem;
+    color: #101113;
+    font-weight: 700;
+  }
+
+  .accessibility-skip-link:focus {
+    transform: translateY(0);
+  }
+}
+
+@layer base {
   :root {
     --bg-midnight: #101113;
     --bg-charcoal: #242426;
