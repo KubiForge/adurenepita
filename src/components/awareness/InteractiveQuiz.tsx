@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { QUIZ_QUESTIONS } from '../../data/awarenessData';
 import { Button } from '../common/Button';
 import { CheckCircle2, XCircle, RotateCcw, HelpCircle, Award, ArrowRight } from 'lucide-react';
+import { AppLanguage, useLanguage } from '../../context/LanguageContext';
 
 interface InteractiveQuizProps {
-  language?: 'en' | 'si';
+  language?: AppLanguage;
 }
 
 export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ language = 'en' }) => {
+  const { t } = useLanguage();
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
   const [selectedOptionIdx, setSelectedOptionIdx] = useState<number | null>(null);
   const [hasAnswered, setHasAnswered] = useState(false);
@@ -15,6 +17,14 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ language = 'en
   const [quizFinished, setQuizFinished] = useState(false);
 
   const currentQ = QUIZ_QUESTIONS[currentQuestionIdx];
+
+  useEffect(() => {
+    setCurrentQuestionIdx(0);
+    setSelectedOptionIdx(null);
+    setHasAnswered(false);
+    setScore(0);
+    setQuizFinished(false);
+  }, [language]);
 
   const handleSelectOption = (idx: number) => {
     if (hasAnswered) return;
@@ -51,16 +61,16 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ language = 'en
           <div className="flex items-center justify-between pb-3 border-b border-charcoal-light text-xs text-ivory/60">
             <span className="font-semibold text-gold flex items-center gap-1.5">
               <HelpCircle className="w-4 h-4" />
-              <span>Evidence-Based Drug Literacy Quiz</span>
+              <span>{t('awareness.quizTitle')}</span>
             </span>
             <span>
-              Question {currentQuestionIdx + 1} of {QUIZ_QUESTIONS.length}
+              {t('awareness.questionProgress', { current: currentQuestionIdx + 1, total: QUIZ_QUESTIONS.length })}
             </span>
           </div>
 
           <div>
             <h3 className="text-xl font-bold font-heading text-ivory">
-              {language === 'si' ? currentQ.questionSi : currentQ.question}
+              {language === 'si' ? currentQ.questionSi : language === 'ta' ? currentQ.questionTa : currentQ.question}
             </h3>
           </div>
 
@@ -86,7 +96,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ language = 'en
                   className={`w-full p-4 rounded-xl text-left border transition-all text-xs flex items-center justify-between ${btnStyle}`}
                 >
                   <div>
-                    <span className="font-medium text-sm block mb-0.5">{language === 'si' ? opt.textSi : opt.text}</span>
+                    <span className="font-medium text-sm block mb-0.5">{language === 'si' ? opt.textSi : language === 'ta' ? opt.textTa : opt.text}</span>
                   </div>
 
                   {hasAnswered && opt.isCorrect && (
@@ -103,10 +113,11 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ language = 'en
           {/* Explanation Box */}
           {hasAnswered && (
             <div className="p-4 rounded-xl bg-midnight border border-gold/30 text-xs space-y-2 animate-fade-in">
-              <div className="font-bold text-champagne">Clinical Scientific Explanation:</div>
-              <p className="text-ivory/80 leading-relaxed">{language === 'si' ? currentQ.explanationSi : currentQ.explanation}</p>
+              <div className="font-bold text-champagne">{t('awareness.quizExplanation')}</div>
+              <p className="text-ivory/80 leading-relaxed">{language === 'si' ? currentQ.explanationSi : language === 'ta' ? currentQ.explanationTa : currentQ.explanation}</p>
               <div className="text-[10px] text-ivory/40 pt-1 border-t border-charcoal-light">
-                <strong>Citation:</strong> {currentQ.citation}
+                <strong>{t('awareness.citation')}</strong>{' '}
+                {language === 'si' ? currentQ.citationSi : language === 'ta' ? currentQ.citationTa : currentQ.citation}
               </div>
             </div>
           )}
@@ -115,7 +126,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ language = 'en
           {hasAnswered && (
             <div className="flex justify-end pt-2">
               <Button variant="gold" size="md" onClick={handleNext} rightIcon={<ArrowRight className="w-4 h-4" />}>
-                {currentQuestionIdx < QUIZ_QUESTIONS.length - 1 ? 'Next Question' : 'View Quiz Results'}
+                {currentQuestionIdx < QUIZ_QUESTIONS.length - 1 ? t('awareness.nextQuestion') : t('awareness.viewResults')}
               </Button>
             </div>
           )}
@@ -129,19 +140,19 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ language = 'en
 
           <div>
             <h3 className="text-2xl font-bold font-heading text-ivory">
-              Quiz Completed!
+              {t('awareness.quizCompleted')}
             </h3>
             <div className="text-3xl font-bold font-mono text-champagne mt-3">
-              {score} / {QUIZ_QUESTIONS.length} Correct
+              {t('awareness.correctCount', { score, total: QUIZ_QUESTIONS.length })}
             </div>
             <p className="text-xs text-ivory/70 mt-2 max-w-md mx-auto">
-              Knowledge is the strongest shield against drug experimentation, misinformation, and stigma. Thank you for testing your knowledge.
+              {t('awareness.quizCompletionMessage')}
             </p>
           </div>
 
           <div className="pt-4 flex justify-center gap-3">
             <Button variant="charcoal" size="sm" onClick={handleRestart} leftIcon={<RotateCcw className="w-4 h-4" />}>
-              Try Again
+              {t('awareness.tryAgain')}
             </Button>
           </div>
         </div>

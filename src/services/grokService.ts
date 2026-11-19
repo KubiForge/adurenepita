@@ -206,6 +206,26 @@ class GrokService {
         };
       }
 
+      if (language === 'ta') {
+        return {
+          safetyLevel: 4,
+          safetyReason: reason,
+          content: `நீங்கள் அனுபவிக்கும் துயரம் மிகவும் கடினமானது. தயவுசெய்து இதைத் தனியாகச் சுமக்க வேண்டாம்; உங்கள் உயிர் மிகவும் மதிப்புமிக்கது.\n\nஉடனடியாக உதவிக்கு அழைக்கவும்:\n• நெருக்கடி உதவி: ${crisisSupport.number}\n• சுமித்ரயோ: ${sumithrayo.number} / ${sumithrayo.alternateNumber}\n• மனநல உதவி: ${mentalHealth.number}\n• அவசர ஊர்தி: ${ambulance.number}\n\nநம்பகமான ஒருவரை உடனே அணுகவும் அல்லது அருகிலுள்ள மருத்துவமனையின் அவசரப் பிரிவுக்குச் செல்லவும். நான் தானியங்கி உதவியாளர் மட்டுமே; அவசரக் குழுவை அனுப்ப முடியாது.`,
+          sources: [
+            {
+              id: 'crisis-ccc-1333',
+              title: 'நெருக்கடி மற்றும் மனநல உதவி',
+              organization: 'இலங்கை நெருக்கடி உதவி சேவை',
+              url: 'https://1333.lk',
+            },
+          ],
+          suggestedQuickActions: [
+            { label: `${crisisSupport.number} ஐ அழைக்கவும்`, action: 'call', payload: crisisSupport.number },
+            { label: `${ambulance.number} அவசர ஊர்தியை அழைக்கவும்`, action: 'call', payload: ambulance.number },
+          ],
+        };
+      }
+
       return {
         safetyLevel: 4,
         safetyReason: reason,
@@ -259,6 +279,26 @@ Please reach out to a trusted family member, close friend, or proceed immediatel
           suggestedQuickActions: [
             { label: `${ambulance.number} ගිලන්රථය අමතන්න`, action: 'call', payload: ambulance.number },
             { label: `${drugHelpline.number} NDDCB අමතන්න`, action: 'call', payload: drugHelpline.number },
+          ],
+        };
+      }
+
+      if (language === 'ta') {
+        return {
+          safetyLevel: 3,
+          safetyReason: reason,
+          content: `அவசர மருத்துவ எச்சரிக்கை: நீங்கள் கூறிய அறிகுறிகள் உடனடி மருத்துவ உதவி தேவைப்படுவதைக் குறிக்கின்றன.\n\n1. உடனே ${ambulance.number} அவசர ஊர்தியை அழைக்கவும்.\n2. நபர் மயக்கத்தில் இருந்தால், சுவாசப்பாதை திறந்திருக்கும் வகையில் அவரைப் பக்கவாட்டில் படுக்க வைக்கவும்.\n3. வாந்தி வரச் செய்யவோ வீட்டுச் சிகிச்சை அளிக்கவோ வேண்டாம்.\n4. மருத்துவ உதவி வரும் வரை அவருடன் இருங்கள்.\n\nபோதைப்பொருள் தொடர்பான ஆலோசனைக்கு ${drugHelpline.number} ஐ அழைக்கவும். அவசர சிகிச்சையைத் தாமதிக்க வேண்டாம்.`,
+          sources: [
+            {
+              id: 'who-overdose',
+              title: 'மிகைமருந்து அவசரநிலை மேலாண்மை',
+              organization: 'உலக சுகாதார நிறுவனம்',
+              url: 'https://www.who.int/news-room/fact-sheets/detail/opioid-overdose',
+            },
+          ],
+          suggestedQuickActions: [
+            { label: `${ambulance.number} அவசர ஊர்தியை அழைக்கவும்`, action: 'call', payload: ambulance.number },
+            { label: `${drugHelpline.number} உதவி எண்ணை அழைக்கவும்`, action: 'call', payload: drugHelpline.number },
           ],
         };
       }
@@ -318,6 +358,26 @@ For urgent substance guidance, call NDDCB hotline ${drugHelpline.number}. Do not
             { label: `${drugHelpline.number} අමතන්න (NDDCB)`, action: 'call', payload: drugHelpline.number },
             { label: 'ප්‍රතිකාර මධ්‍යස්ථාන සොයන්න', action: 'navigate', payload: '/support-directory' },
             { label: 'මඟපෙන්වූ පියවර අරඹන්න', action: 'wizard' },
+          ],
+        };
+      }
+
+      if (language === 'ta') {
+        return {
+          safetyLevel: 2,
+          content: `உங்கள் நிலையைப் பகிர்ந்ததற்கு நன்றி. உதவி நாடுவது துணிச்சலான முதல் படியாகும். நீங்கள் மரியாதையுடனும் அக்கறையுடனும் நடத்தப்பட வேண்டும்.\n\nமுக்கியமான பாதுகாப்பு அறிவிப்பு: நீண்டகாலமாக மதுபானம் அல்லது சில தூக்க மருந்துகளைப் பயன்படுத்தி வந்தால், மருத்துவ ஆலோசனையின்றி திடீரென நிறுத்துவது ஆபத்தான வலிப்பு உள்ளிட்ட பாதிப்புகளை ஏற்படுத்தலாம். மருத்துவரின் கண்காணிப்பில் பாதுகாப்பான சிகிச்சை பெறவும்.\n\n• ரகசிய ஆலோசனைக்கு ${drugHelpline.number} ஐ அழைக்கவும்.\n• நம்பகமான மருத்துவமனை அல்லது சிகிச்சை மையத்தை அணுகவும்.\n• அருகிலுள்ள உதவி மையங்களைக் கண்டறிய ஆதரவு மையப் பட்டியலைப் பயன்படுத்தவும்.\n\nநான் தானியங்கி உதவியாளர் மட்டுமே; நோயறிதலோ தனிப்பட்ட சிகிச்சைத் திட்டமோ வழங்க முடியாது.`,
+          sources: [
+            {
+              id: 'nddcb-support',
+              title: 'சிகிச்சை மற்றும் ஆலோசனை உதவி',
+              organization: 'தேசிய உதவி சேவை',
+              url: 'https://nddcb.gov.lk',
+            },
+          ],
+          suggestedQuickActions: [
+            { label: `${drugHelpline.number} ஐ அழைக்கவும்`, action: 'call', payload: drugHelpline.number },
+            { label: 'ஆதரவு மையங்களைக் கண்டறியவும்', action: 'navigate', payload: '/support-directory' },
+            { label: 'வழிகாட்டுதலைத் தொடங்கவும்', action: 'wizard' },
           ],
         };
       }
@@ -409,6 +469,53 @@ ${substanceMention.evidenceBasedTreatmentSi}
           { label: 'අයිස් (ICE) පිළිබඳ තොරතුරු', action: 'chat', payload: 'අයිස් (ICE) මත්ද්‍රව්‍යයේ බලපෑම් මොනවාද?' },
           { label: 'ප්‍රතිකාර මධ්‍යස්ථාන සොයන්න', action: 'navigate', payload: '/support-directory' },
           { label: 'මඟපෙන්වූ Wizard අරඹන්න', action: 'wizard' },
+        ],
+      };
+    }
+
+    if (language === 'ta') {
+      const substanceMention = DRUGS_DATA.find(
+        (drug) =>
+          message.toLowerCase().includes(drug.name.toLowerCase()) ||
+          message.toLowerCase().includes(drug.slug) ||
+          message.includes(drug.nameTa) ||
+          drug.commonNames.some((commonName) => message.toLowerCase().includes(commonName.toLowerCase()))
+      );
+
+      if (substanceMention) {
+        return {
+          safetyLevel: 1,
+          content: `${substanceMention.nameTa} தொடர்பான தகவல்:\n\n${substanceMention.descriptionTa}\n\nஒவ்வொருவருக்கும் ஏற்படும் பாதிப்புகள் மாறுபடலாம். உடல்நலப் பிரச்சினை அல்லது அவசர அறிகுறிகள் இருந்தால் உடனடியாக மருத்துவ உதவியை நாடுங்கள். சிகிச்சை மற்றும் ஆதரவு மையங்களைப் பற்றித் தெரிந்துகொள்ள விரும்பினால் கேளுங்கள். நான் தானியங்கி உதவியாளர் மட்டுமே; மருத்துவ நோயறிதல் வழங்க முடியாது.`,
+          sources: [
+            {
+              id: 'btd-substance-info',
+              title: 'சரிபார்க்கப்பட்ட சுகாதாரத் தகவல்',
+              organization: 'இலங்கை ஆதரவு சேவை',
+              url: 'https://nddcb.gov.lk',
+            },
+          ],
+          suggestedQuickActions: [
+            { label: 'ஆதரவு மையங்களைக் கண்டறியவும்', action: 'navigate', payload: '/support-directory' },
+            { label: 'வழிகாட்டுதலைத் தொடங்கவும்', action: 'wizard' },
+          ],
+        };
+      }
+
+      return {
+        safetyLevel: 1,
+        content: `வணக்கம். போதைப்பொருட்களின் உடல்நல ஆபத்துகள், எச்சரிக்கை அறிகுறிகள் மற்றும் இலங்கையில் கிடைக்கும் நம்பகமான சுகாதார ஆதரவு குறித்து உதவ முடியும்.\n\nஉங்களுக்கு எந்தத் தகவல் தேவை என்பதைச் சொல்லுங்கள். நான் தானியங்கி உதவியாளர் மட்டுமே; மருத்துவரோ அவசரச் சேவையோ அல்ல.`,
+        sources: [
+          {
+            id: 'btd-overview',
+            title: 'போதைப்பொருள் தடுப்பு மற்றும் விழிப்புணர்வு',
+            organization: 'இலங்கை சுகாதார ஆதரவு சேவை',
+            url: 'https://nddcb.gov.lk',
+          },
+        ],
+        suggestedQuickActions: [
+          { label: 'ஐஸ் பற்றிய தகவல்', action: 'chat', payload: 'ஐஸ் பயன்பாட்டின் உடல்நல ஆபத்துகள் என்ன?' },
+          { label: 'ஆதரவு மையங்களைக் கண்டறியவும்', action: 'navigate', payload: '/support-directory' },
+          { label: 'வழிகாட்டுதலைத் தொடங்கவும்', action: 'wizard' },
         ],
       };
     }

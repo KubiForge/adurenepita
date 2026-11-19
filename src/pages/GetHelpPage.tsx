@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/common/Button';
 import { CONTACT_INFO, telephoneHref } from '../config/contactInfo';
+import { useLanguage } from '../context/LanguageContext';
 import {
   Sparkles,
   Compass,
@@ -20,38 +21,39 @@ interface GetHelpPageProps {
 }
 
 export const GetHelpPage: React.FC<GetHelpPageProps> = ({ onOpenAiChat, onOpenWizard }) => {
+  const { t } = useLanguage();
   const pathways = [
     {
-      title: 'Check Your Substance-Use Risk',
-      desc: 'A private, non-diagnostic questionnaire with mild, moderate, severe, and emergency risk guidance.',
-      actionLabel: 'Start Confidential Assessment',
+      title: t('help.riskTitle'),
+      desc: t('help.riskDescription'),
+      actionLabel: t('help.assessmentAction'),
       actionType: 'navigate',
       link: '/assessment',
     },
     {
-      title: 'I Want to Stop Using Substances',
-      desc: 'You are taking a brave, life-changing step. We provide compassionate guidance without judgment, safe medical detox advice, and links to free local clinics.',
-      actionLabel: 'Explore Personal Recovery',
+      title: t('help.stopTitle'),
+      desc: t('help.stopDescription'),
+      actionLabel: t('help.recoveryAction'),
       actionType: 'wizard',
     },
     {
-      title: 'I Am Worried About a Friend or Family Member',
-      desc: 'Discover how to talk with a loved one without causing defensiveness or anger, set healthy boundaries, and connect them with trusted counseling.',
-      actionLabel: 'Support a Loved One',
+      title: t('help.friendTitle'),
+      desc: t('help.friendDescription'),
+      actionLabel: t('help.friendAction'),
       actionType: 'chat',
-      prompt: 'How can I compassionately support a close friend or sibling struggling with substance use?',
+      prompt: t('chat.quickFriendPrompt'),
     },
     {
-      title: 'I Have Urgent Health Concerns or Symptoms',
-      desc: `Learn to recognize acute toxicity, severe withdrawal hazards, and when emergency ${CONTACT_INFO.emergency.ambulance.number} medical assistance is essential.`,
-      actionLabel: 'Check Emergency Guidance',
+      title: t('help.urgentTitle'),
+      desc: t('help.urgentDescription', { number: CONTACT_INFO.emergency.ambulance.number }),
+      actionLabel: t('help.urgentAction'),
       actionType: 'chat',
-      prompt: 'What are the urgent medical warning signs and withdrawal risks I should watch out for?',
+      prompt: t('help.urgentPrompt'),
     },
     {
-      title: 'I Need Certified Professional Support',
-      desc: 'Find verified state and accredited non-profit centers across all 9 provinces and 25 districts with direct phone lines and verified hours.',
-      actionLabel: 'Find Support Centers',
+      title: t('help.supportTitle'),
+      desc: t('help.supportDescription'),
+      actionLabel: t('chat.quickCenters'),
       actionType: 'navigate',
       link: '/support-directory',
     },
@@ -62,13 +64,13 @@ export const GetHelpPage: React.FC<GetHelpPageProps> = ({ onOpenAiChat, onOpenWi
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
         <span className="text-xs uppercase tracking-wider text-gold font-bold">
-          Compassionate & Confidential Support
+          {t('help.eyebrow')}
         </span>
         <h1 className="text-4xl sm:text-5xl font-bold font-heading text-ivory">
-          A Safe Place to Ask for Help
+          {t('help.title')}
         </h1>
         <p className="text-sm text-ivory/70 leading-relaxed max-w-2xl mx-auto">
-          Whatever you or your loved one is facing, you do not have to walk this path in silence or shame. Choose a pathway below or speak privately with our AI Assistant.
+          {t('help.intro')}
         </p>
       </div>
 
@@ -112,10 +114,10 @@ export const GetHelpPage: React.FC<GetHelpPageProps> = ({ onOpenAiChat, onOpenWi
       <div className="p-8 rounded-2xl bg-charcoal border border-red-500/40 space-y-4">
         <div className="flex items-center gap-2 text-red-400 font-bold text-lg">
           <ShieldAlert className="w-6 h-6 animate-pulse" />
-          <span>Need Immediate Life-Saving Assistance?</span>
+          <span>{t('help.emergencyTitle')}</span>
         </div>
         <p className="text-xs sm:text-sm text-ivory/80 leading-relaxed">
-          If someone is unresponsive, having a seizure, experiencing severe chest pains, or having extreme difficulty breathing, call the <strong>Suwaseriya Free Ambulance Service</strong> immediately. For confidential substance crisis advice, call the <strong>NDDCB Hotline</strong> (toll-free).
+          {t('help.emergencyDescription')}
         </p>
         <div className="pt-2 flex flex-wrap gap-3">
           <a
@@ -123,14 +125,14 @@ export const GetHelpPage: React.FC<GetHelpPageProps> = ({ onOpenAiChat, onOpenWi
             className="btn-gold px-4 py-2.5 rounded-lg text-xs font-bold inline-flex items-center gap-2"
           >
             <PhoneCall className="w-4 h-4" />
-            <span>Call {CONTACT_INFO.emergency.ambulance.number} (Medical Emergency)</span>
+            <span>{t('help.callAmbulance', { number: CONTACT_INFO.emergency.ambulance.number })}</span>
           </a>
           <a
             href={telephoneHref(CONTACT_INFO.emergency.drugHelpline.number)}
             className="btn-charcoal px-4 py-2.5 rounded-lg text-xs font-bold inline-flex items-center gap-2 text-champagne"
           >
             <PhoneCall className="w-4 h-4 text-gold" />
-            <span>Call {CONTACT_INFO.emergency.drugHelpline.number} (NDDCB Drug Helpline)</span>
+            <span>{t('help.callHelpline', { number: CONTACT_INFO.emergency.drugHelpline.number })}</span>
           </a>
         </div>
       </div>

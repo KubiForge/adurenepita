@@ -4,6 +4,7 @@ import { ChatMessage, SourceCitation } from '../types/chat';
 import { grokService } from '../services/grokService';
 import { ASSETS } from '../config/assets';
 import { CONTACT_INFO } from '../config/contactInfo';
+import { useLanguage } from '../context/LanguageContext';
 import {
   Sparkles,
   Send,
@@ -20,16 +21,22 @@ import {
 import { Link } from 'react-router-dom';
 
 export const AssistantPage: React.FC = () => {
-  const language = 'en';
+  const { language, t } = useLanguage();
   const { triggerSafetyInterruption, openEmergencyModal } = useSafety();
 
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const activeLanguage = useRef(language);
+
+  useEffect(() => {
+    activeLanguage.current = language;
+    setInput('');
+  }, [language]);
 
   const getWelcome = (): string => {
-    return "Hello, I'm BEYOND THE DARKNESS AI Assistant. I can help you explore reliable information, talk through what you are concerned about, and find appropriate professional support. You can write naturally or use guided options. I'm an AI assistant, not a healthcare professional or emergency service.";
+    return t('chat.welcome');
   };
 
   useEffect(() => {
@@ -41,14 +48,14 @@ export const AssistantPage: React.FC = () => {
         timestamp: new Date().toISOString(),
         safetyLevel: 1,
         suggestedQuickActions: [
-          { label: "I'm trying to stop using drugs. What should I do first?", action: 'chat', payload: "I'm trying to stop using drugs. What should I do first?" },
-          { label: 'What are the risks and warning signs of Ice (Meth)?', action: 'chat', payload: 'What are the risks and warning signs of Ice (Methamphetamine)?' },
-          { label: 'How can I support a family member who is struggling?', action: 'chat', payload: 'How can I safely support a family member who is struggling with addiction?' },
-          { label: 'Find Verified Rehabilitation Centers in Sri Lanka', action: 'navigate', payload: '/support-directory' },
+          { label: t('chat.quickStop'), action: 'chat', payload: t('chat.quickStopPrompt') },
+          { label: t('chat.quickIce'), action: 'chat', payload: t('chat.quickIcePrompt') },
+          { label: t('chat.quickFriend'), action: 'chat', payload: t('chat.quickFriendPrompt') },
+          { label: t('chat.quickCenters'), action: 'navigate', payload: '/support-directory' },
         ],
       },
     ]);
-  }, []);
+  }, [language]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -77,8 +84,13 @@ export const AssistantPage: React.FC = () => {
         language,
       });
 
+      if (activeLanguage.current !== language) return;
+
       if (response.safetyLevel >= 3) {
-        triggerSafetyInterruption(response.safetyLevel, response.safetyReason || response.content);
+        triggerSafetyInterruption(
+          response.safetyLevel,
+          t(response.safetyLevel === 4 ? 'emergency.reason.crisis' : 'emergency.reason.medical'),
+        );
       }
 
       const aiMsg: ChatMessage = {
@@ -93,12 +105,16 @@ export const AssistantPage: React.FC = () => {
 
       setMessages((prev) => [...prev, aiMsg]);
     } catch (err) {
+      if (activeLanguage.current !== language) return;
       setMessages((prev) => [
         ...prev,
         {
           id: `err-${Date.now()}`,
           sender: 'assistant',
-          content: `I apologize, but I am temporarily unable to connect to the knowledge engine. If you require immediate guidance, please call the NDDCB hotline at ${CONTACT_INFO.emergency.drugHelpline.number} or ${CONTACT_INFO.emergency.ambulance.number} for emergency medical care.`,
+          content: t('chat.connectionError', {
+            hotline: CONTACT_INFO.emergency.drugHelpline.number,
+            ambulance: CONTACT_INFO.emergency.ambulance.number,
+          }),
           timestamp: new Date().toISOString(),
           safetyLevel: 1,
         },
@@ -131,14 +147,14 @@ export const AssistantPage: React.FC = () => {
           <div className="min-w-0">
             <div className="flex min-w-0 flex-wrap items-center gap-2">
               <h1 className="min-w-0 break-words text-xl font-bold font-heading text-ivory sm:text-2xl">
-                BEYOND THE DARKNESS AI Assistant
+                {t('chat.title')}
               </h1>
               <span className="shrink-0 rounded-full border border-gold/30 bg-gold/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-gold">
-                Active 24/7
+                {t('chat.active')}
               </span>
             </div>
             <p className="text-xs text-ivory/60 mt-0.5">
-              Empathetic, non-judgmental guidance and verified medical service routing in English.
+              {t('chat.subtitle')}
             </p>
           </div>
         </div>
@@ -148,7 +164,8 @@ export const AssistantPage: React.FC = () => {
           <button
             onClick={handleReset}
             className="p-2 rounded-xl bg-midnight border border-charcoal-light text-ivory/60 hover:text-gold transition-colors"
-            title="Reset Conversation"
+            title={t('chat.reset')}
+            aria-label={t('chat.reset')}
           >
             <RotateCcw className="w-4 h-4" />
           </button>
@@ -185,7 +202,7 @@ export const AssistantPage: React.FC = () => {
                   {!isUser && msg.sources && msg.sources.length > 0 && (
                     <div className="pt-2 border-t border-charcoal-light/60 text-[11px] space-y-1">
                       <span className="text-gold font-bold uppercase tracking-wider block">
-                        Verified Sources:
+                        {t('chat.verifiedSources')}
                       </span>
                       <div className="flex flex-wrap gap-2">
                         {msg.sources.map((s, idx) => (
@@ -232,7 +249,7 @@ export const AssistantPage: React.FC = () => {
           {isLoading && (
             <div className="flex gap-3 mr-auto items-center text-xs text-gold animate-pulse">
               <Sparkles className="w-4 h-4" />
-              <span>BEYOND THE DARKNESS is consulting verified knowledge sources...</span>
+              <span>{t('chat.thinking')}</span>
             </div>
           )}
 
@@ -250,7 +267,7 @@ export const AssistantPage: React.FC = () => {
           >
             <input
               type="text"
-              placeholder="Ask a confidential question, discuss your situation, or ask about support..."
+              placeholder={t('chat.placeholder')}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               className="flex-1 px-4 py-3 rounded-xl bg-charcoal border border-charcoal-light text-ivory text-xs sm:text-sm focus:outline-none focus:border-gold placeholder:text-ivory/40"
@@ -261,7 +278,7 @@ export const AssistantPage: React.FC = () => {
               className="btn-gold px-5 py-3 rounded-xl font-bold shadow-gold-subtle disabled:opacity-40 transition-all flex items-center gap-2"
             >
               <Send className="w-4 h-4 text-midnight" />
-              <span className="hidden sm:inline text-midnight">Send</span>
+              <span className="hidden sm:inline text-midnight">{t('chat.send')}</span>
             </button>
           </form>
 
@@ -269,9 +286,12 @@ export const AssistantPage: React.FC = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] text-ivory/50 gap-1 px-1">
             <span className="flex items-center gap-1">
               <Lock className="w-3 h-3 text-gold" />
-              <span>Confidential • AI Assistant does not replace medical or psychological diagnosis.</span>
+              <span>{t('chat.disclaimer')}</span>
             </span>
-            <span>Emergency? Call <strong>{CONTACT_INFO.emergency.drugHelpline.number} (NDDCB)</strong> or <strong>{CONTACT_INFO.emergency.ambulance.number} (Suwa Seriya)</strong></span>
+            <span>{t('chat.emergencyContact', {
+              hotline: CONTACT_INFO.emergency.drugHelpline.number,
+              ambulance: CONTACT_INFO.emergency.ambulance.number,
+            })}</span>
           </div>
         </div>
       </div>

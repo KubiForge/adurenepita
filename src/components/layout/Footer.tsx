@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUp, ExternalLink, Heart, Mail, MapPin, PhoneCall, Shield, WifiOff } from 'lucide-react';
-import { BRAND } from '../../config/brand';
 import { ASSETS } from '../../config/assets';
 import { CONTACT_INFO, telephoneHref } from '../../config/contactInfo';
 import { ORGANIZATION_LOGOS } from '../../data/organizationLogos';
@@ -30,10 +29,10 @@ export const Footer: React.FC = () => {
               <Heart className="h-5 w-5 fill-current" />
             </span>
             <h2 id="footer-showcase-title" className="mt-1 font-heading text-xl font-semibold text-ivory sm:text-2xl">
-              Together for a Brighter Tomorrow
+              {t('footer.sharedTomorrow')}
             </h2>
             <p className="mt-1 text-[10px] text-ivory/50 sm:text-xs">
-              A shared commitment to prevention, support, and recovery.
+              {t('footer.sharedCommitment')}
             </p>
           </div>
           <div className="footer-logo-grid grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-8">
@@ -55,27 +54,25 @@ export const Footer: React.FC = () => {
           className="footer-main-grid grid grid-cols-1 gap-6 border-b border-ivory/10 py-6 md:grid-cols-2 lg:grid-cols-[1.25fr_0.8fr_0.95fr_1.25fr] lg:gap-7"
         >
           <div className="footer-column">
-            <h2 className="footer-column__title mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Project Identity</h2>
+            <h2 className="footer-column__title mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-gold">{t('footer.projectIdentity')}</h2>
             <div className="footer-project-lockup flex items-center gap-3">
               <LogoPlaceholder
-                label="Beyond the Darkness"
-                category="Project identity"
+                label={t('app.title')}
+                category={t('footer.projectIdentity')}
                 src={ASSETS.logo}
                 compact
                 className="footer-project-logo w-14 shrink-0 rounded-lg border-gold/25 bg-charcoal/60"
               />
               <div>
-                <p className="font-heading text-base font-semibold leading-tight tracking-wide text-ivory">
-                  BEYOND THE DARKNESS
-                </p>
-                <p className="mt-1 text-[9px] uppercase tracking-[0.16em] text-ivory/45">A Youth-Led Initiative</p>
+                <p className="font-heading text-base font-semibold leading-tight tracking-wide text-ivory">{t('app.title')}</p>
+                <p className="mt-1 text-[9px] uppercase tracking-[0.16em] text-ivory/45">{t('footer.youthInitiative')}</p>
               </div>
             </div>
             <p className="mt-4 max-w-sm text-xs leading-5 text-ivory/60">
-              A youth-led, evidence-informed digital initiative for substance prevention, compassionate support navigation, and access to healthcare in Sri Lanka.
+              {t('footer.projectDescription')}
             </p>
             <span className="mt-3 inline-flex rounded-full border border-gold/20 bg-charcoal/70 px-3 py-1 text-[9px] font-bold uppercase tracking-[0.16em] text-gold">
-              {BRAND.slogan}
+              {t('app.slogan')}
             </span>
           </div>
 
@@ -105,7 +102,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link to="/admin" className={`${footerLinkClass} items-center gap-2`}>
-                  <Shield className="h-3.5 w-3.5 text-gold/70" /> Admin Portal
+                  <Shield className="h-3.5 w-3.5 text-gold/70" /> {t('footer.adminPortal')}
                 </Link>
               </li>
             </ul>
@@ -124,12 +121,12 @@ export const Footer: React.FC = () => {
               ].map((contact) => (
                 <li key={contact.id} className="footer-emergency-item rounded-lg border border-ivory/10 bg-charcoal/45 px-2.5 py-2 transition hover:border-gold/25 hover:bg-charcoal/70">
                   <a className="flex items-center justify-between gap-2" href={telephoneHref(contact.number)}>
-                    <span className="text-[10px] leading-4 text-ivory/70">{contact.footerLabel}</span>
+                    <span className="text-[10px] leading-4 text-ivory/70">{t(`emergency.contact.${contact.id}.name`)}</span>
                     <span className={`font-mono text-sm font-bold ${contact.id === 'ambulance' || contact.id === 'police' ? 'text-red-300' : 'text-champagne'}`}>
                       {contact.number}
                     </span>
                   </a>
-                  <p className="mt-0.5 text-[9px] text-ivory/40">{contact.footerDescription}</p>
+                  <p className="mt-0.5 text-[9px] text-ivory/40">{t(`emergency.contact.${contact.id}.description`)}</p>
                 </li>
               ))}
             </ul>
@@ -144,13 +141,13 @@ export const Footer: React.FC = () => {
         </section>
 
         <section
-          aria-label="Organization headquarters"
+          aria-label={t('footer.headquarters')}
           className="footer-org-info flex flex-col gap-3 border-b border-ivory/10 py-4 text-xs md:flex-row md:items-center md:justify-between"
         >
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-ivory/55">
-            <span className="font-semibold text-ivory/80">{BRAND.orgName}</span>
+            <span className="font-semibold text-ivory/80">{t('app.org')}</span>
             <span className="hidden text-gold/50 sm:inline">•</span>
-            <span>{BRAND.parentOrg} • {BRAND.district}</span>
+            <span>{t('app.parentOrg')} • {t('app.district')}</span>
             <span className="hidden text-gold/50 sm:inline">•</span>
             <span className="inline-flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-gold/75" />{CONTACT_INFO.project.address}</span>
           </div>
@@ -158,33 +155,36 @@ export const Footer: React.FC = () => {
             href={`mailto:${CONTACT_INFO.project.email}`}
             className="inline-flex shrink-0 items-center gap-2 font-semibold text-champagne transition hover:text-white"
           >
-            <Mail className="h-3.5 w-3.5" /> Contact Project Team
+            <Mail className="h-3.5 w-3.5" /> {t('footer.contactTeam')}
           </a>
         </section>
 
         <section aria-labelledby="footer-disclaimer-title" className="footer-disclaimer border-b border-ivory/10 py-4">
           <h2 id="footer-disclaimer-title" className="text-[10px] font-bold uppercase tracking-[0.18em] text-ivory/65">
-            Clinical Governance & Legal Disclaimer
+            {t('footer.legalDisclaimerTitle')}
           </h2>
           <p className="mt-1.5 text-[11px] leading-5 text-ivory/45">
-            BEYOND THE DARKNESS is an educational, awareness, and support navigational digital platform organized by the Leo Club of University of Sri Jayewardenepura. The platform and its AI Assistant do not provide medical diagnosis, clinical treatment plans, pharmaceutical prescriptions, or emergency dispatch services. Always consult certified healthcare professionals or hospital psychiatry units for clinical concerns. If you or someone you know is in immediate life-threatening physical danger, contact emergency medical services ({CONTACT_INFO.emergency.ambulance.number}) or the police ({CONTACT_INFO.emergency.police.number}) immediately.
+            {t('footer.legalDisclaimer', {
+              ambulance: CONTACT_INFO.emergency.ambulance.number,
+              police: CONTACT_INFO.emergency.police.number,
+            })}
           </p>
         </section>
 
         <div className="footer-bottom grid grid-cols-1 gap-3 pt-4 text-[10px] text-ivory/45 md:grid-cols-[1fr_auto_1fr] md:items-center">
           <p className="leading-5">
-            &copy; {new Date().getFullYear()} Beyond the Darkness. Organized by Leo Club of University of Sri Jayewardenepura (Leo District 306 D2).
+            &copy; {new Date().getFullYear()} {t('app.title')}. {t('footer.copyright')}
           </p>
           <nav aria-label="Legal and contact links" className="flex flex-wrap items-center gap-x-3 gap-y-1 md:justify-center">
-            <Link to="/privacy" className="transition hover:text-champagne">Privacy Policy</Link>
+            <Link to="/privacy" className="transition hover:text-champagne">{t('footer.privacy')}</Link>
             <span aria-hidden="true" className="text-gold/40">|</span>
-            <Link to="/terms" className="transition hover:text-champagne">Terms of Use</Link>
+            <Link to="/terms" className="transition hover:text-champagne">{t('footer.terms')}</Link>
             <span aria-hidden="true" className="text-gold/40">|</span>
-            <Link to="/legal-policy" className="transition hover:text-champagne">Legal & Rights</Link>
+            <Link to="/legal-policy" className="transition hover:text-champagne">{t('footer.legalRights')}</Link>
           </nav>
           <div className="flex items-center justify-between gap-4 md:justify-end">
             <p>
-              Designed &amp; Developed with care by{' '}
+              {t('footer.designedBy')}{' '}
               <a href={KUBI_FORGE_URL} target="_blank" rel="noopener noreferrer" className="font-semibold text-champagne transition hover:text-white">
                 Kubi Forge <ExternalLink className="ml-0.5 inline h-3 w-3" />
               </a>
@@ -192,10 +192,10 @@ export const Footer: React.FC = () => {
             <button
               onClick={scrollToTop}
               className="inline-flex shrink-0 items-center gap-1 rounded-full border border-ivory/10 bg-charcoal/60 px-2.5 py-1.5 transition hover:border-gold/35 hover:text-champagne"
-              aria-label="Scroll to top"
+              aria-label={t('footer.backToTop')}
             >
               <ArrowUp className="h-3 w-3" />
-              <span>Top</span>
+              <span>{t('footer.backToTop')}</span>
             </button>
           </div>
         </div>

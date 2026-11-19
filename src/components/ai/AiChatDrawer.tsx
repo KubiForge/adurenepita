@@ -18,6 +18,7 @@ import {
   PhoneCall,
 } from 'lucide-react';
 import { Button } from '../common/Button';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface AiChatDrawerProps {
   isOpen: boolean;
@@ -32,7 +33,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
   onOpenWizard,
   initialMessage,
 }) => {
-  const language = 'en';
+  const { language, t } = useLanguage();
   const { triggerSafetyInterruption } = useSafety();
 
   const [input, setInput] = useState('');
@@ -40,30 +41,31 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const activeLanguage = useRef(language);
 
   const getWelcomeMessage = (): string => {
-    return "Hello, I'm BEYOND THE DARKNESS AI Assistant. I can help you explore reliable information, talk through what you are concerned about, and find appropriate professional support. You can write naturally or use guided options. I'm an AI assistant, not a healthcare professional or emergency service.";
+    return t('chat.welcome');
   };
 
   // Initialize welcome message
   useEffect(() => {
-    if (messages.length === 0) {
-      setMessages([
-        {
-          id: 'msg-welcome',
-          sender: 'assistant',
-          content: getWelcomeMessage(),
-          timestamp: new Date().toISOString(),
-          safetyLevel: 1,
-          suggestedQuickActions: [
-            { label: 'What are the risks of ICE?', action: 'chat', payload: 'What are the dangers and health risks of ICE (Methamphetamine)?' },
-            { label: 'How to support a worried friend?', action: 'chat', payload: 'How can I support a friend struggling with substance addiction?' },
-            { label: 'Find Sri Lankan Centers', action: 'navigate', payload: '/support-directory' },
-            { label: 'Creative Guided Wizard', action: 'wizard' },
-          ],
-        },
-      ]);
-    }
+    activeLanguage.current = language;
+    setInput('');
+    setMessages([
+      {
+        id: 'msg-welcome',
+        sender: 'assistant',
+        content: getWelcomeMessage(),
+        timestamp: new Date().toISOString(),
+        safetyLevel: 1,
+        suggestedQuickActions: [
+          { label: t('chat.quickIce'), action: 'chat', payload: t('chat.quickIcePrompt') },
+          { label: t('chat.quickFriend'), action: 'chat', payload: t('chat.quickFriendPrompt') },
+          { label: t('chat.quickCenters'), action: 'navigate', payload: '/support-directory' },
+          { label: t('chat.quickWizard'), action: 'wizard' },
+        ],
+      },
+    ]);
   }, [language]);
 
   // Handle external prompt (e.g. from Guided Wizard handover)
@@ -96,9 +98,14 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
     try {
       const response = await grokService.generateResponse(text, messages, language);
 
+      if (activeLanguage.current !== language) return;
+
       // Trigger global modal if level 3 or 4
       if (response.safetyLevel >= 3) {
-        triggerSafetyInterruption(response.safetyLevel, response.safetyReason);
+        triggerSafetyInterruption(
+          response.safetyLevel,
+          t(response.safetyLevel === 4 ? 'emergency.reason.crisis' : 'emergency.reason.medical'),
+        );
       }
 
       const assistantMessage: ChatMessage = {
@@ -114,13 +121,16 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err) {
+      if (activeLanguage.current !== language) return;
       setMessages((prev) => [
         ...prev,
         {
           id: `asst-${Date.now()}`,
           sender: 'assistant',
-          content:
-            `I experienced a brief connection disruption. Please remember that if this is an emergency, you can always reach the NDDCB hotline at ${CONTACT_INFO.emergency.drugHelpline.number} or the ${CONTACT_INFO.emergency.ambulance.number} Suwaseriya free ambulance immediately.`,
+          content: t('chat.connectionError', {
+            hotline: CONTACT_INFO.emergency.drugHelpline.number,
+            ambulance: CONTACT_INFO.emergency.ambulance.number,
+          }),
           timestamp: new Date().toISOString(),
           safetyLevel: 1,
         },
@@ -169,13 +179,13 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
             </div>
             <div className="min-w-0">
               <h2 className="flex flex-wrap items-center gap-1.5 font-heading text-base font-bold text-ivory">
-                <span className="break-words">Beyond the Darkness AI</span>
+                <span className="break-words">{t('chat.title')}</span>
                 <span className="text-[10px] uppercase px-2 py-0.5 rounded bg-midnight text-gold border border-gold/20 font-sans">
-                  Grok RAG
+                  {t('chat.engine')}
                 </span>
               </h2>
               <p className="text-[11px] text-ivory/60">
-                Substance prevention and recovery support assistant
+                {t('chat.subtitle')}
               </p>
             </div>
           </div>
@@ -184,15 +194,15 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
             <button
               onClick={handleResetChat}
               className="p-2 rounded-lg text-ivory/60 hover:text-gold hover:bg-charcoal-light transition-colors"
-              title="Clear conversation"
-              aria-label="Reset chat"
+              title={t('chat.reset')}
+              aria-label={t('chat.reset')}
             >
               <RotateCcw className="w-4 h-4" />
             </button>
             <button
               onClick={onClose}
               className="p-2 rounded-lg text-ivory/60 hover:text-gold hover:bg-charcoal-light transition-colors"
-              aria-label="Close AI chat"
+              aria-label={t('cta.close')}
             >
               <X className="w-5 h-5" />
             </button>
@@ -203,7 +213,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-charcoal-light bg-charcoal/60 px-4 py-2.5 text-xs">
           <span className="text-ivory/70 flex items-center gap-1.5">
             <Compass className="w-3.5 h-3.5 text-gold" />
-            <span>Not sure what to type?</span>
+            <span>{t('chat.notSure')}</span>
           </span>
           <button
             onClick={() => {
@@ -212,7 +222,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
             }}
             className="text-gold font-semibold hover:underline flex items-center gap-1"
           >
-            <span>Launch 10-Step Wizard</span>
+            <span>{t('cta.startWizard')}</span>
           </button>
         </div>
 
@@ -240,7 +250,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
                   {!isUser && isEmergency && (
                     <div className="flex items-center gap-1.5 text-xs font-bold text-red-400 mb-2 pb-1.5 border-b border-red-500/30">
                       <ShieldAlert className="w-4 h-4 animate-pulse" />
-                      <span>{msg.safetyReason || 'Medical Emergency / Crisis Protocol'}</span>
+                      <span>{msg.safetyReason || t('chat.emergencyProtocol')}</span>
                     </div>
                   )}
 
@@ -251,7 +261,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
                   {!isUser && msg.sources && msg.sources.length > 0 && (
                     <div className="mt-4 pt-3 border-t border-charcoal-light/60">
                       <span className="text-[11px] font-semibold uppercase tracking-wider text-gold/80 block mb-1.5">
-                        Verified Sources & References:
+                        {t('chat.verifiedSources')}
                       </span>
                       <div className="space-y-1">
                         {msg.sources.map((src) => (
@@ -284,7 +294,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
                         <button
                           onClick={() => handleCopy(msg.id, msg.content)}
                           className="hover:text-gold transition-colors"
-                          title="Copy message"
+                          title={t('chat.copy')}
                         >
                           {copiedId === msg.id ? (
                             <Check className="w-3.5 h-3.5 text-emerald-400" />
@@ -329,7 +339,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
           {isLoading && (
             <div className="flex items-center gap-2 text-ivory/50 text-xs p-3 rounded-xl bg-charcoal/50 border border-charcoal-light w-fit">
               <Sparkles className="w-4 h-4 text-gold animate-spin" />
-              <span>Grok AI is thinking and retrieving approved clinical evidence...</span>
+              <span>{t('chat.thinking')}</span>
             </div>
           )}
 
@@ -347,7 +357,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
           >
             <input
               type="text"
-              placeholder="Ask a question or explain what's on your mind in English..."
+              placeholder={t('chat.placeholder')}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isLoading}
@@ -358,14 +368,14 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
               variant="gold"
               disabled={!input.trim() || isLoading}
               className="px-4 py-3"
-              aria-label="Send message"
+              aria-label={t('chat.send')}
             >
               <Send className="w-4 h-4" />
             </Button>
           </form>
 
           <p className="text-[10px] text-ivory/40 text-center mt-2 leading-tight">
-            Confidential & Anonymous. BEYOND THE DARKNESS is an AI assistant, not a doctor or emergency dispatch.
+            {t('chat.disclaimer')}
           </p>
         </div>
       </div>

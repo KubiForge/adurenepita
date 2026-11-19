@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BRAND } from '../config/brand';
 import { CONTACT_INFO, telephoneHref } from '../config/contactInfo';
 import { useLanguage } from '../context/LanguageContext';
 import { DRUGS_DATA } from '../data/drugsData';
@@ -42,7 +41,7 @@ if (!thalangamaCenter || !melMeduraCenter) {
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }) => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [openFaqId, setOpenFaqId] = React.useState<string | null>(FAQS_DATA[0].id);
   const [substancePage, setSubstancePage] = React.useState(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false);
@@ -85,16 +84,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
           <div className="cinematic-hero__content">
             <p className="cinematic-hero__eyebrow">
               <span className="cinematic-hero__eyebrow-mark" aria-hidden="true" />
-              {BRAND.slogan}
+              {t('app.slogan')}
             </p>
 
             <h1 className="cinematic-hero__title">
-              <span>Beyond the Darkness.</span>
-              <span className="cinematic-hero__title-gold">Towards a Brighter Tomorrow.</span>
+              <span>{t('home.heroTitle')}</span>
+              <span className="cinematic-hero__title-gold">{t('app.tagline')}</span>
             </h1>
 
             <div className="cinematic-hero__copy">
-              <p>{BRAND.heroSubtext}</p>
+              <p>{t('home.heroDescription')}</p>
             </div>
 
             <div className="cinematic-hero__actions">
@@ -115,7 +114,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
                 className="cinematic-hero__action cinematic-hero__action-secondary"
                 leftIcon={<Compass className="cinematic-hero__action-icon h-5 w-5 text-gold" />}
               >
-                Launch Creative Wizard
+                {t('cta.startWizard')}
               </Button>
 
               <Link
@@ -123,13 +122,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
                 className="cinematic-hero__action cinematic-hero__action-secondary"
               >
                 <MapPin className="cinematic-hero__action-icon h-4 w-4 text-gold" aria-hidden="true" />
-                <span>Find Care Centers</span>
+                <span>{t('home.findCare')}</span>
               </Link>
             </div>
 
             <p className="cinematic-hero__promise">
-              <span>OUR PROMISE</span>
-              {BRAND.promise}
+              <span>{t('home.promiseLabel')}</span>
+              {t('app.promise')}
             </p>
           </div>
         </div>
@@ -137,9 +136,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
         <a
           href="#homepage-mission"
           className="cinematic-hero__scroll"
-          aria-label="Scroll to discover the campaign"
+          aria-label={t('home.scrollDiscover')}
         >
-          <span>SCROLL TO DISCOVER</span>
+          <span>{t('home.scrollDiscover')}</span>
           <ChevronDown className="h-4 w-4" aria-hidden="true" />
         </a>
       </section>
@@ -148,10 +147,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
       <section id="homepage-mission" className="homepage-mission max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
           <span className="text-xs uppercase tracking-wider text-gold font-bold">
-            Guiding Philosophy
+            {t('home.philosophy')}
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold font-heading text-ivory mt-1">
-            Prevent. Support. Connect.
+            {t('app.slogan')}
           </h2>
         </div>
 
@@ -161,10 +160,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               <BookOpen className="w-7 h-7" />
             </div>
             <h3 className="text-xl font-bold font-heading text-champagne mb-2">
-              PREVENT
+              {t('home.prevent')}
             </h3>
             <p className="text-xs text-ivory/70 leading-relaxed">
-              Equipping university students, school pupils, and families with rigorous, evidence-based knowledge to demystify peer pressure and prevent initial drug experimentation.
+              {t('home.preventDescription')}
             </p>
           </div>
 
@@ -173,10 +172,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               <Sparkles className="w-7 h-7" />
             </div>
             <h3 className="text-xl font-bold font-heading text-champagne mb-2">
-              SUPPORT
+              {t('home.support')}
             </h3>
             <p className="text-xs text-ivory/70 leading-relaxed">
-              Offering an empathetic, completely anonymous AI-powered assistant and 10-step guided intake wizard that eliminates stigma and fear of judgment.
+              {t('home.supportDescription')}
             </p>
           </div>
 
@@ -185,10 +184,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               <MapPin className="w-7 h-7" />
             </div>
             <h3 className="text-xl font-bold font-heading text-champagne mb-2">
-              CONNECT
+              {t('home.connect')}
             </h3>
             <p className="text-xs text-ivory/70 leading-relaxed">
-              Bridging vulnerable individuals directly with verified Sri Lankan hospitals, NDDCB centers, and non-profit psychosocial counseling facilities across all 25 districts.
+              {t('home.connectDescription')}
             </p>
           </div>
         </div>
@@ -200,19 +199,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
           <div className="homepage-reality-grid grid grid-cols-1 lg:grid-cols-[0.92fr_1.08fr] gap-10 items-center lg:gap-14">
             <div className="space-y-4">
               <span className="text-xs uppercase tracking-wider text-gold font-bold">
-                The Sri Lankan Reality
+                {t('home.realityEyebrow')}
               </span>
               <h2 className="text-3xl sm:text-4xl font-bold font-heading text-ivory">
-                Why Beyond the Darkness Matters Right Now
+                {t('home.realityTitle')}
               </h2>
               <p className="text-sm text-ivory/80 leading-relaxed">
-                In recent years, the illicit drug landscape in Sri Lanka has undergone an alarming transformation. The emergence and aggressive proliferation of crystalline methamphetamine (ICE) and diverted pharmaceuticals have severely impacted university youth and adolescents.
+                {t('home.realityParagraph1')}
               </p>
               <p className="text-sm text-ivory/80 leading-relaxed">
-                Traditional barriers to recovery—such as deep social stigma, fear of legal repercussions, lack of localized verified information, and shame—prevent thousands from seeking timely medical care before irreversible neurotoxic harm occurs.
+                {t('home.realityParagraph2')}
               </p>
               <p className="text-sm text-ivory/80 leading-relaxed">
-                The <strong>Leo Club of University of Sri Jayewardenepura</strong> established this digital bridge to guarantee that any young person or parent in distress can ask questions safely, access verified science, and discover immediate local medical support.
+                {t('home.realityParagraph3')}
               </p>
             </div>
 
@@ -220,29 +219,29 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               <div className="impact-stat-card charcoal-card p-5 border-charcoal-light">
                 <span className="impact-stat-icon" aria-hidden="true"><Users className="h-4 w-4" /></span>
                 <div className="text-3xl font-bold font-mono text-champagne">58%+</div>
-                <div className="text-xs text-ivory font-semibold mt-1">Youth Inquiries</div>
-                <p className="text-[11px] text-ivory/60 mt-1">Aged 18–29 seeking rehabilitation</p>
+                <div className="text-xs text-ivory font-semibold mt-1">{t('home.statYouth')}</div>
+                <p className="text-[11px] text-ivory/60 mt-1">{t('home.statYouthDescription')}</p>
               </div>
 
               <div className="impact-stat-card charcoal-card p-5 border-charcoal-light">
                 <span className="impact-stat-icon" aria-hidden="true"><MapPin className="h-4 w-4" /></span>
                 <div className="text-3xl font-bold font-mono text-gold">25</div>
-                <div className="text-xs text-ivory font-semibold mt-1">Districts Mapped</div>
-                <p className="text-[11px] text-ivory/60 mt-1">All 9 Sri Lankan provinces covered</p>
+                <div className="text-xs text-ivory font-semibold mt-1">{t('home.statDistricts')}</div>
+                <p className="text-[11px] text-ivory/60 mt-1">{t('home.statDistrictsDescription')}</p>
               </div>
 
               <div className="impact-stat-card charcoal-card p-5 border-charcoal-light">
                 <span className="impact-stat-icon" aria-hidden="true"><ShieldCheck className="h-4 w-4" /></span>
                 <div className="text-3xl font-bold font-mono text-champagne">100%</div>
-                <div className="text-xs text-ivory font-semibold mt-1">Anonymous & Free</div>
-                <p className="text-[11px] text-ivory/60 mt-1">Zero forced registration</p>
+                <div className="text-xs text-ivory font-semibold mt-1">{t('home.statAnonymous')}</div>
+                <p className="text-[11px] text-ivory/60 mt-1">{t('home.statAnonymousDescription')}</p>
               </div>
 
               <div className="impact-stat-card charcoal-card p-5 border-charcoal-light">
                 <span className="impact-stat-icon" aria-hidden="true"><Compass className="h-4 w-4" /></span>
                 <div className="text-3xl font-bold font-mono text-gold">1</div>
-                <div className="text-xs text-ivory font-semibold mt-1">Language Available</div>
-                <p className="text-[11px] text-ivory/60 mt-1">English</p>
+                <div className="text-xs text-ivory font-semibold mt-1">{t('home.statLanguages')}</div>
+                <p className="text-[11px] text-ivory/60 mt-1">{t('language.en')}, {t('language.si')}, {t('language.ta')}</p>
               </div>
             </div>
           </div>
@@ -254,14 +253,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
           <div>
             <span className="text-xs uppercase tracking-wider text-gold font-bold">
-              Evidence-Based Monograph Library
+              {t('home.drugLibraryEyebrow')}
             </span>
             <h2 className="text-3xl font-bold font-heading text-ivory mt-1">
-              Substance Awareness & Education
+              {t('nav.learn')}
             </h2>
           </div>
           <Link to="/learn" className="text-xs text-gold hover:underline font-semibold flex items-center gap-1">
-            <span>Explore Full Knowledge Centre</span>
+            <span>{t('home.openLibrary')}</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -270,24 +269,26 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
           className="substance-carousel"
           role="region"
           aria-roledescription="carousel"
-          aria-label="Featured substance awareness cards"
+          aria-label={t('home.featuredSubstances')}
         >
           <div className="homepage-substances-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {displayedSubstances.map((drug, index) => {
               const imageEntry = DRUG_IMAGE_ENTRIES.find((entry) => entry.monographSlug === drug.slug);
+              const drugName = language === 'si' ? drug.nameSi : language === 'ta' ? drug.nameTa : drug.name;
+              const drugDescription = language === 'si' ? drug.descriptionSi : language === 'ta' ? drug.descriptionTa : drug.description;
               return (
                 <article
                   key={drug.id}
                   className="substance-card charcoal-card"
                   style={{ animationDelay: `${index * 75}ms` }}
                   aria-roledescription="slide"
-                  aria-label={`${drug.name}, set ${substancePage + 1} of ${substancePageCount}`}
+                  aria-label={t('home.carouselItem', { name: drugName, current: substancePage + 1, total: substancePageCount })}
                 >
                   <div className="substance-card__header">
                     {imageEntry && (
                       <img
                         src={`/assets/drugs/${imageEntry.file}`}
-                        alt={`${drug.name} awareness illustration`}
+                        alt={t('home.drugIllustration', { name: drugName })}
                         className="substance-card__image"
                         loading="lazy"
                         decoding="async"
@@ -299,24 +300,24 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
                       </span>
                       <span className="substance-card__review">
                         <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
-                        Medically Reviewed
+                        {t('home.medicallyReviewed')}
                       </span>
                     </div>
                   </div>
 
                   <div className="substance-card__content">
                     <h3 className="font-heading font-bold text-lg text-ivory">
-                      {drug.name}
+                      {drugName}
                     </h3>
 
                     <p className="text-xs text-ivory/70 mt-3 line-clamp-3 leading-relaxed">
-                      {drug.description}
+                      {drugDescription}
                     </p>
 
                     <div className="substance-card__alert">
                       <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                       <p>
-                        <strong>Emergency Alert:</strong> {drug.emergencySigns[0]}
+                        <strong>{t('home.emergencyAlert')}:</strong> {t('home.callEmergency')}
                       </p>
                     </div>
 
@@ -324,7 +325,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
                       to={`/learn/${drug.slug}`}
                       className="substance-card__link"
                     >
-                      <span>Read Clinical Monograph</span>
+                      <span>{t('home.readMonograph')}</span>
                       <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                     </Link>
                   </div>
@@ -333,26 +334,26 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
             })}
           </div>
 
-          <div className="substance-carousel__controls" aria-label="Carousel controls">
+          <div className="substance-carousel__controls" aria-label={t('home.carouselControls')}>
             <div className="substance-carousel__buttons">
               <button
                 type="button"
                 className="substance-carousel__button"
-                aria-label="Show previous substance cards"
+                aria-label={t('home.previousCards')}
                 onClick={() => setSubstancePage((current) => (current - 1 + substancePageCount) % substancePageCount)}
                 disabled={substancePageCount <= 1}
               >
                 <ChevronLeft className="h-4 w-4" aria-hidden="true" />
               </button>
 
-              <div className="substance-carousel__dots" role="tablist" aria-label="Choose substance card set">
+              <div className="substance-carousel__dots" role="tablist" aria-label={t('home.chooseCardSet')}>
                 {Array.from({ length: substancePageCount }, (_, page) => (
                   <button
                     key={page}
                     type="button"
                     role="tab"
                     className={`substance-carousel__dot${page === substancePage ? ' is-active' : ''}`}
-                    aria-label={`Show substance card set ${page + 1}`}
+                    aria-label={t('home.showCardSet', { current: page + 1 })}
                     aria-selected={page === substancePage}
                     onClick={() => setSubstancePage(page)}
                   />
@@ -362,7 +363,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               <button
                 type="button"
                 className="substance-carousel__button"
-                aria-label="Show next substance cards"
+                aria-label={t('home.nextCards')}
                 onClick={() => setSubstancePage((current) => (current + 1) % substancePageCount)}
                 disabled={substancePageCount <= 1}
               >
@@ -379,13 +380,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
           <div className="max-w-2xl space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/15 text-gold text-xs font-bold border border-gold/30">
               <Compass className="w-4 h-4" />
-              <span>Interactive Step-by-Step Experience</span>
+              <span>{t('home.wizardEyebrow')}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-ivory">
-              Not Sure Where to Begin? Use Our Creative Wizard.
+              {t('home.wizardTitle')}
             </h2>
             <p className="text-sm text-ivory/70 leading-relaxed">
-              If typing a detailed message feels daunting or confusing, our 10-step conversational wizard guides you gently through your situation, primary concerns, and preferred local support options.
+              {t('home.wizardDescription')}
             </p>
 
             <div className="pt-2 flex flex-wrap items-center gap-4">
@@ -395,10 +396,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
                 onClick={onOpenWizard}
                 rightIcon={<ArrowRight className="w-4 h-4" />}
               >
-                Launch 10-Step Wizard
+                {t('cta.startWizard')}
               </Button>
               <Button variant="charcoal" size="md" onClick={onOpenAiChat}>
-                Talk to AI Assistant
+                {t('cta.talkToAi')}
               </Button>
             </div>
           </div>
@@ -409,13 +410,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-10">
           <span className="text-xs uppercase tracking-wider text-gold font-bold">
-            Verified Support Directory
+            {t('home.supportDirectory')}
           </span>
           <h2 className="text-3xl font-bold font-heading text-ivory mt-1">
-            Certified Sri Lankan Care Centers
+            {t('home.careTitle')}
           </h2>
           <p className="text-xs text-ivory/60 mt-2">
-            Explore state rehabilitation centers and government hospital psychiatric clinics mapped with verified contacts and operating hours.
+            {t('home.careDescription')}
           </p>
         </div>
 
@@ -423,19 +424,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
           <div className="charcoal-card p-6 border-charcoal-light flex flex-col justify-between">
             <div>
               <span className="text-[10px] px-2 py-0.5 rounded bg-midnight text-gold border border-gold/20 font-bold uppercase">
-                Government Facility
+                {t('home.government')}
               </span>
               <h3 className="font-heading font-bold text-base text-ivory mt-2">
-                NDDCB Thalangama Rehabilitation Centre
+                {language === 'si' ? thalangamaCenter.nameSi : language === 'ta' ? thalangamaCenter.nameTa : thalangamaCenter.name}
               </h3>
               <p className="text-xs text-ivory/60 mt-2">
-                {thalangamaCenter.address} • 24-hour residential facilities, multi-disciplinary detox, and counseling.
+                {t('home.thalangamaDescription')}
               </p>
             </div>
             <div className="mt-4 pt-3 border-t border-charcoal-light flex items-center justify-between">
               <span className="font-mono text-xs font-bold text-champagne">{thalangamaCenter.phone}</span>
               <a href={telephoneHref(thalangamaCenter.phone)} className="text-xs text-gold font-semibold hover:underline">
-                Call Now
+                {t('cta.callNow')}
               </a>
             </div>
           </div>
@@ -443,19 +444,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
           <div className="charcoal-card p-6 border-charcoal-light flex flex-col justify-between">
             <div>
               <span className="text-[10px] px-2 py-0.5 rounded bg-midnight text-gold border border-gold/20 font-bold uppercase">
-                NGO / Sumithrayo
+                {t('home.nonprofit')}
               </span>
               <h3 className="font-heading font-bold text-base text-ivory mt-2">
-                Mel Medura (Sumithrayo Care)
+                {language === 'si' ? melMeduraCenter.nameSi : language === 'ta' ? melMeduraCenter.nameTa : melMeduraCenter.name}
               </h3>
               <p className="text-xs text-ivory/60 mt-2">
-                {melMeduraCenter.address} • Free, confidential drop-in counseling, relapse prevention, and family healing.
+                {t('home.melMeduraDescription')}
               </p>
             </div>
             <div className="mt-4 pt-3 border-t border-charcoal-light flex items-center justify-between">
               <span className="font-mono text-xs font-bold text-champagne">{melMeduraCenter.phone}</span>
               <a href={telephoneHref(melMeduraCenter.phone)} className="text-xs text-gold font-semibold hover:underline">
-                Call Now
+                {t('cta.callNow')}
               </a>
             </div>
           </div>
@@ -463,19 +464,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
           <div className="charcoal-card p-6 border-charcoal-light flex flex-col justify-between">
             <div>
               <span className="text-[10px] px-2 py-0.5 rounded bg-midnight text-gold border border-gold/20 font-bold uppercase">
-                National Hospital
+                {t('home.hospital')}
               </span>
               <h3 className="font-heading font-bold text-base text-ivory mt-2">
-                National Institute of Mental Health (NIMH)
+                {t('home.mentalHealthInstitute')}
               </h3>
               <p className="text-xs text-ivory/60 mt-2">
-                Angoda • Tertiary psychiatric stabilization, emergency 24/7 care for severe withdrawal and acute psychosis.
+                {t('home.mentalHealthDescription')}
               </p>
             </div>
             <div className="mt-4 pt-3 border-t border-charcoal-light flex items-center justify-between">
               <span className="font-mono text-xs font-bold text-champagne">{CONTACT_INFO.emergency.mentalHealth.number}</span>
               <a href={telephoneHref(CONTACT_INFO.emergency.mentalHealth.number)} className="text-xs text-gold font-semibold hover:underline">
-                Call Now
+                {t('cta.callNow')}
               </a>
             </div>
           </div>
@@ -484,7 +485,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
         <div className="text-center mt-8">
           <Link to="/support-directory">
             <Button variant="gold" size="md" rightIcon={<ArrowRight className="w-4 h-4" />}>
-              Open Interactive Sri Lanka Map & 25 Districts
+              {t('home.openMap')}
             </Button>
           </Link>
         </div>
@@ -495,14 +496,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
           <div>
             <span className="text-xs uppercase tracking-wider text-gold font-bold">
-              Youth In Action
+              {t('home.youthInAction')}
             </span>
             <h2 className="text-3xl font-bold font-heading text-ivory mt-1">
-              Campaign Drives & Events
+              {t('home.campaignsTitle')}
             </h2>
           </div>
           <Link to="/campaigns" className="text-xs text-gold hover:underline font-semibold flex items-center gap-1">
-            <span>Volunteer & Get Involved</span>
+            <span>{t('home.volunteer')}</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -512,19 +513,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
             <div key={ev.id} className="charcoal-card p-6 border-charcoal-light flex flex-col justify-between">
               <div>
                 <span className="text-[10px] font-bold text-gold uppercase tracking-wider block mb-1">
-                  {ev.phase}
+                  {language === 'si' ? ev.phaseSi : language === 'ta' ? ev.phaseTa : ev.phase}
                 </span>
                 <h3 className="font-heading font-bold text-base text-ivory">
-                  {ev.title}
+                  {language === 'si' ? ev.titleSi : language === 'ta' ? ev.titleTa : ev.title}
                 </h3>
                 <p className="text-xs text-ivory/60 mt-3 leading-relaxed">
-                  {ev.description}
+                  {language === 'si' ? ev.descriptionSi : language === 'ta' ? ev.descriptionTa : ev.description}
                 </p>
               </div>
 
               <div className="mt-4 pt-3 border-t border-charcoal-light text-xs text-ivory/50 space-y-1">
-                <div><strong>Date:</strong> {ev.date}</div>
-                <div><strong>Location:</strong> {ev.location}</div>
+                <div><strong>{t('home.date')}:</strong> {language === 'si' ? ev.dateSi : language === 'ta' ? ev.dateTa : ev.date}</div>
+                <div><strong>{t('home.location')}:</strong> {language === 'si' ? ev.locationSi : language === 'ta' ? ev.locationTa : ev.location}</div>
               </div>
             </div>
           ))}
@@ -536,15 +537,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
         <div className="charcoal-card p-8 sm:p-12 border-gold/30 bg-gradient-to-r from-charcoal via-midnight to-charcoal text-center">
           <Heart className="w-10 h-10 text-gold fill-gold/20 mx-auto mb-3" />
           <h2 className="text-2xl sm:text-3xl font-bold font-heading text-ivory">
-            Support Drug Prevention & Recovery in Sri Lanka
+            {t('home.donationTitle')}
           </h2>
           <p className="text-xs text-ivory/70 max-w-xl mx-auto mt-2 leading-relaxed">
-            Donation intake is currently paused while approved payment and public reporting details are prepared. Visit the donation page for the current status; no unverified totals or bank details are displayed.
+            {t('home.donationDescription')}
           </p>
           <div className="mt-6 flex justify-center gap-4">
             <Link to="/donate">
               <Button variant="gold" size="lg" rightIcon={<ArrowRight className="w-4 h-4" />}>
-                Make a Contribution
+                {t('nav.donate')}
               </Button>
             </Link>
           </div>
@@ -555,10 +556,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
       <section id="faq" className="scroll-mt-24 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
           <span className="text-xs uppercase tracking-wider text-gold font-bold">
-            Frequently Asked Questions
+            {t('home.faqEyebrow')}
           </span>
           <h2 className="text-3xl font-bold font-heading text-ivory mt-1">
-            Common Inquiries & Privacy Information
+            {t('home.faqTitle')}
           </h2>
         </div>
 
@@ -577,7 +578,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
                   aria-controls={`homepage-faq-${faq.id}`}
                 >
                   <div>
-                    <h3 className="font-bold text-sm sm:text-base text-ivory">{faq.question}</h3>
+                    <h3 className="font-bold text-sm sm:text-base text-ivory">
+                      {language === 'si' ? faq.questionSi : language === 'ta' ? faq.questionTa : faq.question}
+                    </h3>
                   </div>
                   <ChevronDown
                     className={`w-5 h-5 text-gold flex-shrink-0 transition-transform duration-200 ${
@@ -591,7 +594,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
                     id={`homepage-faq-${faq.id}`}
                     className="p-4 sm:p-5 pt-0 text-xs sm:text-sm text-ivory/80 leading-relaxed border-t border-charcoal-light/60 space-y-2"
                   >
-                    <p>{faq.answer}</p>
+                    <p>{language === 'si' ? faq.answerSi : language === 'ta' ? faq.answerTa : faq.answer}</p>
                   </div>
                 )}
               </div>

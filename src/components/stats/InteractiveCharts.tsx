@@ -22,10 +22,21 @@ import {
   METHODOLOGY_NOTE,
 } from '../../data/statisticsData';
 import { ShieldCheck, Info, TrendingUp, Calendar, BookOpen } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 const COLORS = ['#D8BE82', '#BA9F60', '#8F7952', '#F1DFA5', '#E6E2D8'];
 
 export const InteractiveCharts: React.FC = () => {
+  const { language, t } = useLanguage();
+  const ageDistributionData = AGE_DISTRIBUTION_DATA.map((entry) => ({
+    ...entry,
+    ageGroup: language === 'si' ? entry.ageGroupSi : language === 'ta' ? entry.ageGroupTa : entry.ageGroup,
+  }));
+  const helpSeekingReasonsData = HELP_SEEKING_REASONS_DATA.map((entry) => ({
+    ...entry,
+    reason: language === 'si' ? entry.reasonSi : language === 'ta' ? entry.reasonTa : entry.reason,
+  }));
+
   return (
     <div className="space-y-12">
       {/* Top Stat Cards */}
@@ -34,26 +45,26 @@ export const InteractiveCharts: React.FC = () => {
           <div key={stat.id} className="charcoal-card p-6 border-gold/30 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between text-xs text-gold/80 mb-2">
-                <span className="font-semibold">{stat.trendValue}</span>
+                <span className="font-semibold">{language === 'si' ? stat.trendValueSi : language === 'ta' ? stat.trendValueTa : stat.trendValue}</span>
                 <span className="flex items-center gap-1 font-mono text-[11px] text-ivory/50">
                   <Calendar className="w-3 h-3" />
-                  <span>{stat.dateRange}</span>
+                  <span>{language === 'si' ? stat.dateRangeSi : language === 'ta' ? stat.dateRangeTa : stat.dateRange}</span>
                 </span>
               </div>
               <div className="text-3xl font-bold font-heading text-champagne mb-1">
                 {stat.metric}
               </div>
               <h4 className="text-sm font-bold text-ivory leading-snug">
-                {stat.label}
+                {language === 'si' ? stat.labelSi : language === 'ta' ? stat.labelTa : stat.label}
               </h4>
               <p className="text-xs text-ivory/60 mt-2 leading-relaxed">
-                {stat.subtext}
+                {language === 'si' ? stat.subtextSi : language === 'ta' ? stat.subtextTa : stat.subtext}
               </p>
             </div>
 
             <div className="mt-4 pt-3 border-t border-charcoal-light text-[10px] text-ivory/40 flex items-center gap-1">
               <BookOpen className="w-3 h-3 text-gold/60 flex-shrink-0" />
-              <span className="truncate">Source: {stat.source}</span>
+              <span className="truncate">{t('statistics.source')}: {language === 'si' ? stat.sourceSi : language === 'ta' ? stat.sourceTa : stat.source}</span>
             </div>
           </div>
         ))}
@@ -64,14 +75,14 @@ export const InteractiveCharts: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 pb-4 border-b border-charcoal-light">
           <div>
             <span className="text-xs uppercase tracking-wider text-gold font-bold">
-              Surveillance Trends
+              {t('statistics.surveillance')}
             </span>
             <h3 className="text-xl sm:text-2xl font-bold font-heading text-ivory mt-0.5">
-              Substance Seizure & Treatment Admissions in Sri Lanka (2020 – 2025)
+              {t('statistics.trendTitle')}
             </h3>
           </div>
           <div className="text-xs text-ivory/50 font-mono">
-            Source: NDDCB Annual Surveillance Reports
+            {t('statistics.source')}: {t('statistics.nddcbReports')}
           </div>
         </div>
 
@@ -91,15 +102,15 @@ export const InteractiveCharts: React.FC = () => {
                 }}
               />
               <Legend wrapperStyle={{ paddingTop: '10px' }} />
-              <Bar dataKey="Heroin" fill="#8F7952" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="Cannabis" fill="#BA9F60" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="ICE" fill="#F1DFA5" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="Heroin" name={t('statistics.heroin')} fill="#8F7952" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="Cannabis" name={t('statistics.cannabis')} fill="#BA9F60" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="ICE" name={t('statistics.ice')} fill="#F1DFA5" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         <p className="text-xs text-ivory/50 mt-4 italic text-center">
-          Note: Note the rapid upward trajectory of ICE (Methamphetamine) compared to traditional plant-based substances.
+          {t('statistics.trendNote')}
         </p>
       </div>
 
@@ -109,12 +120,12 @@ export const InteractiveCharts: React.FC = () => {
         <div className="charcoal-card p-6 sm:p-8 flex flex-col justify-between">
           <div>
             <h3 className="text-lg font-bold font-heading text-ivory mb-1">
-              Age Demographic Profile of First-Time Inquiries
+              {t('statistics.ageTitle')}
             </h3>
 
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={AGE_DISTRIBUTION_DATA} layout="vertical" margin={{ top: 5, right: 20, left: 40, bottom: 5 }}>
+                <BarChart data={ageDistributionData} layout="vertical" margin={{ top: 5, right: 20, left: 40, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#323235" />
                   <XAxis type="number" stroke="#D8BE82" fontSize={11} unit="%" />
                   <YAxis type="category" dataKey="ageGroup" stroke="#D8BE82" fontSize={11} />
@@ -134,7 +145,7 @@ export const InteractiveCharts: React.FC = () => {
           </div>
 
           <p className="text-[11px] text-ivory/50 mt-3 pt-3 border-t border-charcoal-light">
-            Youth between 18 and 29 account for over 58% of all initial rehabilitation inquiries.
+            {t('statistics.ageNote')}
           </p>
         </div>
 
@@ -142,14 +153,14 @@ export const InteractiveCharts: React.FC = () => {
         <div className="charcoal-card p-6 sm:p-8 flex flex-col justify-between">
           <div>
             <h3 className="text-lg font-bold font-heading text-ivory mb-1">
-              Primary Triggers for Initiating Recovery Support
+              {t('statistics.helpReasonsTitle')}
             </h3>
 
             <div className="h-64 w-full flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={HELP_SEEKING_REASONS_DATA}
+                    data={helpSeekingReasonsData}
                     cx="50%"
                     cy="50%"
                     innerRadius={60}
@@ -159,7 +170,7 @@ export const InteractiveCharts: React.FC = () => {
                     label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
                     labelLine={false}
                   >
-                    {HELP_SEEKING_REASONS_DATA.map((entry, index) => (
+                    {helpSeekingReasonsData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
@@ -179,7 +190,7 @@ export const InteractiveCharts: React.FC = () => {
           </div>
 
           <p className="text-[11px] text-ivory/50 mt-3 pt-3 border-t border-charcoal-light">
-            Physical health deterioration and family relationship strain remain the two primary factors.
+            {t('statistics.helpReasonsNote')}
           </p>
         </div>
       </div>
@@ -188,10 +199,10 @@ export const InteractiveCharts: React.FC = () => {
       <div className="p-6 rounded-2xl bg-midnight border border-gold/30 text-xs text-ivory/70 space-y-3">
         <h4 className="font-heading font-bold text-base text-gold flex items-center gap-2">
           <ShieldCheck className="w-5 h-5 text-gold" />
-          <span>{METHODOLOGY_NOTE.title}</span>
+          <span>{language === 'si' ? METHODOLOGY_NOTE.titleSi : language === 'ta' ? METHODOLOGY_NOTE.titleTa : METHODOLOGY_NOTE.title}</span>
         </h4>
         <ul className="list-disc pl-5 space-y-1.5 text-ivory/60 leading-relaxed">
-          {METHODOLOGY_NOTE.notes.map((n, i) => (
+          {(language === 'si' ? METHODOLOGY_NOTE.notesSi : language === 'ta' ? METHODOLOGY_NOTE.notesTa : METHODOLOGY_NOTE.notes).map((n, i) => (
             <li key={i}>{n}</li>
           ))}
         </ul>

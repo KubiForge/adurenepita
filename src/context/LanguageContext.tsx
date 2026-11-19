@@ -6,13 +6,14 @@ export type AppLanguage = 'en' | 'si' | 'ta';
 interface LanguageContextType {
   language: AppLanguage;
   setLanguage: (language: AppLanguage) => void;
-  t: (key: string) => string;
+  t: (key: string, values?: Record<string, string | number>) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType>({
   language: 'en',
   setLanguage: () => undefined,
-  t: (key: string) => String(i18n.t(key)),
+  t: (key: string, values?: Record<string, string | number>) =>
+    String(values ? i18n.t(key, values) : i18n.t(key)),
 });
 
 const isAppLanguage = (value: string | null): value is AppLanguage =>
@@ -45,7 +46,11 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
   }, [language]);
 
-  const t = useCallback((key: string): string => String(i18n.t(key)), [languageRevision]);
+  const t = useCallback(
+    (key: string, values?: Record<string, string | number>): string =>
+      String(values ? i18n.t(key, values) : i18n.t(key)),
+    [languageRevision],
+  );
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>

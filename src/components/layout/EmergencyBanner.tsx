@@ -31,7 +31,7 @@ export const EmergencyBanner: React.FC = () => {
           </a>
           <button
             type="button"
-            onClick={() => openEmergencyModal('Immediate emergency support requested')}
+            onClick={() => openEmergencyModal()}
             className="inline-flex h-8 items-center justify-center gap-1.5 rounded-full bg-red-950/70 px-2.5 text-[10px] font-bold text-white ring-1 ring-red-200/40 transition hover:bg-red-950 sm:px-3 sm:text-xs"
             aria-label={t('emergency.btn')}
           >

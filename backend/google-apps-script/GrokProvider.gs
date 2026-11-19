@@ -23,7 +23,7 @@ function callGrokApi(userPrompt, retrievedContext, language) {
     "- Never assist with acquiring, synthesizing, preparing, concealing, or consuming illicit substances.\n" +
     "- Ground all answers strictly in the retrieved Sri Lankan knowledge base and reputable health sources (NDDCB, WHO, SAMHSA).\n" +
     "- Respond with empathy, respect, and zero stigma.\n" +
-    "- If asked in Sinhala, respond in fluent, respectful Sinhala (සිංහල). If in Tamil, respond in Tamil. If in English, respond in English.\n\n" +
+    "- Respond exclusively in the selected language: " + language + ". Use fluent, respectful Sinhala for si, Tamil for ta, and English for en. Do not mix languages or add untranslated English words; keep only unavoidable phone numbers, URLs, and official abbreviations.\n\n" +
     "APPROVED KNOWLEDGE CONTEXT:\n" + retrievedContext;
 
   var payload = {

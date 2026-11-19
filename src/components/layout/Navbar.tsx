@@ -70,17 +70,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
               className="navbar-action inline-flex items-center gap-1.5 rounded-full border border-gold/20 px-3 py-2 text-xs text-ivory/75"
             >
               <UserRound className="h-3.5 w-3.5" />
-              <span>Account</span>
+              <span>{t('nav.account')}</span>
             </Link>
 
             {onOpenWizard && (
               <button
                 onClick={onOpenWizard}
                 className="navbar-action hidden 2xl:inline-flex items-center gap-2 rounded-full border border-gold/25 bg-charcoal/50 px-3.5 py-2 text-xs font-medium text-ivory"
-                title="Guided Step-by-Step Navigation"
+                title={t('nav.launchWizard')}
               >
                 <Compass className="h-4 w-4 text-gold" />
-                <span>Creative Wizard</span>
+                <span>{t('nav.launchWizard')}</span>
               </button>
             )}
 
@@ -105,7 +105,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
             <button
               onClick={onOpenAiChat}
               className="navbar-mobile-ai btn-gold inline-flex h-11 w-11 items-center justify-center rounded-full"
-              aria-label="Open AI Assistant"
+              aria-label={t('nav.openChat')}
             >
               <Sparkles className="h-4 w-4" />
             </button>
@@ -113,7 +113,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
             <button
               onClick={() => setMobileMenuOpen((isOpen) => !isOpen)}
               className={`navbar-hamburger inline-flex h-11 w-11 items-center justify-center rounded-full border text-ivory/80 ${mobileMenuOpen ? 'border-gold/60 bg-gold/10 text-gold' : 'border-gold/20'}`}
-              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-label={mobileMenuOpen ? t('nav.closeMenu') : t('nav.openMenu')}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-navigation"
             >
@@ -122,7 +122,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
           </div>
         </div>
 
-        <nav className="hidden h-12 items-center justify-center gap-1 border-t border-ivory/5 lg:flex" aria-label="Main Navigation">
+        <nav className="hidden h-12 items-center justify-center gap-1 border-t border-ivory/5 lg:flex" aria-label={t('nav.mainNavigation')}>
           {navLinks.map((link) => (
             <NavLink
               key={link.to}
@@ -146,7 +146,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
           id="mobile-navigation"
           className="navbar-mobile-panel max-h-[calc(100dvh-60px)] overflow-y-auto overscroll-contain border-t border-gold/15 bg-midnight/98 px-4 pb-6 pt-3 shadow-[0_24px_40px_-28px_rgba(216,190,130,0.55)] backdrop-blur-xl sm:max-h-[calc(100dvh-76px)] lg:hidden"
         >
-          <nav className="mx-auto flex max-w-7xl flex-col gap-1" aria-label="Main Navigation">
+          <nav className="mx-auto flex max-w-7xl flex-col gap-1" aria-label={t('nav.mainNavigation')}>
             {navLinks.map((link, index) => (
               <NavLink
                 key={link.to}
@@ -174,7 +174,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
               className="flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold text-ivory/80 hover:text-gold"
             >
               <UserRound className="h-4 w-4 text-gold" />
-              <span>Account</span>
+              <span>{t('nav.account')}</span>
             </Link>
             {onOpenWizard && (
               <button
@@ -185,7 +185,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
                 className="btn-charcoal flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold"
               >
                 <Compass className="h-4 w-4 text-gold" />
-                <span>Launch Creative Wizard</span>
+                <span>{t('nav.launchWizard')}</span>
               </button>
             )}
 
@@ -204,7 +204,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
               className="flex w-full items-center justify-center gap-1.5 py-2.5 text-center text-xs text-ivory/60 transition-colors hover:text-gold"
             >
               <Shield className="h-3.5 w-3.5 text-gold/70" />
-              <span>{t('nav.adminPortal')} (Admin & Technical Crew)</span>
+              <span>{t('nav.adminPortal')} ({t('nav.adminCrew')})</span>
             </Link>
           </div>
         </div>

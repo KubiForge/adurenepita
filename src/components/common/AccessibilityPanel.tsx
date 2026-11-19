@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Accessibility, MessageCircle, Volume2, VolumeX, WifiOff } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -31,6 +32,56 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ onOpenAi
   );
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [speechStatus, setSpeechStatus] = useState('');
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    window.requestAnimationFrame(() => {
+      dialogRef.current?.querySelector<HTMLElement>('[data-dialog-close]')?.focus();
+    });
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+        return;
+      }
+
+      if (event.key !== 'Tab' || !dialogRef.current) return;
+      const focusableElements = Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+      if (!focusableElements.length) {
+        event.preventDefault();
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+      if (event.shiftKey && document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+      if (previousFocus?.isConnected) previousFocus.focus();
+      else triggerRef.current?.focus();
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -110,42 +161,57 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ onOpenAi
     setSpeechStatus(t('accessibility.speechStopped'));
   };
 
-  return (
-    <div className="accessibility-panel fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 z-50 sm:bottom-6 sm:left-6">
+  return createPortal(
+    <>
       {isOpen && (
-        <section
+        <>
+          <button
+          type="button"
+          className="fixed inset-0 z-[80] cursor-default bg-black/75 backdrop-blur-[2px]"
+          onClick={() => setIsOpen(false)}
+          aria-label={t('cta.close')}
+          />
+          <section
+          ref={dialogRef}
           id="accessibility-settings"
+          role="dialog"
+          aria-modal="true"
           aria-labelledby="accessibility-settings-title"
-          className="mb-3 max-h-[75vh] max-h-[min(75dvh,42rem)] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto overscroll-contain rounded-2xl border border-gold/35 bg-midnight/95 p-4 text-ivory shadow-2xl backdrop-blur-xl"
-        >
-          <div className="mb-4 flex items-center justify-between gap-3">
-            <h2 id="accessibility-settings-title" className="font-heading text-lg font-bold">
-              {t('accessibility.title')}
-            </h2>
+          tabIndex={-1}
+          className="accessibility-dialog fixed left-1/2 top-1/2 z-[90] w-[min(28rem,calc(100vw-1.5rem))] -translate-x-1/2 -translate-y-1/2 overflow-y-auto overscroll-contain rounded-3xl border border-gold/40 bg-[#151617] p-5 text-ivory shadow-[0_32px_100px_rgba(0,0,0,0.85)] sm:p-7"
+          >
+          <div className="mb-5 flex items-center justify-between gap-3 border-b border-ivory/10 pb-4">
+            <div>
+              <h2 id="accessibility-settings-title" className="font-heading text-xl font-bold text-champagne">
+                {t('accessibility.title')}
+              </h2>
+              <p className="mt-1 text-xs text-ivory/60">{t('accessibility.description')}</p>
+            </div>
             <button
               type="button"
+              data-dialog-close
               onClick={() => setIsOpen(false)}
-              className="rounded-lg px-2 py-1 text-sm text-ivory/70 hover:bg-charcoal"
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-ivory/15 bg-charcoal text-lg text-ivory transition hover:border-gold/50 hover:bg-charcoal-light hover:text-champagne"
               aria-label={t('cta.close')}
             >
               ×
             </button>
           </div>
 
-          <div className="space-y-4 text-sm">
+          <div className="space-y-5 text-sm">
             <div>
-              <label htmlFor="accessibility-language" className="mb-1 block text-xs font-semibold text-ivory/75">
+              <label htmlFor="accessibility-language" className="mb-1.5 block text-xs font-semibold text-ivory/75">
                 {t('accessibility.language')}
               </label>
               <select
                 id="accessibility-language"
                 value={language}
                 onChange={(event) => handleLanguageChange(event.currentTarget.value)}
-                className="min-h-11 w-full rounded-lg border border-charcoal-light bg-charcoal px-3 text-ivory focus-visible:outline"
+                className="min-h-12 w-full rounded-xl border border-gold/35 bg-[#202124] px-3 text-base text-ivory shadow-inner focus:border-gold focus-visible:outline sm:text-sm"
               >
-                <option value="en">English</option>
-                <option value="si">සිංහල</option>
-                <option value="ta">தமிழ்</option>
+                <option value="en">{t('language.en')}</option>
+                <option value="si">{t('language.si')}</option>
+                <option value="ta">{t('language.ta')}</option>
               </select>
             </div>
 
@@ -158,8 +224,8 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ onOpenAi
                   type="button"
                   aria-pressed={textSize === 'normal'}
                   onClick={() => setTextSize('normal')}
-                  className={`min-h-11 rounded-lg border px-3 text-xs font-semibold ${
-                    textSize === 'normal' ? 'border-gold bg-gold/15 text-champagne' : 'border-charcoal-light text-ivory/75'
+                  className={`min-h-11 rounded-xl border px-3 text-xs font-semibold transition-colors ${
+                    textSize === 'normal' ? 'border-gold bg-gold/15 text-champagne' : 'border-charcoal-light bg-[#1d1e20] text-ivory/75 hover:border-gold/40'
                   }`}
                 >
                   {t('accessibility.normal')}
@@ -168,8 +234,8 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ onOpenAi
                   type="button"
                   aria-pressed={textSize === 'large'}
                   onClick={() => setTextSize('large')}
-                  className={`min-h-11 rounded-lg border px-3 text-xs font-semibold ${
-                    textSize === 'large' ? 'border-gold bg-gold/15 text-champagne' : 'border-charcoal-light text-ivory/75'
+                  className={`min-h-11 rounded-xl border px-3 text-xs font-semibold transition-colors ${
+                    textSize === 'large' ? 'border-gold bg-gold/15 text-champagne' : 'border-charcoal-light bg-[#1d1e20] text-ivory/75 hover:border-gold/40'
                   }`}
                 >
                   {t('accessibility.large')}
@@ -177,77 +243,80 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ onOpenAi
               </div>
             </fieldset>
 
-            <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-lg border border-charcoal-light px-3">
-              <input
-                type="checkbox"
-                checked={highContrast}
-                onChange={(event) => setHighContrast(event.currentTarget.checked)}
-                className="h-4 w-4 accent-yellow-300"
-              />
-              <span>{t('accessibility.highContrast')}</span>
-            </label>
+            <div className="space-y-2">
+              <label className="flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border border-charcoal-light bg-[#1d1e20] px-3 transition-colors hover:border-gold/35">
+                <input
+                  type="checkbox"
+                  checked={highContrast}
+                  onChange={(event) => setHighContrast(event.currentTarget.checked)}
+                  className="h-4 w-4 accent-yellow-300"
+                />
+                <span>{t('accessibility.highContrast')}</span>
+              </label>
 
-            <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-lg border border-charcoal-light px-3">
-              <input
-                type="checkbox"
-                checked={easyRead}
-                onChange={(event) => setEasyRead(event.currentTarget.checked)}
-                className="h-4 w-4 accent-yellow-300"
-              />
-              <span>{t('accessibility.easyRead')}</span>
-            </label>
+              <label className="flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border border-charcoal-light bg-[#1d1e20] px-3 transition-colors hover:border-gold/35">
+                <input
+                  type="checkbox"
+                  checked={easyRead}
+                  onChange={(event) => setEasyRead(event.currentTarget.checked)}
+                  className="h-4 w-4 accent-yellow-300"
+                />
+                <span>{t('accessibility.easyRead')}</span>
+              </label>
+            </div>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               <button
                 type="button"
                 onClick={isSpeaking ? stopReading : handleReadPage}
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-gold/35 px-3 text-xs font-semibold text-champagne hover:bg-gold/10"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-gold/35 bg-[#1d1e20] px-3 text-xs font-semibold text-champagne transition-colors hover:border-gold/60 hover:bg-gold/10"
               >
                 {isSpeaking ? <VolumeX className="h-4 w-4" aria-hidden="true" /> : <Volume2 className="h-4 w-4" aria-hidden="true" />}
                 {isSpeaking ? t('accessibility.stop') : t('accessibility.listen')}
               </button>
               <a
                 href="/offline-emergency.html"
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-red-300/40 px-3 text-center text-xs font-semibold text-red-100 hover:bg-red-950/60"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-red-300/45 bg-[#211819] px-3 text-center text-xs font-semibold text-red-100 transition-colors hover:border-red-200/70 hover:bg-red-950/60"
               >
                 <WifiOff className="h-4 w-4 shrink-0" aria-hidden="true" />
                 {t('emergency.offline')}
               </a>
             </div>
 
-            <p className="text-[11px] leading-relaxed text-ivory/55">
-              {t('accessibility.translationNotice')}
-            </p>
             <p role="status" aria-live="polite" className="min-h-4 text-[11px] text-gold">
               {speechStatus}
             </p>
           </div>
-        </section>
+          </section>
+        </>
       )}
 
-      <div
-        role="group"
-        aria-label={t('accessibility.title')}
-        className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-midnight/90 p-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-xl"
-      >
-        <button
+      <div className="accessibility-panel fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 z-[70] sm:bottom-6 sm:left-6">
+        <div
+          role="group"
+          aria-label={t('accessibility.title')}
+          className="inline-flex items-center gap-1.5 rounded-full border border-gold/35 bg-[#151617] p-1.5 shadow-[0_12px_36px_rgba(0,0,0,0.65)]"
+        >
+          <button
+          ref={triggerRef}
           type="button"
           onClick={() => setIsOpen((open) => !open)}
           aria-label={t('accessibility.open')}
           aria-expanded={isOpen}
+          aria-haspopup="dialog"
           aria-controls={isOpen ? 'accessibility-settings' : undefined}
           className={`group relative inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold active:scale-95 ${
             isOpen
               ? 'border-gold/70 bg-gold/15 text-gold shadow-[0_0_20px_rgba(216,190,130,0.2)]'
-              : 'border-transparent bg-white/[0.04] text-gold hover:scale-105 hover:border-gold/40 hover:bg-gold/10'
+              : 'border-transparent bg-charcoal text-gold hover:scale-105 hover:border-gold/40 hover:bg-charcoal-light'
           }`}
-        >
+          >
           <Accessibility className="h-5 w-5" aria-hidden="true" />
-          <span className="pointer-events-none absolute bottom-full left-0 mb-2 whitespace-nowrap rounded-lg border border-gold/20 bg-midnight px-3 py-1.5 text-xs font-semibold text-ivory opacity-0 shadow-xl transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+            <span className="pointer-events-none absolute bottom-full left-0 mb-2 whitespace-nowrap rounded-lg border border-gold/20 bg-midnight px-3 py-1.5 text-xs font-semibold text-ivory opacity-0 shadow-xl transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
             {t('accessibility.title')}
-          </span>
-        </button>
-        {onOpenAiChat && (
+            </span>
+          </button>
+          {onOpenAiChat && (
           <button
             type="button"
             onClick={() => {
@@ -256,15 +325,17 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ onOpenAi
             }}
             aria-label={t('cta.talkToAi')}
             title={t('cta.talkToAi')}
-            className="group relative inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-transparent bg-gradient-to-br from-gold/20 to-gold/[0.06] text-champagne transition-all duration-200 hover:scale-105 hover:border-gold/50 hover:from-gold/30 hover:to-gold/10 hover:shadow-[0_0_20px_rgba(216,190,130,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold active:scale-95"
+            className="group relative inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold/20 bg-[#252628] text-champagne transition-all duration-200 hover:scale-105 hover:border-gold/50 hover:bg-gold/15 hover:shadow-[0_0_20px_rgba(216,190,130,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold active:scale-95"
           >
             <MessageCircle className="h-5 w-5" aria-hidden="true" />
             <span className="pointer-events-none absolute bottom-full left-0 mb-2 whitespace-nowrap rounded-lg border border-gold/20 bg-midnight px-3 py-1.5 text-xs font-semibold text-ivory opacity-0 shadow-xl transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
               {t('cta.talkToAi')}
             </span>
           </button>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </>,
+    document.body
   );
 };

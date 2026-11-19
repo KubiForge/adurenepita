@@ -51,7 +51,7 @@ const ScrollToTop = () => {
 
 export const AppContent: React.FC = () => {
   const location = useLocation();
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const isHome = location.pathname === '/';
   const isAdmin = location.pathname.startsWith('/admin');
   const [isAiChatOpen, setIsAiChatOpen] = useState(false);
@@ -82,7 +82,7 @@ export const AppContent: React.FC = () => {
         />
       )}
 
-      <main id="main-content" lang="en" tabIndex={-1} className="relative z-10 flex-1 w-full overflow-x-hidden">
+      <main id="main-content" lang={language} tabIndex={-1} className="relative z-10 flex-1 w-full overflow-x-hidden">
         <Routes>
           {/* Public User Platform (12 Core Screens + Home, About, Stats) */}
           <Route
@@ -139,16 +139,16 @@ export const AppContent: React.FC = () => {
             path="/wizard"
             element={
               <div className="py-12 max-w-4xl mx-auto px-4 text-center space-y-6">
-                <h1 className="text-3xl font-heading font-bold text-gold">Advanced Guided Support Wizard</h1>
+                <h1 className="text-3xl font-heading font-bold text-gold">{t('wizard.title')}</h1>
                 <p className="text-sm text-ivory/70 max-w-lg mx-auto">
-                  A confidential, step-by-step interactive questionnaire tailored to your personal circumstances.
+                  {t('wizard.description')}
                 </p>
                 <button
                   onClick={handleOpenWizard}
                   className="btn-gold px-6 py-3 rounded-xl font-bold shadow-gold-subtle inline-flex items-center gap-2"
                 >
                   <Compass className="w-5 h-5 text-midnight" />
-                  <span className="text-midnight">Launch Interactive Wizard</span>
+                  <span className="text-midnight">{t('cta.startWizard')}</span>
                 </button>
               </div>
             }

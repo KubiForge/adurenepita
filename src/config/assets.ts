@@ -8,9 +8,9 @@ export const ASSETS = {
   campaignPoster: '/assets/campaign_poster.webp',
   
   // Official Logo & Emblems
-  logo: '/assets/logo.webp',
-  logoIcon: '/assets/logo.webp',
-  leoLogoPlaceholder: '/assets/logo.webp',
+  logo: '/assets/logo%20and%20favicon.png',
+  logoIcon: '/assets/logo%20and%20favicon.png',
+  leoLogoPlaceholder: '/assets/logo%20and%20favicon.png',
   kubiForgeShowcase: '/assets/Kubi%20Forge%20Startup%20Hub%20Showcase.webp',
   logos: {
     leoDistrict306D2: '/assets/logos/d2%20logo.webp',

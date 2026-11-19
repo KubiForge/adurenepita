@@ -24,8 +24,7 @@ import {
 } from 'lucide-react';
 import { CONTACT_INFO, telephoneHref } from '../config/contactInfo';
 import { ASSETS } from '../config/assets';
-
-type ResourceLanguage = 'en' | 'si';
+import { useLanguage } from '../context/LanguageContext';
 
 const GLOSSARY_ENTRIES = [
   {
@@ -69,8 +68,8 @@ interface AudienceGuidance {
 }
 
 export const AwarenessHubPage: React.FC = () => {
+  const { language, setLanguage, t } = useLanguage();
   const [activeTab, setActiveTab] = useState<'articles' | 'quiz' | 'downloads'>('articles');
-  const [resourceLanguage, setResourceLanguage] = useState<ResourceLanguage>('en');
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [selectedGuidance, setSelectedGuidance] = useState<AudienceGuidance | null>(null);
   const [glossaryQuery, setGlossaryQuery] = useState('');
@@ -435,7 +434,7 @@ export const AwarenessHubPage: React.FC = () => {
             }`}
           >
             <BookOpen className="w-4 h-4" />
-            <span>Educational Articles</span>
+            <span>{t('awareness.articlesTab')}</span>
           </button>
 
           <button
@@ -445,7 +444,7 @@ export const AwarenessHubPage: React.FC = () => {
             }`}
           >
             <HelpCircle className="w-4 h-4" />
-            <span>Interactive Quiz</span>
+            <span>{t('awareness.quizTab')}</span>
           </button>
 
           <button
@@ -455,28 +454,27 @@ export const AwarenessHubPage: React.FC = () => {
             }`}
           >
             <Download className="w-4 h-4" />
-            <span>Downloadable Materials</span>
+            <span>{t('awareness.downloadsTab')}</span>
           </button>
         </div>
       </div>
 
       <div className="flex flex-col gap-3 rounded-xl border border-charcoal-light bg-charcoal/45 p-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-xs font-semibold text-ivory">Article, quiz and FAQ language</p>
+            <p className="text-xs font-semibold text-ivory">{t('awareness.languageHeading')}</p>
             <p className="mt-1 text-[11px] leading-5 text-ivory/50">
-              English and Sinhala content is available in these sections. Tamil translations are not
-              published until reviewed. Downloadable guides remain in English.
+              {t('awareness.languageDescription')}
             </p>
           </div>
-          <div className="flex flex-wrap gap-2" role="group" aria-label="Choose resource language">
-            <button type="button" aria-pressed={resourceLanguage === 'en'} onClick={() => setResourceLanguage('en')} className={`min-h-10 rounded-lg border px-3 py-2 text-xs font-semibold ${resourceLanguage === 'en' ? 'border-gold/50 bg-gold/10 text-champagne' : 'border-charcoal-light text-ivory/65'}`}>
-              English
+          <div className="flex flex-wrap gap-2" role="group" aria-label={t('awareness.chooseLanguage')}>
+            <button type="button" aria-pressed={language === 'en'} onClick={() => setLanguage('en')} className={`min-h-10 rounded-lg border px-3 py-2 text-xs font-semibold ${language === 'en' ? 'border-gold/50 bg-gold/10 text-champagne' : 'border-charcoal-light text-ivory/65'}`}>
+              {t('awareness.english')}
             </button>
-            <button type="button" aria-pressed={resourceLanguage === 'si'} onClick={() => setResourceLanguage('si')} className={`min-h-10 rounded-lg border px-3 py-2 text-xs font-semibold ${resourceLanguage === 'si' ? 'border-gold/50 bg-gold/10 text-champagne' : 'border-charcoal-light text-ivory/65'}`}>
-              සිංහල
+            <button type="button" aria-pressed={language === 'si'} onClick={() => setLanguage('si')} className={`min-h-10 rounded-lg border px-3 py-2 text-xs font-semibold ${language === 'si' ? 'border-gold/50 bg-gold/10 text-champagne' : 'border-charcoal-light text-ivory/65'}`}>
+              {t('awareness.sinhala')}
             </button>
-            <button type="button" disabled title="Tamil translations are not yet reviewed" className="min-h-10 cursor-not-allowed rounded-lg border border-charcoal-light px-3 py-2 text-xs font-semibold text-ivory/35">
-              தமிழ் · review pending
+            <button type="button" aria-pressed={language === 'ta'} onClick={() => setLanguage('ta')} className={`min-h-10 rounded-lg border px-3 py-2 text-xs font-semibold ${language === 'ta' ? 'border-gold/50 bg-gold/10 text-champagne' : 'border-charcoal-light text-ivory/65'}`}>
+              {t('awareness.tamil')}
             </button>
           </div>
       </div>
@@ -495,11 +493,11 @@ export const AwarenessHubPage: React.FC = () => {
                 </div>
 
                 <h3 className="font-heading font-bold text-lg text-ivory leading-snug">
-                  {resourceLanguage === 'si' ? art.titleSi : art.title}
+                  {language === 'si' ? art.titleSi : language === 'ta' ? art.titleTa : art.title}
                 </h3>
 
                 <p className="text-xs text-ivory/70 leading-relaxed line-clamp-3">
-                  {resourceLanguage === 'si' ? art.summarySi : art.summary}
+                  {language === 'si' ? art.summarySi : language === 'ta' ? art.summaryTa : art.summary}
                 </p>
               </div>
 
@@ -509,7 +507,7 @@ export const AwarenessHubPage: React.FC = () => {
                   onClick={() => setSelectedArticle(art)}
                   className="text-xs font-semibold text-gold hover:underline flex items-center gap-1"
                 >
-                  <span>Read Full Article</span>
+                  <span>{t('awareness.readArticle')}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -521,7 +519,7 @@ export const AwarenessHubPage: React.FC = () => {
       {/* TAB 2: INTERACTIVE QUIZ */}
       {activeTab === 'quiz' && (
         <div className="py-4">
-          <InteractiveQuiz language={resourceLanguage} />
+          <InteractiveQuiz language={language} />
         </div>
       )}
 
@@ -590,12 +588,12 @@ export const AwarenessHubPage: React.FC = () => {
           return (
             <article key={faq.id} className="overflow-hidden rounded-xl border border-charcoal-light bg-charcoal/45">
               <button type="button" onClick={() => setOpenFaqId(isOpen ? null : faq.id)} aria-expanded={isOpen} aria-controls={`awareness-faq-${faq.id}`} className="flex min-h-12 w-full items-center justify-between gap-3 p-4 text-left">
-                <span className="text-sm font-semibold text-ivory">{resourceLanguage === 'si' ? faq.questionSi : faq.question}</span>
+                <span className="text-sm font-semibold text-ivory">{language === 'si' ? faq.questionSi : language === 'ta' ? faq.questionTa : faq.question}</span>
                 <ChevronDown className={`h-4 w-4 shrink-0 text-gold transition-transform ${isOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
               </button>
               {isOpen && (
                 <p id={`awareness-faq-${faq.id}`} className="border-t border-charcoal-light px-4 py-3 text-xs leading-5 text-ivory/65">
-                  {resourceLanguage === 'si' ? faq.answerSi : faq.answer}
+                  {language === 'si' ? faq.answerSi : language === 'ta' ? faq.answerTa : faq.answer}
                 </p>
               )}
             </article>
@@ -627,11 +625,11 @@ export const AwarenessHubPage: React.FC = () => {
             </div>
 
             <h2 className="text-2xl font-bold font-heading text-ivory mb-1">
-              {resourceLanguage === 'si' ? selectedArticle.titleSi : selectedArticle.title}
+              {language === 'si' ? selectedArticle.titleSi : language === 'ta' ? selectedArticle.titleTa : selectedArticle.title}
             </h2>
 
             <div className="space-y-4 text-xs sm:text-sm text-ivory/80 leading-relaxed">
-              {(resourceLanguage === 'si' ? selectedArticle.contentSi : selectedArticle.content).map((p, i) => (
+              {(language === 'si' ? selectedArticle.contentSi : language === 'ta' ? selectedArticle.contentTa : selectedArticle.content).map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
             </div>

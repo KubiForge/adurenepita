@@ -18,6 +18,21 @@ export const EmergencyModal: React.FC = () => {
     CONTACT_INFO.emergency.womenProtection,
     CONTACT_INFO.emergency.childProtection,
   ];
+  const badgeKeyByContact: Record<string, string> = {
+    nddcb: 'drug',
+    ambulance: 'medical',
+    crisis: 'crisis',
+    nimh: 'mental',
+    police: 'emergency',
+    women: 'women',
+    child: 'child',
+  };
+  const localizedHours = (hours: string) => {
+    if (hours === '24/7 Toll-Free') return t('emergency.hours.allday');
+    if (hours === '9:00 AM - 8:00 PM Daily') return t('emergency.hours.daily');
+    if (hours === 'Public social-welfare assistance') return t('emergency.hours.public');
+    return t('emergency.hours.national');
+  };
 
   return (
     <Modal
@@ -31,7 +46,7 @@ export const EmergencyModal: React.FC = () => {
         </div>
       }
     >
-      <div lang="en" className="space-y-6">
+      <div lang={language} className="space-y-6">
         {emergencyReason && (
           <div className="p-4 rounded-lg bg-red-950/60 border border-red-500/40 text-sm text-red-200">
             <p className="font-semibold text-red-100 flex items-center gap-2">
@@ -59,15 +74,15 @@ export const EmergencyModal: React.FC = () => {
                 <div>
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-semibold px-2 py-0.5 rounded bg-midnight text-gold border border-gold/20">
-                      {contact.badge}
+                      {t(`emergency.badge.${badgeKeyByContact[contact.id]}`)}
                     </span>
-                    <span className="text-[11px] text-ivory/50">{contact.hours}</span>
+                    <span className="text-[11px] text-ivory/50">{localizedHours(contact.hours)}</span>
                   </div>
                   <h4 className="font-bold text-ivory text-sm group-hover:text-champagne transition-colors">
-                    {contact.name}
+                    {t(`emergency.contact.${contact.id}.name`)}
                   </h4>
                   <p className="text-xs text-ivory/60 mt-1 leading-snug">
-                    {contact.description}
+                    {t(`emergency.contact.${contact.id}.description`)}
                   </p>
                 </div>
 
@@ -77,30 +92,33 @@ export const EmergencyModal: React.FC = () => {
                   </span>
                   <span className="flex flex-wrap items-center gap-2">
                     <a
-                      href={`https://wa.me/?text=${encodeURIComponent(`I need emergency support in Sri Lanka. Please help me contact ${contact.name} (${contact.number}).`)}`}
+                      href={`https://wa.me/?text=${encodeURIComponent(t('emergency.shareMessage', {
+                        name: t(`emergency.contact.${contact.id}.name`),
+                        number: contact.number,
+                      }))}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 text-xs font-semibold text-ivory/70 hover:text-gold"
-                      aria-label={`Share ${contact.name} details through WhatsApp`}
+                      aria-label={t('emergency.shareContact')}
                     >
                       <MessageSquareText className="w-3.5 h-3.5" />
-                      WhatsApp
+                      {t('emergency.shareContact')}
                     </a>
                     {contact.primary && (
                       <a
-                        href={smsHref(contact.number, 'I need emergency support assistance. My district and landmark are: ')}
+                        href={smsHref(contact.number, t('emergency.smsBody'))}
                         onClick={(event) => event.stopPropagation()}
                         className="inline-flex items-center gap-1 text-xs font-semibold text-ivory/70 hover:text-gold"
-                        aria-label={`Send an SMS to ${contact.name}`}
+                        aria-label={t('emergency.sendSms')}
                       >
                         <MessageSquareText className="w-3.5 h-3.5" />
-                        SMS
+                        {t('emergency.sendSms')}
                       </a>
                     )}
                     <a
                       href={telephoneHref(contact.number)}
                       className="inline-flex items-center gap-1 text-xs font-semibold text-gold group-hover:underline"
-                      aria-label={`Call ${contact.name}`}
+                      aria-label={t('emergency.callContact')}
                     >
                       <PhoneCall className="w-3.5 h-3.5" />
                       <span lang={language}>{t('emergency.call')}</span>
@@ -119,10 +137,10 @@ export const EmergencyModal: React.FC = () => {
             <span lang={language}>{t('emergency.overdoseProtocol')}:</span>
           </h4>
           <ol className="list-decimal pl-4 space-y-1 text-ivory/70 leading-relaxed">
-            <li><strong>Call {CONTACT_INFO.emergency.ambulance.number} immediately</strong>. State your exact district, city, and nearest landmark clearly.</li>
-            <li><strong>Check breathing</strong>: If breathing has stopped, tilt head back gently to clear the airway.</li>
-            <li><strong>Recovery Position</strong>: If unconscious but breathing, roll them onto their side with their top knee bent to prevent choking on fluids or vomit.</li>
-            <li><strong>Stay with the person</strong>: Keep them warm and awake if possible. Never give alcohol, caffeine, or induce vomiting.</li>
+            <li>{t('emergency.step.call', { number: CONTACT_INFO.emergency.ambulance.number })}</li>
+            <li>{t('emergency.step.breathing')}</li>
+            <li>{t('emergency.step.position')}</li>
+            <li>{t('emergency.step.stay')}</li>
           </ol>
         </div>
 
