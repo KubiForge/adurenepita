@@ -179,7 +179,7 @@ export const ConfidentialAssessmentPage: React.FC = () => {
                 <h2 className="text-sm font-semibold leading-6 text-ivory sm:text-base">{question.text}</h2>
               </div>
 
-              <div className="mt-4 grid grid-cols-3 gap-2">
+              <div className="mt-4 grid grid-cols-1 gap-2 min-[360px]:grid-cols-3">
                 {answerOptions.map((option) => (
                   <button
                     type="button"

@@ -5,17 +5,20 @@ import L from 'leaflet';
 interface SriLankaMapProps {
   centers: SupportCenter[];
   selectedCenter: SupportCenter | null;
+  userLocation: { latitude: number; longitude: number } | null;
   onSelectCenter: (center: SupportCenter) => void;
 }
 
 export const SriLankaMap: React.FC<SriLankaMapProps> = ({
   centers,
   selectedCenter,
+  userLocation,
   onSelectCenter,
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersRef = useRef<{ [id: string]: L.Marker }>({});
+  const userMarkerRef = useRef<L.CircleMarker | null>(null);
 
   useEffect(() => {
     if (!mapContainerRef.current) return;
@@ -30,10 +33,9 @@ export const SriLankaMap: React.FC<SriLankaMapProps> = ({
         scrollWheelZoom: false,
       });
 
-      // Dark editorial tile layer (CartoDB Dark Matter)
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap contributors',
-        subdomains: 'abcd',
+      // OpenStreetMap tiles do not require a provider API key.
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
         maxZoom: 19,
       }).addTo(map);
 
@@ -41,6 +43,17 @@ export const SriLankaMap: React.FC<SriLankaMapProps> = ({
     }
 
     const map = mapInstanceRef.current;
+
+    userMarkerRef.current?.remove();
+    userMarkerRef.current = userLocation
+      ? L.circleMarker([userLocation.latitude, userLocation.longitude], {
+          radius: 8,
+          color: '#ffffff',
+          weight: 2,
+          fillColor: '#3b82f6',
+          fillOpacity: 1,
+        }).addTo(map).bindPopup('Your current location')
+      : null;
 
     // Clear old markers
     Object.values(markersRef.current).forEach((m) => m.remove());
@@ -80,6 +93,7 @@ export const SriLankaMap: React.FC<SriLankaMapProps> = ({
           <strong style="font-size: 13px; color: #101113; display: block; margin-bottom: 2px;">${center.name}</strong>
           <span style="font-size: 11px; color: #8F7952; font-weight: 600;">${center.district} • ${center.city}</span>
           <p style="font-size: 11px; color: #434347; margin: 4px 0;">${center.address}</p>
+          ${center.coordinatesAreApproximate ? '<p style="font-size: 10px; color: #8F7952; margin: 4px 0;">Approximate area pin — call to confirm the exact location.</p>' : ''}
           <div style="margin-top: 6px; padding-top: 4px; border-top: 1px solid #ddd; font-size: 12px;">
             <strong>Phone:</strong> <a href="tel:${center.phone}" style="color: #BA9F60; font-weight: bold;">${center.phone}</a>
           </div>
@@ -100,7 +114,7 @@ export const SriLankaMap: React.FC<SriLankaMapProps> = ({
       });
       markersRef.current[selectedCenter.id].openPopup();
     }
-  }, [centers, selectedCenter, onSelectCenter]);
+  }, [centers, selectedCenter, userLocation, onSelectCenter]);
 
   return (
     <div className="relative h-[360px] w-full overflow-hidden rounded-2xl border border-gold/30 shadow-2xl sm:h-[450px] lg:h-[550px]">

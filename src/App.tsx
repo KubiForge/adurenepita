@@ -33,7 +33,7 @@ import { LegalPolicyPage } from './pages/LegalPolicyPage';
 import { ConfidentialAssessmentPage } from './pages/ConfidentialAssessmentPage';
 import { ProfessionalNetworkPage } from './pages/ProfessionalNetworkPage';
 
-import { Sparkles, Compass } from 'lucide-react';
+import { Compass } from 'lucide-react';
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -183,23 +183,7 @@ export const AppContent: React.FC = () => {
       </main>
 
       {!isAdmin && <Footer />}
-      <AccessibilityPanel />
-
-      {/* Floating AI Action Button (Always Accessible on Public Pages) */}
-      {!isAdmin && (
-        <div className="fixed bottom-6 right-6 z-40 hidden sm:block">
-          <button
-            onClick={() => handleOpenAiChat()}
-            className="btn-gold px-4 py-3 rounded-full font-bold shadow-gold-glow flex items-center gap-2 hover:scale-105 active:scale-95 transition-all"
-            aria-label="Talk with Beyond the Darkness AI Assistant"
-          >
-            <Sparkles className="w-5 h-5 text-midnight animate-pulse" />
-            <span className="text-xs sm:text-sm font-semibold text-midnight">
-              {t('cta.talkToAi')}
-            </span>
-          </button>
-        </div>
-      )}
+      <AccessibilityPanel onOpenAiChat={isAdmin ? undefined : () => handleOpenAiChat()} />
 
       {/* Global Modals & Drawers */}
       <EmergencyModal />

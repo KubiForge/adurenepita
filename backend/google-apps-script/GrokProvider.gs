@@ -6,6 +6,7 @@
 function callGrokApi(userPrompt, retrievedContext, language) {
   var scriptProperties = PropertiesService.getScriptProperties();
   var apiKey = scriptProperties.getProperty('GROK_API_KEY');
+  var model = scriptProperties.getProperty('GROK_MODEL') || 'grok-4.3';
 
   if (!apiKey) {
     throw new Error('GROK_API_KEY is not configured in Script Properties. Please configure it in Project Settings.');
@@ -26,13 +27,13 @@ function callGrokApi(userPrompt, retrievedContext, language) {
     "APPROVED KNOWLEDGE CONTEXT:\n" + retrievedContext;
 
   var payload = {
-    model: 'grok-beta',
+    model: model,
     messages: [
       { role: 'system', content: systemInstructions },
       { role: 'user', content: userPrompt }
     ],
     temperature: 0.3,
-    max_tokens: 800
+    max_completion_tokens: 800
   };
 
   var options = {
@@ -59,7 +60,7 @@ function callGrokApi(userPrompt, retrievedContext, language) {
 
   // Log non-sensitive usage metrics to AIUsage sheet
   var totalTokens = parsed.usage ? parsed.usage.total_tokens : 0;
-  recordAiUsage('grok-beta', totalTokens, 200);
+  recordAiUsage(model, totalTokens, 200);
 
   return replyContent;
 }

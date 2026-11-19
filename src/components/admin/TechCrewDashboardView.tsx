@@ -139,7 +139,7 @@ export const TechCrewDashboardView: React.FC = () => {
             <span className="w-2.5 h-2.5 rounded-full bg-gold"></span>
             <span>Server Isolated</span>
           </div>
-          <p className="text-[11px] text-ivory/50 mt-1">Grok-Beta via Script Properties</p>
+          <p className="text-[11px] text-ivory/50 mt-1">Grok model configured server-side</p>
         </div>
       </div>
 

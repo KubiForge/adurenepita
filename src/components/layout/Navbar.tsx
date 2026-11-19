@@ -104,7 +104,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
           <div className="flex items-center gap-2 lg:hidden">
             <button
               onClick={onOpenAiChat}
-              className="navbar-mobile-ai btn-gold rounded-full p-2.5"
+              className="navbar-mobile-ai btn-gold inline-flex h-11 w-11 items-center justify-center rounded-full"
               aria-label="Open AI Assistant"
             >
               <Sparkles className="h-4 w-4" />
@@ -112,7 +112,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
 
             <button
               onClick={() => setMobileMenuOpen((isOpen) => !isOpen)}
-              className={`navbar-hamburger rounded-full border p-2 text-ivory/80 ${mobileMenuOpen ? 'border-gold/60 bg-gold/10 text-gold' : 'border-gold/20'}`}
+              className={`navbar-hamburger inline-flex h-11 w-11 items-center justify-center rounded-full border text-ivory/80 ${mobileMenuOpen ? 'border-gold/60 bg-gold/10 text-gold' : 'border-gold/20'}`}
               aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-navigation"

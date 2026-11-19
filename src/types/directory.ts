@@ -2,6 +2,7 @@ export type ServiceType =
   | 'counseling'
   | 'rehabilitation'
   | 'medical'
+  | 'referral'
   | 'family_support'
   | 'hotline'
   | 'peer_support';
@@ -48,9 +49,11 @@ export interface SupportCenter {
   isFreeOrGovernmentFunded: boolean;
   latitude: number;
   longitude: number;
+  coordinatesAreApproximate?: boolean;
   verificationStatus: VerificationStatus;
   lastVerifiedDate: string;
   verifiedBy: string;
+  verificationSourceUrl?: string;
   programs?: SupportProgram[];
   lastUpdatedDate?: string;
   accreditation?: {

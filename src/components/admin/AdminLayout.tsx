@@ -186,7 +186,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               </button>
 
               {notifOpen && (
-                <div className="absolute right-0 mt-2 w-80 charcoal-card border-gold/30 shadow-2xl p-4 space-y-3 z-50 text-xs">
+                <div className="absolute right-0 mt-2 w-[min(20rem,calc(100vw-2rem))] charcoal-card border-gold/30 shadow-2xl p-4 space-y-3 z-50 text-xs">
                   <div className="font-bold text-ivory border-b border-charcoal-light pb-2 flex items-center justify-between">
                     <span>Recent Notifications</span>
                     <span className="text-[10px] text-gold font-mono">3 New</span>

@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Accessibility, Volume2, VolumeX, WifiOff } from 'lucide-react';
+import { Accessibility, MessageCircle, Volume2, VolumeX, WifiOff } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 type TextSize = 'normal' | 'large';
+
+interface AccessibilityPanelProps {
+  onOpenAiChat?: () => void;
+}
 
 const readPreference = (key: string): string | null => {
   try {
@@ -13,7 +17,7 @@ const readPreference = (key: string): string | null => {
   }
 };
 
-export const AccessibilityPanel: React.FC = () => {
+export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ onOpenAiChat }) => {
   const { language, setLanguage, t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [textSize, setTextSize] = useState<TextSize>(
@@ -107,12 +111,12 @@ export const AccessibilityPanel: React.FC = () => {
   };
 
   return (
-    <div className="accessibility-panel fixed bottom-5 left-4 z-40 sm:bottom-6 sm:left-6">
+    <div className="accessibility-panel fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 z-50 sm:bottom-6 sm:left-6">
       {isOpen && (
         <section
           id="accessibility-settings"
           aria-labelledby="accessibility-settings-title"
-          className="mb-3 w-[min(22rem,calc(100vw-2rem))] rounded-2xl border border-gold/35 bg-midnight p-4 text-ivory shadow-2xl"
+          className="mb-3 max-h-[75vh] max-h-[min(75dvh,42rem)] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto overscroll-contain rounded-2xl border border-gold/35 bg-midnight/95 p-4 text-ivory shadow-2xl backdrop-blur-xl"
         >
           <div className="mb-4 flex items-center justify-between gap-3">
             <h2 id="accessibility-settings-title" className="font-heading text-lg font-bold">
@@ -221,17 +225,46 @@ export const AccessibilityPanel: React.FC = () => {
         </section>
       )}
 
-      <button
-        type="button"
-        onClick={() => setIsOpen((open) => !open)}
-        aria-label={t('accessibility.open')}
-        aria-expanded={isOpen}
-        aria-controls={isOpen ? 'accessibility-settings' : undefined}
-        className="inline-flex min-h-12 items-center gap-2 rounded-full border border-gold/60 bg-midnight px-4 text-sm font-bold text-ivory shadow-xl hover:bg-charcoal focus-visible:outline"
+      <div
+        role="group"
+        aria-label={t('accessibility.title')}
+        className="inline-flex items-center gap-1.5 rounded-full border border-gold/25 bg-midnight/90 p-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-xl"
       >
-        <Accessibility className="h-5 w-5 text-gold" aria-hidden="true" />
-        <span className="hidden sm:inline">{t('accessibility.title')}</span>
-      </button>
+        <button
+          type="button"
+          onClick={() => setIsOpen((open) => !open)}
+          aria-label={t('accessibility.open')}
+          aria-expanded={isOpen}
+          aria-controls={isOpen ? 'accessibility-settings' : undefined}
+          className={`group relative inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold active:scale-95 ${
+            isOpen
+              ? 'border-gold/70 bg-gold/15 text-gold shadow-[0_0_20px_rgba(216,190,130,0.2)]'
+              : 'border-transparent bg-white/[0.04] text-gold hover:scale-105 hover:border-gold/40 hover:bg-gold/10'
+          }`}
+        >
+          <Accessibility className="h-5 w-5" aria-hidden="true" />
+          <span className="pointer-events-none absolute bottom-full left-0 mb-2 whitespace-nowrap rounded-lg border border-gold/20 bg-midnight px-3 py-1.5 text-xs font-semibold text-ivory opacity-0 shadow-xl transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+            {t('accessibility.title')}
+          </span>
+        </button>
+        {onOpenAiChat && (
+          <button
+            type="button"
+            onClick={() => {
+              setIsOpen(false);
+              onOpenAiChat();
+            }}
+            aria-label={t('cta.talkToAi')}
+            title={t('cta.talkToAi')}
+            className="group relative inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-transparent bg-gradient-to-br from-gold/20 to-gold/[0.06] text-champagne transition-all duration-200 hover:scale-105 hover:border-gold/50 hover:from-gold/30 hover:to-gold/10 hover:shadow-[0_0_20px_rgba(216,190,130,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold active:scale-95"
+          >
+            <MessageCircle className="h-5 w-5" aria-hidden="true" />
+            <span className="pointer-events-none absolute bottom-full left-0 mb-2 whitespace-nowrap rounded-lg border border-gold/20 bg-midnight px-3 py-1.5 text-xs font-semibold text-ivory opacity-0 shadow-xl transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+              {t('cta.talkToAi')}
+            </span>
+          </button>
+        )}
+      </div>
     </div>
   );
 };

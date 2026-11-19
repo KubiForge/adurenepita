@@ -20,7 +20,7 @@ export const API_CONFIG = {
 
   // Selected AI Provider
   aiProvider: 'grok', // 'grok' | 'gemini' | 'openai'
-  aiModel: 'grok-beta',
+  aiModel: 'grok-4.3',
 
   // Request timeouts in milliseconds
   timeoutMs: 15000,

@@ -40,10 +40,12 @@ export const SupportDirectoryPage: React.FC = () => {
   const [selectedCenter, setSelectedCenter] = useState<SupportCenter | null>(null);
   const [referralCenter, setReferralCenter] = useState<SupportCenter | null>(null);
   const [viewMode, setViewMode] = useState<'both' | 'map' | 'list'>('both');
-  const [locationStatus, setLocationStatus] = useState<'idle' | 'loading' | 'ready' | 'denied'>('idle');
+  const [locationStatus, setLocationStatus] = useState<'idle' | 'loading' | 'ready' | 'denied' | 'unavailable'>('idle');
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
 
   const filteredCenters = SUPPORT_CENTERS_DATA.filter((center) => {
+    if (userLocation && center.verificationStatus !== 'verified') return false;
+
     const matchQuery =
       center.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       center.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -74,7 +76,7 @@ export const SupportDirectoryPage: React.FC = () => {
 
   const handleUseLocation = () => {
     if (!navigator.geolocation) {
-      setLocationStatus('denied');
+      setLocationStatus('unavailable');
       return;
     }
 
@@ -87,22 +89,33 @@ export const SupportDirectoryPage: React.FC = () => {
         };
         setUserLocation(location);
         setLocationStatus('ready');
+        setSearchQuery('');
         setSelectedProvince('');
         setSelectedDistrict('');
-        setSelectedServiceType('');
+        setSelectedServiceType('rehabilitation');
         setSelectedProgram('');
 
-        const nearest = [...SUPPORT_CENTERS_DATA].sort(
+        const nearest = SUPPORT_CENTERS_DATA.filter(
+          (center) => center.verificationStatus === 'verified' && center.serviceTypes.includes('rehabilitation')
+        ).sort(
           (a, b) =>
             distanceKm(location.latitude, location.longitude, a.latitude, a.longitude) -
             distanceKm(location.latitude, location.longitude, b.latitude, b.longitude)
         )[0];
         if (nearest) setSelectedCenter(nearest);
       },
-      () => setLocationStatus('denied'),
+      (error) => {
+        setLocationStatus(error.code === error.PERMISSION_DENIED ? 'denied' : 'unavailable');
+      },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
     );
   };
+
+  const googleMapsSearchUrl = userLocation
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+        `rehabilitation centres in Sri Lanka near ${userLocation.latitude},${userLocation.longitude}`
+      )}`
+    : undefined;
 
   const handleReportError = (center: SupportCenter) => {
     const subject = encodeURIComponent(`Directory correction request: ${center.name}`);
@@ -149,16 +162,32 @@ export const SupportDirectoryPage: React.FC = () => {
             Find the nearest verified facility
           </p>
           <p className="mt-1 text-xs leading-5 text-ivory/55">
-            Uses your browser location once and does not store it. You can continue with manual province and district filters instead.
+            Your location is used only after you tap the button and is not saved by this site. Opening Google Maps shares the coordinates with Google.
           </p>
           {locationStatus === 'ready' && userLocation && (
-            <p className="mt-2 text-xs font-semibold text-emerald-300">
-              Location found. Facilities are sorted by shortest estimated distance.
-            </p>
+            <div className="mt-2 space-y-2">
+              <p className="text-xs font-semibold text-emerald-300">
+                Location found. Verified rehabilitation listings are sorted by straight-line distance.
+              </p>
+              <a
+                href={googleMapsSearchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-gold/35 px-3 py-2 text-xs font-semibold text-champagne transition-colors hover:bg-gold/10"
+              >
+                <MapPin className="h-4 w-4 text-gold" aria-hidden="true" />
+                Search nearby on Google Maps
+              </a>
+            </div>
           )}
           {locationStatus === 'denied' && (
             <p className="mt-2 text-xs font-semibold text-red-300">
-              Location permission was unavailable. Please use the district filters or enable location permission.
+              Location permission was denied. Enable it in your browser settings, or use the district filters.
+            </p>
+          )}
+          {locationStatus === 'unavailable' && (
+            <p className="mt-2 text-xs font-semibold text-red-300">
+              Your location could not be determined. Check your device location settings and try again.
             </p>
           )}
         </div>
@@ -250,6 +279,7 @@ export const SupportDirectoryPage: React.FC = () => {
             <SriLankaMap
               centers={filteredCenters}
               selectedCenter={selectedCenter}
+              userLocation={userLocation}
               onSelectCenter={(c) => setSelectedCenter(c)}
             />
           </div>
@@ -264,6 +294,8 @@ export const SupportDirectoryPage: React.FC = () => {
                   key={center.id}
                   center={center}
                   isSelected={selectedCenter?.id === center.id}
+                  distanceKm={userLocation ? distanceKm(userLocation.latitude, userLocation.longitude, center.latitude, center.longitude) : undefined}
+                  origin={userLocation}
                   onSelect={() => setSelectedCenter(center)}
                   onRequestReferral={(c) => setReferralCenter(c)}
                   onReportError={handleReportError}

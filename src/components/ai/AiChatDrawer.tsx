@@ -160,16 +160,16 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
       />
 
       {/* Drawer Surface */}
-      <div className="relative w-full max-w-xl bg-midnight border-l border-gold/30 shadow-2xl flex flex-col h-full z-10 animate-fade-in">
+      <div className="relative z-10 flex h-full min-h-0 w-full max-w-xl flex-col border-l border-gold/30 bg-midnight pb-[env(safe-area-inset-bottom)] shadow-2xl animate-fade-in">
         {/* Header */}
         <div className="p-4 sm:px-6 border-b border-charcoal-light bg-charcoal/90 backdrop-blur-md flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gold/15 border border-gold/40 flex items-center justify-center text-gold shadow-gold-subtle">
               <Sparkles className="w-5 h-5" />
             </div>
-            <div>
-              <h2 className="font-heading font-bold text-base text-ivory flex items-center gap-2">
-                <span>Beyond the Darkness AI</span>
+            <div className="min-w-0">
+              <h2 className="flex flex-wrap items-center gap-1.5 font-heading text-base font-bold text-ivory">
+                <span className="break-words">Beyond the Darkness AI</span>
                 <span className="text-[10px] uppercase px-2 py-0.5 rounded bg-midnight text-gold border border-gold/20 font-sans">
                   Grok RAG
                 </span>
@@ -200,7 +200,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
         </div>
 
         {/* Guided Wizard Banner Callout */}
-        <div className="px-4 py-2.5 bg-charcoal/60 border-b border-charcoal-light flex items-center justify-between text-xs">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-charcoal-light bg-charcoal/60 px-4 py-2.5 text-xs">
           <span className="text-ivory/70 flex items-center gap-1.5">
             <Compass className="w-3.5 h-3.5 text-gold" />
             <span>Not sure what to type?</span>
@@ -228,7 +228,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
                 className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}
               >
                 <div
-                  className={`max-w-[90%] sm:max-w-[85%] rounded-2xl p-4 text-sm leading-relaxed ${
+                  className={`max-w-[94%] min-w-0 break-words rounded-2xl p-3 text-sm leading-relaxed sm:max-w-[85%] sm:p-4 ${
                     isUser
                       ? 'bg-gold text-midnight font-medium rounded-tr-none shadow-md'
                       : isEmergency
@@ -343,7 +343,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
               e.preventDefault();
               handleSendMessage();
             }}
-            className="flex items-center gap-2"
+            className="flex min-w-0 items-center gap-2"
           >
             <input
               type="text"
@@ -351,7 +351,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={isLoading}
-              className="flex-1 px-4 py-3 rounded-xl bg-midnight border border-charcoal-light text-ivory text-sm focus:outline-none focus:border-gold placeholder:text-ivory/40"
+              className="min-w-0 flex-1 rounded-xl border border-charcoal-light bg-midnight px-3 py-3 text-sm text-ivory placeholder:text-ivory/40 focus:border-gold focus:outline-none sm:px-4"
             />
             <Button
               type="submit"

@@ -7,6 +7,8 @@ import { SUPPORT_PROGRAM_FILTERS } from '../../types/directory';
 interface SupportCenterCardProps {
   center: SupportCenter;
   isSelected?: boolean;
+  distanceKm?: number;
+  origin?: { latitude: number; longitude: number } | null;
   onSelect: () => void;
   onRequestReferral: (center: SupportCenter) => void;
   onReportError: (center: SupportCenter) => void;
@@ -15,6 +17,8 @@ interface SupportCenterCardProps {
 export const SupportCenterCard: React.FC<SupportCenterCardProps> = ({
   center,
   isSelected = false,
+  distanceKm,
+  origin,
   onSelect,
   onRequestReferral,
   onReportError,
@@ -53,13 +57,23 @@ export const SupportCenterCard: React.FC<SupportCenterCardProps> = ({
         {center.verificationStatus === 'verified' && ` · Verified by ${center.verifiedBy}`}
       </p>
 
-      <h3 className="text-lg font-bold font-heading text-ivory leading-snug">
+      <h3 className="break-words text-lg font-bold font-heading leading-snug text-ivory">
         {center.name}
       </h3>
+      {distanceKm !== undefined && (
+        <p className="mt-1 text-xs font-semibold text-gold">
+          About {distanceKm.toFixed(1)} km away · {center.coordinatesAreApproximate ? 'approximate mapped area' : 'straight-line estimate'}
+        </p>
+      )}
 
       <p className="text-xs text-ivory/70 line-clamp-2 leading-relaxed mb-4">
         {center.description}
       </p>
+      {center.organizationType === 'hospital' && center.serviceTypes.includes('referral') && (
+        <p className="mb-4 rounded-lg border border-blue-400/20 bg-blue-950/20 px-3 py-2 text-[11px] leading-relaxed text-blue-100/80">
+          Hospital referral listing, not a dedicated rehabilitation centre. Contact the hospital to confirm current services.
+        </p>
+      )}
 
       {/* Details List */}
       <div className="space-y-2 text-xs text-ivory/70 border-t border-b border-charcoal-light py-3 mb-4">
@@ -83,6 +97,15 @@ export const SupportCenterCard: React.FC<SupportCenterCardProps> = ({
               className="text-gold hover:underline"
             >
               Official website
+            </a>
+          ) : center.verificationSourceUrl ? (
+            <a
+              href={center.verificationSourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gold hover:underline"
+            >
+              Official source directory
             </a>
           ) : (
             <span>Official contact details available</span>
@@ -150,8 +173,8 @@ export const SupportCenterCard: React.FC<SupportCenterCardProps> = ({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex min-w-0 flex-wrap items-center gap-2">
           <a
             href={`tel:${center.phone.replace(/\s+/g, '')}`}
             className="btn-gold px-3.5 py-1.5 rounded-lg text-xs font-bold inline-flex items-center gap-1.5 shadow-sm"
@@ -172,7 +195,9 @@ export const SupportCenterCard: React.FC<SupportCenterCardProps> = ({
             View on Map
           </Button>
           <a
-            href={`https://www.google.com/maps/dir/?api=1&destination=${center.latitude},${center.longitude}`}
+            href={`https://www.google.com/maps/dir/?api=1${origin ? `&origin=${origin.latitude},${origin.longitude}` : ''}&destination=${encodeURIComponent(
+              center.coordinatesAreApproximate ? `${center.name}, ${center.address}` : `${center.latitude},${center.longitude}`
+            )}`}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-charcoal px-3 py-1.5 rounded-lg text-xs font-bold inline-flex items-center gap-1.5"
@@ -193,7 +218,7 @@ export const SupportCenterCard: React.FC<SupportCenterCardProps> = ({
           )}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={() => onRequestReferral(center)}
             className="text-xs text-champagne hover:text-gold font-semibold underline flex items-center gap-1"

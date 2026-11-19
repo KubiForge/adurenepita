@@ -121,19 +121,19 @@ export const AssistantPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div className="mx-auto min-w-0 w-full max-w-6xl space-y-5 px-3 py-5 sm:space-y-6 sm:px-6 sm:py-8 lg:px-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-charcoal-light pb-4">
-        <div className="flex items-center gap-3.5">
+        <div className="flex min-w-0 items-center gap-3.5">
           <div className="w-12 h-12 rounded-full overflow-hidden border border-gold/40 shadow-gold-subtle flex-shrink-0">
             <img src={ASSETS.logoIcon} alt="AI Assistant" className="w-full h-full object-cover" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-bold font-heading text-ivory">
+          <div className="min-w-0">
+            <div className="flex min-w-0 flex-wrap items-center gap-2">
+              <h1 className="min-w-0 break-words text-xl font-bold font-heading text-ivory sm:text-2xl">
                 BEYOND THE DARKNESS AI Assistant
               </h1>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-gold/15 text-gold border border-gold/30 font-bold uppercase tracking-wider">
+              <span className="shrink-0 rounded-full border border-gold/30 bg-gold/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-gold">
                 Active 24/7
               </span>
             </div>
@@ -156,7 +156,7 @@ export const AssistantPage: React.FC = () => {
       </div>
 
       {/* Main Chat Interface */}
-      <div className="charcoal-card border-gold/30 overflow-hidden flex flex-col h-[650px] shadow-2xl">
+      <div className="charcoal-card flex h-[min(650px,calc(100dvh-12rem))] min-h-[20rem] min-w-0 flex-col overflow-hidden border-gold/30 shadow-2xl sm:h-[650px]">
         {/* Messages Stream */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
           {messages.map((msg) => {
@@ -164,7 +164,7 @@ export const AssistantPage: React.FC = () => {
             return (
               <div
                 key={msg.id}
-                className={`flex gap-3 max-w-3xl ${isUser ? 'ml-auto flex-row-reverse' : 'mr-auto'}`}
+                className={`flex min-w-0 gap-3 max-w-3xl ${isUser ? 'ml-auto flex-row-reverse' : 'mr-auto'}`}
               >
                 {!isUser && (
                   <div className="w-8 h-8 rounded-full bg-gold/20 border border-gold/40 flex items-center justify-center text-gold flex-shrink-0 mt-1">
@@ -173,7 +173,7 @@ export const AssistantPage: React.FC = () => {
                 )}
 
                 <div
-                  className={`p-4 rounded-2xl text-xs sm:text-sm leading-relaxed space-y-3 ${
+                  className={`min-w-0 max-w-full break-words p-4 rounded-2xl text-xs sm:text-sm leading-relaxed space-y-3 ${
                     isUser
                       ? 'bg-gradient-to-r from-gold/90 to-champagne/90 text-midnight font-medium rounded-tr-none shadow-gold-subtle'
                       : 'bg-midnight/90 text-ivory/90 border border-charcoal-light rounded-tl-none shadow-lg'

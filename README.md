@@ -64,7 +64,8 @@ An accessible, conversational intake pathway for first-time visitors:
 - **Safety Safeguards**: No clinical diagnosis, no prescribing, no unmonitored cold-turkey advice for alcohol/benzodiazepines, zero assistance with substance acquisition.
 
 ### 3. Sri Lankan Support Directory & Locator
-- Interactive Leaflet map mapped with verified state rehabilitation centers (NDDCB Thalangama, Nittambuwa, Mel Medura Colombo 7, NIMH Angoda, and Teaching Hospital psychiatric units in Kandy, Galle, Jaffna, Batticaloa, Kurunegala, Anuradhapura).
+- Interactive Leaflet map for support and rehabilitation listings, including the NDDCB centres, hospital mental-health referral services, and providers in the Ministry of Health's [2023 Directory of Mental Health Service Providers](https://health.gov.lk/wp-content/uploads/2025/04/Mental-Health-Service-Providers-Directory-2023.pdf).
+- Hospital psychiatry/referral listings are distinguished from dedicated substance-use rehabilitation services. Directory entries include their source and advise users to confirm current availability, referral requirements, and costs directly.
 - Filter by province, district, and care type.
 - Confidential referral requests with explicit user consent.
 
@@ -154,6 +155,20 @@ npm run dev
 # 3. Build for production
 npm run build
 ```
+
+### Enable Live AI Chat
+
+The chatbot calls xAI Grok from Google Apps Script. The model defaults to `grok-4.3`; set `GROK_MODEL` to another model enabled for your xAI account if needed.
+
+1. Create an account in the [xAI Console](https://console.x.ai/), enable API billing/credits, and create an API key. API usage is billed by model and token; review the [current model pricing](https://docs.x.ai/developers/models) and configure spending limits in the console.
+2. Create or open a Google Sheet for the backend. In its bound Apps Script project, add all `.gs` files from `backend/google-apps-script/` (or push them using your configured `clasp` project).
+3. In Apps Script **Project Settings → Script Properties**, add `GROK_API_KEY` with the xAI key and `SPREADSHEET_ID` with the Sheet ID. Optionally add `GROK_MODEL` with a model ID available to your account.
+4. Run `setupBeyondTheDarknessEnvironment()` once from the Apps Script editor and approve the requested Google Sheets/Drive permissions.
+5. In Apps Script choose **Deploy → New deployment → Web app**. Choose **Execute as me**. For a public chatbot, set access to **Anyone**; this makes the endpoint publicly callable, so set provider spending limits and add server-side rate limiting before a public launch.
+6. Copy the deployed `/exec` URL. For local development, create an untracked `.env.local` in the repository root with `VITE_APPS_SCRIPT_URL=<your-web-app-url>` and restart Vite. In Vercel, add the same variable to the project environment and redeploy.
+7. Check `<your-web-app-url>?endpoint=/api/health`, then send a test message in the app. Verify the Apps Script execution log and xAI usage dashboard. After changing backend code, edit the deployment and publish a new version.
+
+Never put `GROK_API_KEY` in `.env`, frontend code, Vercel frontend variables, or GitHub. Only the Apps Script backend should hold it.
 
 ---
 

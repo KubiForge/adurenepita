@@ -171,17 +171,17 @@ export const AdminSettingsModule: React.FC = () => {
                 </h3>
                 <p className="text-xs text-ivory/60">Server-side proxy settings via Google Apps Script</p>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-800">
-                Connected
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-charcoal text-ivory/70 border border-charcoal-light">
+                Server-side key
               </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div>
-                <label className="block text-ivory/70 mb-1">Active Model</label>
+                <label className="block text-ivory/70 mb-1">Default Model</label>
                 <input
                   type="text"
-                  value="grok-beta (xAI)"
+                  value="grok-4.3 (xAI; override with GROK_MODEL)"
                   readOnly
                   className="w-full p-2.5 rounded-xl bg-midnight border border-charcoal-light text-gold font-mono"
                 />
@@ -201,7 +201,7 @@ export const AdminSettingsModule: React.FC = () => {
                 <label className="block text-ivory/70 mb-1">Grok Secret Storage</label>
                 <div className="p-2.5 rounded-xl bg-midnight border border-charcoal-light text-xs text-emerald-400 flex items-center gap-2">
                   <Lock className="w-3.5 h-3.5 text-gold" />
-                  <span>Google Apps Script Script Properties (`GROK_API_KEY`)</span>
+                  <span>Google Apps Script Script Properties (`GROK_API_KEY`, optional `GROK_MODEL`)</span>
                 </div>
               </div>
 

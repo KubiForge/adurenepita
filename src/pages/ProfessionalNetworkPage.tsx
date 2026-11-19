@@ -32,6 +32,7 @@ const SERVICE_LABELS: Record<SupportCenter['serviceTypes'][number], string> = {
   counseling: 'Counseling',
   rehabilitation: 'Rehabilitation',
   medical: 'Medical care',
+  referral: 'Referral service',
   family_support: 'Family support',
   hotline: 'Helpline',
   peer_support: 'Peer support',

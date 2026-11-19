@@ -34,23 +34,23 @@ export const DirectoryFilters: React.FC<DirectoryFiltersProps> = ({
 
   return (
     <div className="charcoal-card p-4 sm:p-6 mb-6 space-y-4">
-      <div className="flex items-center justify-between border-b border-charcoal-light pb-3">
-        <h3 className="font-heading font-bold text-base text-ivory flex items-center gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-charcoal-light pb-3">
+        <h3 className="flex min-w-0 items-center gap-2 font-heading text-base font-bold text-ivory">
           <Filter className="w-4 h-4 text-gold" />
           <span>Filter Sri Lankan Directory</span>
         </h3>
         <button
           onClick={onReset}
-          className="text-xs text-ivory/50 hover:text-gold flex items-center gap-1 transition-colors"
+          className="inline-flex min-h-10 shrink-0 items-center gap-1 text-xs text-ivory/50 transition-colors hover:text-gold"
         >
           <RotateCcw className="w-3.5 h-3.5" />
           <span>Reset Filters</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+      <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
         {/* Search */}
-        <div className="relative">
+        <div className="relative min-w-0">
           <Search className="w-4 h-4 text-ivory/40 absolute left-3.5 top-3.5" />
           <input
             type="text"
@@ -62,7 +62,7 @@ export const DirectoryFilters: React.FC<DirectoryFiltersProps> = ({
         </div>
 
         {/* Province Select */}
-        <div>
+        <div className="min-w-0">
           <select
             value={selectedProvince}
             onChange={(e) => {
@@ -81,7 +81,7 @@ export const DirectoryFilters: React.FC<DirectoryFiltersProps> = ({
         </div>
 
         {/* District Select */}
-        <div>
+        <div className="min-w-0">
           <select
             value={selectedDistrict}
             onChange={(e) => onDistrictChange(e.target.value)}
@@ -100,7 +100,7 @@ export const DirectoryFilters: React.FC<DirectoryFiltersProps> = ({
         </div>
 
         {/* Service Type Select */}
-        <div>
+        <div className="min-w-0">
           <select
             value={selectedServiceType}
             onChange={(e) => onServiceTypeChange(e.target.value)}
@@ -108,6 +108,7 @@ export const DirectoryFilters: React.FC<DirectoryFiltersProps> = ({
           >
             <option value="">All Care Types</option>
             <option value="rehabilitation">Rehabilitation</option>
+            <option value="referral">Hospital referral (not rehab)</option>
             <option value="counseling">Psychosocial Counseling</option>
             <option value="medical">Medical Care</option>
             <option value="family_support">Family Support</option>
@@ -116,7 +117,7 @@ export const DirectoryFilters: React.FC<DirectoryFiltersProps> = ({
           </select>
         </div>
 
-        <div>
+        <div className="min-w-0">
           <label htmlFor="support-program-filter" className="sr-only">Filter by program or population</label>
           <select
             id="support-program-filter"

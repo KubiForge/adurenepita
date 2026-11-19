@@ -10,7 +10,7 @@ export const StatisticsPage: React.FC = () => {
         <span className="text-xs uppercase tracking-wider text-gold font-bold">
           Data Storytelling & Public Evidence
         </span>
-        <h1 className="text-4xl font-bold font-heading text-ivory">
+        <h1 className="break-words text-3xl font-bold font-heading text-ivory sm:text-4xl">
           Sri Lankan Substance Trends & Impact Analytics
         </h1>
         <p className="text-sm text-ivory/70 leading-relaxed">
