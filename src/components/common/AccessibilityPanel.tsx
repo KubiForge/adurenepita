@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Accessibility, MessageCircle, Volume2, VolumeX, WifiOff } from 'lucide-react';
+import { MessageCircle, Volume2, VolumeX, WifiOff } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 type TextSize = 'normal' | 'large';
@@ -19,7 +19,7 @@ const readPreference = (key: string): string | null => {
 };
 
 export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ onOpenAiChat }) => {
-  const { language, setLanguage, t } = useLanguage();
+  const { language, t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [textSize, setTextSize] = useState<TextSize>(
     () => readPreference('btd_text_size') === 'large' ? 'large' : 'normal'
@@ -100,12 +100,6 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ onOpenAi
   useEffect(() => () => {
     if ('speechSynthesis' in window) window.speechSynthesis.cancel();
   }, []);
-
-  const handleLanguageChange = (value: string) => {
-    if (value === 'en' || value === 'si' || value === 'ta') {
-      setLanguage(value);
-    }
-  };
 
   const handleReadPage = () => {
     if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) {
@@ -199,22 +193,6 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ onOpenAi
           </div>
 
           <div className="space-y-5 text-sm">
-            <div>
-              <label htmlFor="accessibility-language" className="mb-1.5 block text-xs font-semibold text-ivory/75">
-                {t('accessibility.language')}
-              </label>
-              <select
-                id="accessibility-language"
-                value={language}
-                onChange={(event) => handleLanguageChange(event.currentTarget.value)}
-                className="min-h-12 w-full rounded-xl border border-gold/35 bg-[#202124] px-3 text-base text-ivory shadow-inner focus:border-gold focus-visible:outline sm:text-sm"
-              >
-                <option value="en">{t('language.en')}</option>
-                <option value="si">{t('language.si')}</option>
-                <option value="ta">{t('language.ta')}</option>
-              </select>
-            </div>
-
             <fieldset>
               <legend className="mb-2 text-xs font-semibold text-ivory/75">
                 {t('accessibility.textSize')}
@@ -291,31 +269,12 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ onOpenAi
         </>
       )}
 
-      <div className="accessibility-panel fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 z-[70] sm:bottom-6 sm:left-6">
+      <div className="accessibility-panel fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-4 z-[70] sm:bottom-6 sm:right-6">
         <div
           role="group"
           aria-label={t('accessibility.title')}
-          className="inline-flex items-center gap-1.5 rounded-full border border-gold/35 bg-[#151617] p-1.5 shadow-[0_12px_36px_rgba(0,0,0,0.65)]"
+          className="inline-flex items-center rounded-full border border-gold/35 bg-[#151617] p-1.5 shadow-[0_12px_36px_rgba(0,0,0,0.65)]"
         >
-          <button
-          ref={triggerRef}
-          type="button"
-          onClick={() => setIsOpen((open) => !open)}
-          aria-label={t('accessibility.open')}
-          aria-expanded={isOpen}
-          aria-haspopup="dialog"
-          aria-controls={isOpen ? 'accessibility-settings' : undefined}
-          className={`group relative inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold active:scale-95 ${
-            isOpen
-              ? 'border-gold/70 bg-gold/15 text-gold shadow-[0_0_20px_rgba(216,190,130,0.2)]'
-              : 'border-transparent bg-charcoal text-gold hover:scale-105 hover:border-gold/40 hover:bg-charcoal-light'
-          }`}
-          >
-          <Accessibility className="h-5 w-5" aria-hidden="true" />
-            <span className="pointer-events-none absolute bottom-full left-0 mb-2 whitespace-nowrap rounded-lg border border-gold/20 bg-midnight px-3 py-1.5 text-xs font-semibold text-ivory opacity-0 shadow-xl transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-            {t('accessibility.title')}
-            </span>
-          </button>
           {onOpenAiChat && (
           <button
             type="button"
@@ -325,7 +284,7 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ onOpenAi
             }}
             aria-label={t('cta.talkToAi')}
             title={t('cta.talkToAi')}
-            className="group relative inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold/20 bg-[#252628] text-champagne transition-all duration-200 hover:scale-105 hover:border-gold/50 hover:bg-gold/15 hover:shadow-[0_0_20px_rgba(216,190,130,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold active:scale-95"
+            className="group relative inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-gold/35 bg-[#252628]/95 text-champagne shadow-[0_14px_36px_rgba(0,0,0,0.55),0_0_24px_rgba(216,190,130,0.12)] backdrop-blur-xl transition-all duration-200 hover:scale-105 hover:border-gold/60 hover:bg-gold/15 hover:shadow-[0_18px_40px_rgba(0,0,0,0.6),0_0_26px_rgba(216,190,130,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold active:scale-95"
           >
             <MessageCircle className="h-5 w-5" aria-hidden="true" />
             <span className="pointer-events-none absolute bottom-full left-0 mb-2 whitespace-nowrap rounded-lg border border-gold/20 bg-midnight px-3 py-1.5 text-xs font-semibold text-ivory opacity-0 shadow-xl transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">

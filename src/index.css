@@ -1290,7 +1290,8 @@
 }
 
 .accessibility-panel {
-  left: max(0.75rem, env(safe-area-inset-left));
+  left: auto;
+  right: max(0.75rem, env(safe-area-inset-right));
   bottom: max(0.75rem, env(safe-area-inset-bottom));
 }
 

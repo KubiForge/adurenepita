@@ -100,11 +100,7 @@ export const Footer: React.FC = () => {
                   <Heart className="h-3.5 w-3.5 text-gold" /> {t('nav.donate')}
                 </Link>
               </li>
-              <li>
-                <Link to="/admin" className={`${footerLinkClass} items-center gap-2`}>
-                  <Shield className="h-3.5 w-3.5 text-gold/70" /> {t('footer.adminPortal')}
-                </Link>
-              </li>
+
             </ul>
           </div>
 

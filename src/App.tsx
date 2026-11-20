@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
-import { AuthProvider } from './context/AuthContext';
+// AuthProvider removed – authentication not used
 import { SafetyProvider } from './context/SafetyContext';
 
 import { Navbar } from './components/layout/Navbar';
@@ -208,11 +208,9 @@ export const App: React.FC = () => {
   return (
     <BrowserRouter>
       <LanguageProvider>
-        <AuthProvider>
-          <SafetyProvider>
-            <AppContent />
-          </SafetyProvider>
-        </AuthProvider>
+        <SafetyProvider>
+          <AppContent />
+        </SafetyProvider>
       </LanguageProvider>
     </BrowserRouter>
   );

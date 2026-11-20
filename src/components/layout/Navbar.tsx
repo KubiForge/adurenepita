@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { Logo } from '../common/Logo';
 import { useLanguage } from '../../context/LanguageContext';
-import { Sparkles, Menu, X, Heart, Shield, Compass, UserRound, ChevronRight } from 'lucide-react';
+import { Sparkles, Menu, X, Heart, Shield, Compass, ChevronRight, Languages, Check, ChevronDown } from 'lucide-react';
+import { LanguageSelector } from '../common/LanguageSelector';
 
 interface NavbarProps {
   onOpenAiChat?: () => void;
@@ -10,13 +11,21 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) => {
-  const { t } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
   const location = useLocation();
+  const languageOptions = [
+    { value: 'en' as const, label: t('language.en') },
+    { value: 'si' as const, label: t('language.si') },
+    { value: 'ta' as const, label: t('language.ta') },
+  ];
+  const activeLanguageLabel = languageOptions.find((option) => option.value === language)?.label ?? languageOptions[0].label;
 
   useEffect(() => {
     setMobileMenuOpen(false);
+    setLanguageMenuOpen(false);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -34,6 +43,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    if (!languageMenuOpen) return;
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!(event.target instanceof Element) || !event.target.closest('.navbar-language')) {
+        setLanguageMenuOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setLanguageMenuOpen(false);
+    };
+    document.addEventListener('pointerdown', handlePointerDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [languageMenuOpen]);
 
   const navLinks = [
     { to: '/', label: t('nav.home') },
@@ -65,13 +92,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
           <Logo size="md" className="min-w-0" />
 
           <div className="hidden items-center gap-2.5 lg:flex">
-            <Link
-              to="/profile"
-              className="navbar-action inline-flex items-center gap-1.5 rounded-full border border-gold/20 px-3 py-2 text-xs text-ivory/75"
-            >
-              <UserRound className="h-3.5 w-3.5" />
-              <span>{t('nav.account')}</span>
-            </Link>
+            <LanguageSelector />
+
+
 
             {onOpenWizard && (
               <button
@@ -168,14 +191,31 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
           </nav>
 
           <div className="navbar-mobile-actions mx-auto mt-4 flex max-w-7xl flex-col gap-2.5 border-t border-ivory/10 pt-4">
-            <Link
-              to="/profile"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold text-ivory/80 hover:text-gold"
-            >
-              <UserRound className="h-4 w-4 text-gold" />
-              <span>{t('nav.account')}</span>
-            </Link>
+            <div className="overflow-hidden rounded-xl border border-gold/20 bg-charcoal/50">
+              <div className="flex min-h-12 items-center gap-2 px-4 text-sm text-ivory/80">
+                <Languages className="h-4 w-4 text-gold" aria-hidden="true" />
+                <span>{t('accessibility.language')}</span>
+              </div>
+              <div className="grid grid-cols-3 gap-1 px-2 pb-2">
+                {languageOptions.map((option) => (
+                  <button
+                    type="button"
+                    key={option.value}
+                    onClick={() => setLanguage(option.value)}
+                    aria-pressed={language === option.value}
+                    className={`min-h-10 rounded-lg border text-xs font-semibold transition ${
+                      language === option.value
+                        ? 'border-gold/50 bg-gold/15 text-champagne'
+                        : 'border-ivory/10 text-ivory/65 hover:border-gold/30 hover:text-gold'
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+
             {onOpenWizard && (
               <button
                 onClick={() => {
