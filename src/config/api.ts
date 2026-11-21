@@ -19,8 +19,8 @@ export const API_CONFIG = {
   isDemoMode: !import.meta.env.VITE_APPS_SCRIPT_URL,
 
   // Selected AI Provider
-  aiProvider: 'grok', // 'grok' | 'gemini' | 'openai'
-  aiModel: 'grok-4.3',
+  aiProvider: 'gemini', // 'grok' | 'gemini' | 'openai'
+  aiModel: 'gemini-flash-latest',
 
   // Request timeouts in milliseconds
   timeoutMs: 15000,
@@ -30,7 +30,7 @@ export const API_CONFIG = {
 
   // Feature Flags
   features: {
-    voiceInput: false, // Planned for Phase 7 as per proposal
+    voiceInput: true, // Progressive enhancement via Web Speech API
     realTimeGrok: true,
     leafletMaps: true,
     interactiveQuiz: true,
