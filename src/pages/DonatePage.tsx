@@ -13,7 +13,7 @@ export const DonatePage: React.FC = () => {
       <section
         className="relative isolate overflow-hidden rounded-2xl border border-gold/25 px-5 py-8 sm:rounded-3xl sm:px-10 sm:py-14"
         style={{
-          backgroundImage: `linear-gradient(90deg, rgba(16, 17, 19, 0.96) 0%, rgba(16, 17, 19, 0.84) 48%, rgba(16, 17, 19, 0.3) 100%), url(${ASSETS.donateBg})`,
+          backgroundImage: `linear-gradient(90deg, rgba(255, 249, 245, 0.97) 0%, rgba(255, 249, 245, 0.9) 48%, rgba(255, 249, 245, 0.5) 100%), url(${ASSETS.donateBg})`,
           backgroundPosition: 'center, right center',
           backgroundSize: 'cover',
         }}

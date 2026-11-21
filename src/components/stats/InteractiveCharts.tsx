@@ -24,7 +24,7 @@ import {
 import { ShieldCheck, Info, TrendingUp, Calendar, BookOpen } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
-const COLORS = ['#D8BE82', '#BA9F60', '#8F7952', '#F1DFA5', '#E6E2D8'];
+const COLORS = ['#8B1E2D', '#D35D6E', '#55743D', '#A3C585', '#E7D7CE'];
 
 export const InteractiveCharts: React.FC = () => {
   const { language, t } = useLanguage();
@@ -89,22 +89,22 @@ export const InteractiveCharts: React.FC = () => {
         <div className="h-80 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={SUBSTANCE_TREND_CHART_DATA} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#323235" />
-              <XAxis dataKey="year" stroke="#D8BE82" fontSize={12} />
-              <YAxis stroke="#D8BE82" fontSize={12} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#E7D7CE" />
+              <XAxis dataKey="year" stroke="#6B7280" fontSize={12} />
+              <YAxis stroke="#6B7280" fontSize={12} />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: '#242426',
-                  borderColor: '#D8BE82',
+                  backgroundColor: '#FFFFFF',
+                  borderColor: '#E7D7CE',
                   borderRadius: '0.75rem',
-                  color: '#F5F2EB',
+                  color: '#1F2937',
                   fontSize: '12px',
                 }}
               />
               <Legend wrapperStyle={{ paddingTop: '10px' }} />
-              <Bar dataKey="Heroin" name={t('statistics.heroin')} fill="#8F7952" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="Cannabis" name={t('statistics.cannabis')} fill="#BA9F60" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="ICE" name={t('statistics.ice')} fill="#F1DFA5" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="Heroin" name={t('statistics.heroin')} fill="#8B1E2D" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="Cannabis" name={t('statistics.cannabis')} fill="#D35D6E" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="ICE" name={t('statistics.ice')} fill="#A3C585" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -126,19 +126,19 @@ export const InteractiveCharts: React.FC = () => {
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={ageDistributionData} layout="vertical" margin={{ top: 5, right: 20, left: 40, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#323235" />
-                  <XAxis type="number" stroke="#D8BE82" fontSize={11} unit="%" />
-                  <YAxis type="category" dataKey="ageGroup" stroke="#D8BE82" fontSize={11} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E7D7CE" />
+                  <XAxis type="number" stroke="#6B7280" fontSize={11} unit="%" />
+                  <YAxis type="category" dataKey="ageGroup" stroke="#6B7280" fontSize={11} />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: '#242426',
-                      borderColor: '#D8BE82',
+                      backgroundColor: '#FFFFFF',
+                      borderColor: '#E7D7CE',
                       borderRadius: '0.5rem',
-                      color: '#F5F2EB',
+                      color: '#1F2937',
                       fontSize: '11px',
                     }}
                   />
-                  <Bar dataKey="percentage" fill="#D8BE82" radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="percentage" fill="#8B1E2D" radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -176,10 +176,10 @@ export const InteractiveCharts: React.FC = () => {
                   </Pie>
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: '#242426',
-                      borderColor: '#D8BE82',
+                      backgroundColor: '#FFFFFF',
+                      borderColor: '#E7D7CE',
                       borderRadius: '0.5rem',
-                      color: '#F5F2EB',
+                      color: '#1F2937',
                       fontSize: '11px',
                     }}
                   />

@@ -67,19 +67,19 @@ export const SriLankaMap: React.FC<SriLankaMapProps> = ({
         className: 'custom-map-marker',
         html: `
           <div style="
-            background: ${isSelected ? '#F1DFA5' : '#D8BE82'};
-            border: 2px solid ${isSelected ? '#FFFFFF' : '#101113'};
+            background: ${isSelected ? '#D35D6E' : '#8B1E2D'};
+            border: 2px solid ${isSelected ? '#FFFFFF' : '#701625'};
             width: ${isSelected ? '28px' : '22px'};
             height: ${isSelected ? '28px' : '22px'};
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 12px rgba(216, 190, 130, 0.7);
+            box-shadow: 0 0 12px rgba(139, 30, 45, 0.28);
             cursor: pointer;
             transition: all 0.2s ease;
           ">
-            <div style="width: 8px; height: 8px; background: #101113; border-radius: 50%;"></div>
+            <div style="width: 8px; height: 8px; background: #FFFFFF; border-radius: 50%;"></div>
           </div>
         `,
         iconSize: [24, 24],
@@ -89,13 +89,13 @@ export const SriLankaMap: React.FC<SriLankaMapProps> = ({
       const marker = L.marker([center.latitude, center.longitude], { icon: customIcon }).addTo(map);
 
       marker.bindPopup(`
-        <div style="color: #101113; font-family: Inter, sans-serif; padding: 4px; max-width: 240px;">
-          <strong style="font-size: 13px; color: #101113; display: block; margin-bottom: 2px;">${center.name}</strong>
-          <span style="font-size: 11px; color: #8F7952; font-weight: 600;">${center.district} • ${center.city}</span>
-          <p style="font-size: 11px; color: #434347; margin: 4px 0;">${center.address}</p>
-          ${center.coordinatesAreApproximate ? '<p style="font-size: 10px; color: #8F7952; margin: 4px 0;">Approximate area pin — call to confirm the exact location.</p>' : ''}
+        <div style="color: #1F2937; font-family: 'DM Sans', sans-serif; padding: 4px; max-width: 240px;">
+          <strong style="font-size: 13px; color: #1F2937; display: block; margin-bottom: 2px;">${center.name}</strong>
+          <span style="font-size: 11px; color: #8B1E2D; font-weight: 600;">${center.district} • ${center.city}</span>
+          <p style="font-size: 11px; color: #6B7280; margin: 4px 0;">${center.address}</p>
+          ${center.coordinatesAreApproximate ? '<p style="font-size: 10px; color: #6B7280; margin: 4px 0;">Approximate area pin — call to confirm the exact location.</p>' : ''}
           <div style="margin-top: 6px; padding-top: 4px; border-top: 1px solid #ddd; font-size: 12px;">
-            <strong>Phone:</strong> <a href="tel:${center.phone}" style="color: #BA9F60; font-weight: bold;">${center.phone}</a>
+            <strong>Phone:</strong> <a href="tel:${center.phone}" style="color: #8B1E2D; font-weight: bold;">${center.phone}</a>
           </div>
         </div>
       `);

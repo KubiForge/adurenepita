@@ -34,11 +34,11 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showSubtitle = true, cl
       </div>
 
       <div className="flex flex-col">
-        <span className={`font-heading font-bold tracking-tight text-ivory group-hover:text-champagne transition-colors leading-tight ${textSizes[size]}`}>
+        <span className={`font-heading font-bold tracking-tight text-[#65101E] group-hover:text-[#8B1E2D] transition-colors leading-tight ${textSizes[size]}`}>
           BEYOND THE DARKNESS
         </span>
         {showSubtitle && (
-          <span className="text-[10px] uppercase tracking-wider text-ivory/60 font-sans hidden sm:block">
+          <span className="text-[9px] uppercase tracking-[0.12em] text-[#9A7A7F] font-sans hidden sm:block">
             Drug Abuse Prevention Portal
           </span>
         )}

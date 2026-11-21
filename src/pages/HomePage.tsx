@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CONTACT_INFO, telephoneHref } from '../config/contactInfo';
+import { ASSETS } from '../config/assets';
 import { useLanguage } from '../context/LanguageContext';
 import { DRUGS_DATA } from '../data/drugsData';
 import { SUPPORT_CENTERS_DATA } from '../data/sriLankaData';
@@ -42,6 +43,28 @@ if (!thalangamaCenter || !melMeduraCenter) {
 
 export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }) => {
   const { language, t } = useLanguage();
+  const heroHighlights = [
+    {
+      title: t('home.heroTrustInformation'),
+      description: t('home.heroTrustInformationDescription'),
+      Icon: ShieldCheck,
+    },
+    {
+      title: t('home.heroTrustSupport'),
+      description: t('home.heroTrustSupportDescription'),
+      Icon: Heart,
+    },
+    {
+      title: t('home.heroTrustResources'),
+      description: t('home.heroTrustResourcesDescription'),
+      Icon: MapPin,
+    },
+    {
+      title: t('home.heroTrustCommunity'),
+      description: t('home.heroTrustCommunityDescription'),
+      Icon: Users,
+    },
+  ];
   const [openFaqId, setOpenFaqId] = React.useState<string | null>(FAQS_DATA[0].id);
   const [substancePage, setSubstancePage] = React.useState(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false);
@@ -79,7 +102,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
   return (
     <div className="homepage-page space-y-20 pb-16 sm:space-y-24">
       {/* 1. CINEMATIC HERO SECTION */}
-      <section className="cinematic-hero relative flex items-center">
+      <section className="cinematic-hero" aria-labelledby="homepage-hero-title">
         <div className="cinematic-hero__inner">
           <div className="cinematic-hero__content">
             <p className="cinematic-hero__eyebrow">
@@ -87,7 +110,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
               {t('app.slogan')}
             </p>
 
-            <h1 className="cinematic-hero__title">
+            <h1 id="homepage-hero-title" className="cinematic-hero__title">
               <span>{t('home.heroTitle')}</span>
               <span className="cinematic-hero__title-gold">{t('app.tagline')}</span>
             </h1>
@@ -103,6 +126,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
                 onClick={onOpenAiChat}
                 className="cinematic-hero__action cinematic-hero__action-primary"
                 leftIcon={<Sparkles className="cinematic-hero__action-icon h-5 w-5" />}
+                rightIcon={<ArrowRight className="cinematic-hero__action-icon h-4 w-4" />}
               >
                 {t('cta.talkToAi')}
               </Button>
@@ -133,14 +157,45 @@ export const HomePage: React.FC<HomePageProps> = ({ onOpenAiChat, onOpenWizard }
           </div>
         </div>
 
-        <a
-          href="#homepage-mission"
-          className="cinematic-hero__scroll"
-          aria-label={t('home.scrollDiscover')}
-        >
-          <span>{t('home.scrollDiscover')}</span>
-          <ChevronDown className="h-4 w-4" aria-hidden="true" />
-        </a>
+        <figure className="cinematic-hero__media">
+          <picture className="cinematic-hero__picture">
+            <source media="(max-width: 767px)" srcSet={ASSETS.mobileHeroBg} />
+            <source media="(max-width: 1200px)" srcSet={ASSETS.tabletHeroBg} />
+            <img
+              src={ASSETS.heroBg}
+              alt={t('home.heroImageAlt')}
+              className="cinematic-hero__image"
+              width={1670}
+              height={940}
+              loading="eager"
+              decoding="async"
+            />
+          </picture>
+        </figure>
+
+        <div className="cinematic-hero__trustbar" aria-label={t('home.heroTrustHeading')}>
+          <div className="cinematic-hero__trustbar-grid">
+            {heroHighlights.map(({ title, description, Icon }) => (
+              <div className="cinematic-hero__trust-item" key={title}>
+                <span className="cinematic-hero__trust-icon" aria-hidden="true">
+                  <Icon className="h-6 w-6" />
+                </span>
+                <span className="cinematic-hero__trust-copy">
+                  <strong>{title}</strong>
+                  <span>{description}</span>
+                </span>
+              </div>
+            ))}
+          </div>
+          <a
+            href="#homepage-mission"
+            className="cinematic-hero__scroll"
+            aria-label={t('home.scrollDiscover')}
+          >
+            <span>{t('home.scrollDiscover')}</span>
+            <ChevronDown className="cinematic-hero__scroll-icon h-4 w-4" aria-hidden="true" />
+          </a>
+        </div>
       </section>
 
       {/* 2. MISSION & VISION: PREVENT • SUPPORT • CONNECT */}

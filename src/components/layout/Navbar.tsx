@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { Logo } from '../common/Logo';
 import { useLanguage } from '../../context/LanguageContext';
-import { Sparkles, Menu, X, Heart, Shield, Compass, ChevronRight, Languages, Check, ChevronDown } from 'lucide-react';
+import { Sparkles, Menu, X, Heart, Shield, Compass, ChevronRight, Languages, Search } from 'lucide-react';
 import { LanguageSelector } from '../common/LanguageSelector';
 
 interface NavbarProps {
@@ -14,18 +14,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
   const { language, setLanguage, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
   const location = useLocation();
   const languageOptions = [
     { value: 'en' as const, label: t('language.en') },
     { value: 'si' as const, label: t('language.si') },
     { value: 'ta' as const, label: t('language.ta') },
   ];
-  const activeLanguageLabel = languageOptions.find((option) => option.value === language)?.label ?? languageOptions[0].label;
 
   useEffect(() => {
     setMobileMenuOpen(false);
-    setLanguageMenuOpen(false);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -44,24 +41,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [mobileMenuOpen]);
 
-  useEffect(() => {
-    if (!languageMenuOpen) return;
-    const handlePointerDown = (event: PointerEvent) => {
-      if (!(event.target instanceof Element) || !event.target.closest('.navbar-language')) {
-        setLanguageMenuOpen(false);
-      }
-    };
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setLanguageMenuOpen(false);
-    };
-    document.addEventListener('pointerdown', handlePointerDown);
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.removeEventListener('pointerdown', handlePointerDown);
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [languageMenuOpen]);
-
   const navLinks = [
     { to: '/', label: t('nav.home') },
     { to: '/about', label: t('nav.about') },
@@ -78,56 +57,66 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
     <header
       className={`navbar-shell sticky top-0 z-40 border-b transition-all duration-300 ${
         isScrolled
-          ? 'border-gold/25 bg-midnight/95 shadow-[0_16px_36px_-24px_rgba(216,190,130,0.72)] backdrop-blur-xl'
-          : 'border-gold/15 shadow-[0_12px_36px_-24px_rgba(216,190,130,0.5)]'
+          ? 'border-[#eadfd7] bg-[#fffaf7]/95 shadow-[0_12px_30px_-22px_rgba(101,16,30,0.42)] backdrop-blur-xl'
+          : 'border-[#eadfd7] bg-[#fffaf7]/92 shadow-[0_8px_24px_-20px_rgba(101,16,30,0.35)] backdrop-blur-lg'
       } ${
         location.pathname === '/'
-          ? isScrolled ? '' : 'bg-midnight/45 backdrop-blur-md'
-          : isScrolled ? '' : 'bg-midnight/90 backdrop-blur-xl'
+          ? ''
+          : ''
       }`}
     >
-      <div className="h-px bg-gradient-to-r from-transparent via-gold/70 to-transparent" />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-[60px] items-center justify-between gap-2.5 px-0 sm:h-[76px] sm:gap-4">
+      <div className="mx-auto max-w-[1560px] px-3 sm:px-5 xl:px-6">
+        <div className="flex h-[62px] items-center justify-between gap-3 px-0 sm:h-[68px] xl:h-[72px]">
           <Logo size="md" className="min-w-0" />
 
-          <div className="hidden items-center gap-2.5 lg:flex">
-            <LanguageSelector />
-
-
-
-            {onOpenWizard && (
-              <button
-                onClick={onOpenWizard}
-                className="navbar-action hidden 2xl:inline-flex items-center gap-2 rounded-full border border-gold/25 bg-charcoal/50 px-3.5 py-2 text-xs font-medium text-ivory"
-                title={t('nav.launchWizard')}
+          <nav className="navbar-desktop-nav hidden items-center justify-center xl:flex" aria-label={t('nav.mainNavigation')}>
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className={({ isActive }) =>
+                  `navbar-desktop-link relative whitespace-nowrap px-2.5 py-3 text-[12px] font-semibold ${
+                    isActive
+                      ? 'text-[#8B1E2D]'
+                      : 'text-[#374151] hover:text-[#8B1E2D]'
+                  }`
+                }
               >
-                <Compass className="h-4 w-4 text-gold" />
-                <span>{t('nav.launchWizard')}</span>
-              </button>
-            )}
+                {link.label}
+              </NavLink>
+            ))}
+          </nav>
 
+          <div className="hidden shrink-0 items-center gap-2 xl:flex">
+            <LanguageSelector />
+            <Link
+              to="/learn"
+              className="navbar-action inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#e7d8cf] text-[#374151]"
+              aria-label={t('nav.learn')}
+              title={t('nav.learn')}
+            >
+              <Search className="h-4 w-4" />
+            </Link>
             <Link
               to="/donate"
-              className="navbar-action inline-flex items-center gap-2 rounded-full border border-gold/35 bg-charcoal/60 px-3.5 py-2 text-xs font-semibold text-champagne"
+              className="navbar-action inline-flex h-10 items-center gap-2 rounded-full border border-[#e2cdc3] px-3.5 text-xs font-bold text-[#65101E]"
             >
-              <Heart className="h-3.5 w-3.5 fill-gold/20 text-gold" />
+              <Heart className="h-3.5 w-3.5 text-[#8B1E2D]" />
               <span>{t('nav.donate')}</span>
             </Link>
-
             <button
               onClick={onOpenAiChat}
-              className="navbar-ai btn-gold inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-bold shadow-gold-subtle"
+              className="navbar-ai inline-flex h-10 items-center gap-2 rounded-full bg-[#8B1E2D] px-4 text-xs font-bold text-white shadow-[0_8px_18px_-10px_rgba(139,30,45,0.75)]"
             >
               <Sparkles className="h-4 w-4" />
               <span>{t('nav.aiAssistant')}</span>
             </button>
           </div>
 
-          <div className="flex items-center gap-2 lg:hidden">
+          <div className="flex items-center gap-2 xl:hidden">
             <button
               onClick={onOpenAiChat}
-              className="navbar-mobile-ai btn-gold inline-flex h-11 w-11 items-center justify-center rounded-full"
+              className="navbar-mobile-ai inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#8B1E2D] text-white"
               aria-label={t('nav.openChat')}
             >
               <Sparkles className="h-4 w-4" />
@@ -135,7 +124,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
 
             <button
               onClick={() => setMobileMenuOpen((isOpen) => !isOpen)}
-              className={`navbar-hamburger inline-flex h-11 w-11 items-center justify-center rounded-full border text-ivory/80 ${mobileMenuOpen ? 'border-gold/60 bg-gold/10 text-gold' : 'border-gold/20'}`}
+              className={`navbar-hamburger inline-flex h-10 w-10 items-center justify-center rounded-full border text-[#65101E] ${mobileMenuOpen ? 'border-[#D35D6E] bg-[#F6EDE6]' : 'border-[#e1d4cb]'}`}
               aria-label={mobileMenuOpen ? t('nav.closeMenu') : t('nav.openMenu')}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-navigation"
@@ -144,24 +133,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAiChat, onOpenWizard }) =>
             </button>
           </div>
         </div>
-
-        <nav className="hidden h-12 items-center justify-center gap-1 border-t border-ivory/5 lg:flex" aria-label={t('nav.mainNavigation')}>
-          {navLinks.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className={({ isActive }) =>
-                `navbar-desktop-link relative rounded-full px-3 py-2 text-xs font-medium ${
-                  isActive
-                    ? 'bg-gold/10 text-gold'
-                    : 'text-ivory/70 hover:bg-ivory/5 hover:text-ivory'
-                }`
-              }
-            >
-              {link.label}
-            </NavLink>
-          ))}
-        </nav>
       </div>
 
       {mobileMenuOpen && (

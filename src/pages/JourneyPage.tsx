@@ -367,7 +367,7 @@ export const JourneyPage: React.FC = () => {
                   cx="50"
                   cy="50"
                   r="40"
-                  stroke="#D8BE82"
+                  stroke="#8B1E2D"
                   strokeWidth="8"
                   strokeDasharray="251.2"
                   strokeDashoffset="100.48" /* 60% progress */

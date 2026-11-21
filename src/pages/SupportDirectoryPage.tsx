@@ -131,7 +131,7 @@ export const SupportDirectoryPage: React.FC = () => {
       <div
         className="relative isolate overflow-hidden rounded-3xl border border-gold/20 px-6 py-10 sm:px-10 sm:py-14"
         style={{
-          backgroundImage: `linear-gradient(90deg, rgba(16, 17, 19, 0.98) 0%, rgba(16, 17, 19, 0.86) 52%, rgba(16, 17, 19, 0.28) 100%), url(${ASSETS.servicesBg})`,
+          backgroundImage: `linear-gradient(90deg, rgba(255, 249, 245, 0.98) 0%, rgba(255, 249, 245, 0.91) 52%, rgba(255, 249, 245, 0.48) 100%), url(${ASSETS.servicesBg})`,
           backgroundPosition: 'center, right center',
           backgroundSize: 'cover',
         }}

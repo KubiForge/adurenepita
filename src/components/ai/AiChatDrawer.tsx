@@ -164,7 +164,7 @@ export const AiChatDrawer: React.FC<AiChatDrawerProps> = ({
     <div className="fixed inset-0 z-50 overflow-hidden flex justify-end">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-midnight/80 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-slate-950/45 backdrop-blur-sm transition-opacity"
         onClick={onClose}
         aria-hidden="true"
       />

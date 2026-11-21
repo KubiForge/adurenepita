@@ -143,22 +143,22 @@ export const AdminDashboardView: React.FC = () => {
             <svg className="w-full h-full overflow-visible" viewBox="0 0 700 200">
               <defs>
                 <linearGradient id="goldGradientArea" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#D8BE82" stopOpacity="0.35" />
-                  <stop offset="100%" stopColor="#D8BE82" stopOpacity="0.0" />
+                  <stop offset="0%" stopColor="#D35D6E" stopOpacity="0.24" />
+                  <stop offset="100%" stopColor="#D35D6E" stopOpacity="0.0" />
                 </linearGradient>
               </defs>
 
               {/* Grid Lines */}
-              <line x1="50" y1="20" x2="680" y2="20" stroke="rgba(245,242,235,0.06)" strokeDasharray="3 3" />
-              <line x1="50" y1="70" x2="680" y2="70" stroke="rgba(245,242,235,0.06)" strokeDasharray="3 3" />
-              <line x1="50" y1="120" x2="680" y2="120" stroke="rgba(245,242,235,0.06)" strokeDasharray="3 3" />
-              <line x1="50" y1="170" x2="680" y2="170" stroke="rgba(245,242,235,0.1)" />
+              <line x1="50" y1="20" x2="680" y2="20" stroke="rgba(31,41,55,0.08)" strokeDasharray="3 3" />
+              <line x1="50" y1="70" x2="680" y2="70" stroke="rgba(31,41,55,0.08)" strokeDasharray="3 3" />
+              <line x1="50" y1="120" x2="680" y2="120" stroke="rgba(31,41,55,0.08)" strokeDasharray="3 3" />
+              <line x1="50" y1="170" x2="680" y2="170" stroke="rgba(31,41,55,0.14)" />
 
               {/* Y Axis Labels */}
-              <text x="15" y="24" fill="rgba(245,242,235,0.4)" fontSize="10" fontFamily="sans-serif">1.5K</text>
-              <text x="15" y="74" fill="rgba(245,242,235,0.4)" fontSize="10" fontFamily="sans-serif">1.2K</text>
-              <text x="15" y="124" fill="rgba(245,242,235,0.4)" fontSize="10" fontFamily="sans-serif">900</text>
-              <text x="15" y="174" fill="rgba(245,242,235,0.4)" fontSize="10" fontFamily="sans-serif">300</text>
+              <text x="15" y="24" fill="rgba(31,41,55,0.55)" fontSize="10" fontFamily="sans-serif">1.5K</text>
+              <text x="15" y="74" fill="rgba(31,41,55,0.55)" fontSize="10" fontFamily="sans-serif">1.2K</text>
+              <text x="15" y="124" fill="rgba(31,41,55,0.55)" fontSize="10" fontFamily="sans-serif">900</text>
+              <text x="15" y="174" fill="rgba(31,41,55,0.55)" fontSize="10" fontFamily="sans-serif">300</text>
 
               {/* Chart Filled Area */}
               <polygon
@@ -170,7 +170,7 @@ export const AdminDashboardView: React.FC = () => {
               <polyline
                 points="50,150 140,140 230,145 320,130 410,110 500,80 590,60 680,45"
                 fill="none"
-                stroke="#D8BE82"
+                stroke="#8B1E2D"
                 strokeWidth="3"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -178,16 +178,16 @@ export const AdminDashboardView: React.FC = () => {
 
               {/* Interactive Points */}
               {[[50,150],[140,140],[230,145],[320,130],[410,110],[500,80],[590,60],[680,45]].map(([cx, cy], i) => (
-                <circle key={i} cx={cx} cy={cy} r="4" fill="#101113" stroke="#D8BE82" strokeWidth="2.5" />
+                <circle key={i} cx={cx} cy={cy} r="4" fill="#FFFFFF" stroke="#8B1E2D" strokeWidth="2.5" />
               ))}
 
               {/* X Axis Labels */}
-              <text x="45" y="195" fill="rgba(245,242,235,0.4)" fontSize="10">Oct 12</text>
-              <text x="135" y="195" fill="rgba(245,242,235,0.4)" fontSize="10">Oct 17</text>
-              <text x="225" y="195" fill="rgba(245,242,235,0.4)" fontSize="10">Oct 22</text>
-              <text x="315" y="195" fill="rgba(245,242,235,0.4)" fontSize="10">Oct 27</text>
-              <text x="405" y="195" fill="rgba(245,242,235,0.4)" fontSize="10">Nov 01</text>
-              <text x="665" y="195" fill="rgba(245,242,235,0.4)" fontSize="10">Nov 06</text>
+              <text x="45" y="195" fill="rgba(31,41,55,0.55)" fontSize="10">Oct 12</text>
+              <text x="135" y="195" fill="rgba(31,41,55,0.55)" fontSize="10">Oct 17</text>
+              <text x="225" y="195" fill="rgba(31,41,55,0.55)" fontSize="10">Oct 22</text>
+              <text x="315" y="195" fill="rgba(31,41,55,0.55)" fontSize="10">Oct 27</text>
+              <text x="405" y="195" fill="rgba(31,41,55,0.55)" fontSize="10">Nov 01</text>
+              <text x="665" y="195" fill="rgba(31,41,55,0.55)" fontSize="10">Nov 06</text>
             </svg>
           </div>
         </div>
@@ -219,7 +219,7 @@ export const AdminDashboardView: React.FC = () => {
                 cx="50"
                 cy="50"
                 r="38"
-                stroke="#D8BE82"
+                stroke="#8B1E2D"
                 strokeWidth="11"
                 strokeDasharray="238.7"
                 strokeDashoffset="162.3" /* 32% */

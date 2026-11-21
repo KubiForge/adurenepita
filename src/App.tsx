@@ -7,7 +7,6 @@ import { SafetyProvider } from './context/SafetyContext';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { EmergencyBanner } from './components/layout/EmergencyBanner';
-import { CinematicBackground } from './components/layout/CinematicBackground';
 import { EmergencyModal } from './components/common/EmergencyModal';
 import { AccessibilityPanel } from './components/common/AccessibilityPanel';
 import { CreativeWizardModal } from './components/wizard/CreativeWizardModal';
@@ -73,7 +72,6 @@ export const AppContent: React.FC = () => {
       <a className="accessibility-skip-link" href="#main-content">
         {t('accessibility.skip')}
       </a>
-      {isHome && <CinematicBackground />}
       {!isAdmin && <EmergencyBanner />}
       {!isAdmin && (
         <Navbar

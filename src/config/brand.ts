@@ -10,11 +10,12 @@ export const BRAND = {
   heroSubtext: 'Knowledge creates awareness. Support creates possibilities. Together, we can help people find a way forward.',
   promise: 'A safe place to ask. A trusted path to information, professional support and hope.',
   colors: {
-    midnightCharcoal: '#101113',
-    smokyCharcoal: '#242426',
-    antiqueGold: '#D8BE82',
-    softChampagne: '#F1DFA5',
-    warmIvory: '#F5F2EB',
-    mutedBronze: '#8F7952',
+    primary: '#8B1E2D',
+    secondary: '#D35D6E',
+    background: '#FFF9F5',
+    surface: '#F6EDE6',
+    textPrimary: '#1F2937',
+    textSecondary: '#6B7280',
+    accent: '#A3C585',
   },
 };

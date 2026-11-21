@@ -100,7 +100,7 @@ export const AboutPage: React.FC = () => (
       aria-labelledby="about-hero-title"
       className="relative isolate mx-auto mt-6 flex min-h-[540px] max-w-[1440px] items-center overflow-hidden rounded-[2rem] border border-gold/15 bg-midnight bg-cover bg-center px-5 py-16 sm:mx-6 sm:px-10 lg:mx-8 lg:min-h-[590px] lg:px-16"
       style={{
-        backgroundImage: `linear-gradient(90deg, rgba(10, 11, 13, 0.98) 0%, rgba(10, 11, 13, 0.92) 42%, rgba(10, 11, 13, 0.52) 100%), linear-gradient(0deg, rgba(10, 11, 13, 0.5), transparent 55%), url(${ASSETS.heroBg})`,
+        backgroundImage: `linear-gradient(90deg, rgba(255, 249, 245, 0.97) 0%, rgba(255, 249, 245, 0.92) 42%, rgba(255, 249, 245, 0.58) 100%), linear-gradient(0deg, rgba(255, 249, 245, 0.65), transparent 55%), url(${ASSETS.heroBg})`,
       }}
     >
       <div className="relative flex max-w-3xl flex-col">
@@ -175,7 +175,7 @@ export const AboutPage: React.FC = () => (
             </div>
           </div>
 
-          <div className="relative flex flex-col justify-between overflow-hidden rounded-3xl border border-gold/25 bg-gradient-to-br from-charcoal/95 via-charcoal/80 to-midnight p-6 shadow-charcoal-elevated backdrop-blur-xl sm:p-8 lg:col-span-5">
+          <div className="relative flex flex-col justify-between overflow-hidden rounded-3xl border border-gold/25 bg-gradient-to-br from-white via-white to-charcoal p-6 shadow-charcoal-elevated backdrop-blur-xl sm:p-8 lg:col-span-5">
             <div aria-hidden="true" className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-gold/10 blur-3xl" />
             <div className="relative">
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold">Campaign identity</p>
@@ -205,7 +205,7 @@ export const AboutPage: React.FC = () => (
             {missionItems.map(({ title, description, icon: Icon }, index) => (
               <article
                 key={title}
-                className="group relative overflow-hidden rounded-2xl border border-gold/15 bg-white/[0.025] p-6 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-gold/40 hover:bg-gold/[0.045] sm:p-8"
+                className="group relative overflow-hidden rounded-2xl border border-gold/15 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-gold/40 hover:bg-gold/[0.045] sm:p-8"
               >
                 <div aria-hidden="true" className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gold/10 blur-3xl transition-opacity group-hover:opacity-100" />
                 <div className="relative flex items-center justify-between">
@@ -224,7 +224,7 @@ export const AboutPage: React.FC = () => (
       </Reveal>
 
       <Reveal>
-        <section aria-labelledby="governance-title" className="relative overflow-hidden rounded-3xl border border-gold/20 bg-gradient-to-br from-charcoal/80 to-midnight/90 p-6 shadow-charcoal-elevated backdrop-blur-xl sm:p-9 lg:p-11">
+        <section aria-labelledby="governance-title" className="relative overflow-hidden rounded-3xl border border-gold/20 bg-gradient-to-br from-white to-charcoal p-6 shadow-charcoal-elevated sm:p-9 lg:p-11">
           <div aria-hidden="true" className="absolute bottom-0 right-0 h-64 w-64 rounded-full bg-gold/[0.06] blur-3xl" />
           <div className="relative grid gap-6 md:grid-cols-[auto_1fr] md:gap-8">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-gold/25 bg-midnight text-champagne">
