@@ -19,7 +19,7 @@ const readPreference = (key: string): string | null => {
 };
 
 export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ onOpenAiChat }) => {
-  const { language, t } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [textSize, setTextSize] = useState<TextSize>(
     () => readPreference('btd_text_size') === 'large' ? 'large' : 'normal'
@@ -153,6 +153,12 @@ export const AccessibilityPanel: React.FC<AccessibilityPanelProps> = ({ onOpenAi
     window.speechSynthesis.cancel();
     setIsSpeaking(false);
     setSpeechStatus(t('accessibility.speechStopped'));
+  };
+
+  const handleLanguageChange = (value: string) => {
+    if (value === 'en' || value === 'si' || value === 'ta') {
+      setLanguage(value);
+    }
   };
 
   return createPortal(

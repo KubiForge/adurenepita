@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal } from '../common/Modal';
 import { WizardStepRenderer } from './WizardStepRenderer';
 import { WizardCompletionDashboard } from './WizardCompletionDashboard';
 import { WizardAnswers } from '../../types/wizard';
 import { Button } from '../common/Button';
-import { ArrowLeft, ArrowRight, Sparkles, X, Check, Compass } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Sparkles, Check, Compass, Languages } from 'lucide-react';
 import { useSafety } from '../../context/SafetyContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface CreativeWizardModalProps {
   isOpen: boolean;
@@ -19,6 +20,7 @@ export const CreativeWizardModal: React.FC<CreativeWizardModalProps> = ({
   onSwitchToChat,
 }) => {
   const { openEmergencyModal } = useSafety();
+  const { language, setLanguage } = useLanguage();
 
   const [currentStep, setCurrentStep] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -27,6 +29,48 @@ export const CreativeWizardModal: React.FC<CreativeWizardModalProps> = ({
     substances: [],
     concerns: [],
   });
+  const stageLabels = [
+    'Understanding your needs',
+    'Understanding the situation',
+    'Identifying the substance',
+    'Understanding the timeline',
+    'Current situation and safety',
+    'Areas of concern',
+    'Preferred support',
+    'Finding local help',
+    'Additional context',
+    'Reviewing your support request',
+  ];
+
+  useEffect(() => {
+    if (!isOpen) return;
+    try {
+      const saved = window.localStorage.getItem('btd-support-journey');
+      if (!saved) return;
+      const parsed = JSON.parse(saved) as {
+        answers?: WizardAnswers;
+        currentStep?: number;
+        isCompleted?: boolean;
+      };
+      if (parsed.answers) setAnswers(parsed.answers);
+      if (parsed.currentStep) setCurrentStep(parsed.currentStep);
+      if (parsed.isCompleted) setIsCompleted(parsed.isCompleted);
+    } catch (error) {
+      console.warn('The saved support journey could not be restored.', error);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    try {
+      window.localStorage.setItem(
+        'btd-support-journey',
+        JSON.stringify({ answers, currentStep, isCompleted }),
+      );
+    } catch (error) {
+      console.warn('The support journey could not be saved locally.', error);
+    }
+  }, [answers, currentStep, isCompleted, isOpen]);
 
   const updateAnswers = (patch: Partial<WizardAnswers>) => {
     setAnswers((prev) => ({ ...prev, ...patch }));
@@ -56,9 +100,12 @@ export const CreativeWizardModal: React.FC<CreativeWizardModalProps> = ({
   };
 
   const handleReset = () => {
-    setAnswers({ substances: [], concerns: [] });
-    setCurrentStep(1);
-    setIsCompleted(false);
+    if (window.confirm('Clear all answers and start "Your Path to Support" again?')) {
+      setAnswers({ substances: [], concerns: [] });
+      setCurrentStep(1);
+      setIsCompleted(false);
+      window.localStorage.removeItem('btd-support-journey');
+    }
   };
 
   const handleEmergencyTrigger = (reason: string) => {
@@ -71,36 +118,56 @@ export const CreativeWizardModal: React.FC<CreativeWizardModalProps> = ({
       onClose={onClose}
       maxWidth="4xl"
       title={
-        <div className="flex items-center gap-2">
-          <Compass className="w-5 h-5 text-gold" />
-          <span>Creative AI Guided Wizard</span>
+        <div className="flex min-w-0 items-center gap-2">
+          <Compass className="h-5 w-5 shrink-0 text-gold" />
+          <div className="min-w-0">
+            <span className="block truncate">Your Path to Support</span>
+            <span className="block text-[10px] font-normal text-ivory/50 sm:text-xs">
+              Personalized Recovery &amp; Support Guide
+            </span>
+          </div>
         </div>
       }
     >
-      <div className="space-y-6">
+      <div className="space-y-4">
+        <div className="flex items-center justify-end gap-2">
+          <Languages className="h-4 w-4 text-gold" aria-hidden="true" />
+          <label htmlFor="journey-language" className="sr-only">Experience language</label>
+          <select
+            id="journey-language"
+            value={language}
+            onChange={(event) => setLanguage(event.target.value as 'en' | 'si' | 'ta')}
+            className="rounded-lg border border-gold/30 bg-midnight px-3 py-2 text-xs font-semibold text-ivory"
+          >
+            <option value="en">English</option>
+            <option value="si">සිංහල</option>
+            <option value="ta">தமிழ்</option>
+          </select>
+        </div>
         {/* Progress Bar (Visible during steps 1-10) */}
         {!isCompleted && (
           <div>
-            <div className="flex items-center justify-between text-xs text-ivory/60 mb-2">
-              <span className="font-semibold text-gold">
-                Step {currentStep} of 10
-              </span>
+            <div className="mb-2 flex items-end justify-between gap-3 text-xs text-ivory/60">
+              <div>
+                <span className="block font-semibold text-gold">{stageLabels[currentStep - 1]}</span>
+                <span className="mt-0.5 block">Step {currentStep} of 10 · {Math.round((currentStep / 10) * 100)}%</span>
+              </div>
               <button
                 onClick={() => {
-                  const message = `Hi, I was exploring the Creative Wizard at Step ${currentStep} and I would prefer to talk naturally. Can you help me?`;
+                  const message = `Hi, I am at Step ${currentStep} of "Your Path to Support" and would prefer to talk naturally. Can you help me?`;
                   onClose();
                   onSwitchToChat(message);
                 }}
                 className="text-xs text-gold/80 hover:text-champagne flex items-center gap-1 underline"
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Switch to Natural Chat</span>
+                <span>Continue with AI chat</span>
               </button>
             </div>
 
             <div className="w-full bg-midnight rounded-full h-2 overflow-hidden border border-charcoal-light">
               <div
-                className="bg-gradient-to-r from-bronze via-gold to-champagne h-full transition-all duration-300 rounded-full"
+                className="h-full rounded-full bg-gold transition-all duration-300"
                 style={{ width: `${(currentStep / 10) * 100}%` }}
               />
             </div>
