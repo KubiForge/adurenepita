@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Modal } from '../common/Modal';
 import { WizardAnswers } from '../../types/wizard';
 import { SupportCenter } from '../../types/directory';
-import { Download, Mail, MessageCircle, Printer, Share2, ShieldCheck, X } from 'lucide-react';
+import { Copy, Download, Mail, MessageCircle, Printer, Share2, ShieldCheck, X } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 interface SupportRequestModalProps {
@@ -28,7 +28,13 @@ export const SupportRequestModal: React.FC<SupportRequestModalProps> = ({
 }) => {
   const { language } = useLanguage();
   const [anonymous, setAnonymous] = useState(true);
+  const [reportSubject, setReportSubject] = useState<'myself' | 'someone_else'>('myself');
   const [preferredName, setPreferredName] = useState('');
+  const [relationship, setRelationship] = useState('');
+  const [ageRange, setAgeRange] = useState('');
+  const [contactNumber, setContactNumber] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [permissionToShare, setPermissionToShare] = useState(false);
   const [recipient, setRecipient] = useState('');
   const [assistance, setAssistance] = useState<string[]>(['professional_counselling']);
   const [accuracyConsent, setAccuracyConsent] = useState(false);
@@ -57,7 +63,14 @@ export const SupportRequestModal: React.FC<SupportRequestModalProps> = ({
         </header>
         <section style="margin-top:22px">
           <h2 style="color:#641522">Request overview</h2>
+          <p><strong>Request prepared for:</strong> ${reportSubject === 'myself' ? 'Myself' : 'Someone else'}</p>
           <p><strong>Person:</strong> ${anonymous ? 'Anonymous support summary' : escapeHtml(preferredName || 'Preferred name not provided')}</p>
+          ${ageRange ? `<p><strong>Age range:</strong> ${escapeHtml(ageRange)}</p>` : ''}
+          ${relationship && reportSubject === 'someone_else' ? `<p><strong>Relationship:</strong> ${escapeHtml(relationship)}</p>` : ''}
+          ${!anonymous && contactNumber ? `<p><strong>Contact number:</strong> ${escapeHtml(contactNumber)}</p>` : ''}
+          ${!anonymous && contactEmail ? `<p><strong>Contact email:</strong> ${escapeHtml(contactEmail)}</p>` : ''}
+          <p><strong>Preferred language:</strong> ${escapeHtml(language)}</p>
+          <p><strong>Location shared:</strong> ${escapeHtml([answers.locality, answers.district, answers.province].filter(Boolean).join(', ') || 'Not provided')}</p>
           <p><strong>Reason:</strong> ${escapeHtml(answers.purpose?.replace(/_/g, ' ') || 'Not specified')}</p>
           ${selectedCentre ? `<p><strong>Preferred support destination:</strong> ${escapeHtml(selectedCentre.name)}<br>${escapeHtml(selectedCentre.address)}<br>${escapeHtml(selectedCentre.phone)}</p>` : '<p><strong>Preferred support destination:</strong> Not specified</p>'}
         </section>
@@ -71,6 +84,7 @@ export const SupportRequestModal: React.FC<SupportRequestModalProps> = ({
         <section style="margin-top:22px">
           <h2 style="color:#641522">Health, support and additional context</h2>
           <p><strong>Health information:</strong> ${escapeHtml(answers.healthInfo || 'Not provided')}</p>
+          <p><strong>Immediate safety concern reported:</strong> ${answers.urgentSymptoms?.includes('immediate_emergency') ? 'Yes. Seek emergency medical help now.' : 'Not reported in this summary'}</p>
           <p><strong>Requested assistance:</strong> ${escapeHtml(assistance.join(', ').replace(/_/g, ' ') || 'Not specified')}</p>
           <p><strong>Additional context:</strong> ${escapeHtml(answers.additionalContext || 'Not provided')}</p>
         </section>
@@ -79,15 +93,15 @@ export const SupportRequestModal: React.FC<SupportRequestModalProps> = ({
           <p>This document is a user-prepared support summary intended to help communicate a request for assistance. It is not a medical diagnosis, clinical assessment, treatment plan, or official institutional record. All information should be independently assessed by an appropriately qualified professional.</p>
         </footer>
       </article>`;
-  }, [anonymous, preferredName, answers, assistance, recipient, centers, reference, substanceText]);
+  }, [anonymous, reportSubject, preferredName, relationship, ageRange, contactNumber, contactEmail, answers, assistance, recipient, centers, reference, substanceText]);
 
   const printReport = () => {
-    const printWindow = window.open('', '_blank', 'noopener,noreferrer');
+    const printWindow = window.open('', '_blank');
     if (!printWindow) return;
-    printWindow.document.write(`<!doctype html><html><head><title>Confidential Support Summary</title><style>@page{size:A4;margin:16mm}@media print{body{-webkit-print-color-adjust:exact}}</style></head><body>${reportHtml}</body></html>`);
+    printWindow.document.write(`<!doctype html><html lang="${language}"><head><meta charset="utf-8"><title>Confidential Support Summary</title><style>@page{size:A4;margin:16mm}body{font-family:Arial,sans-serif;color:#252b35;line-height:1.55}h2{break-after:avoid}article{max-width:780px;margin:auto;padding:24px}@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body>${reportHtml}</body></html>`);
     printWindow.document.close();
     printWindow.focus();
-    printWindow.print();
+    printWindow.setTimeout(() => printWindow.print(), 250);
   };
 
   const preparedMessage =
@@ -95,26 +109,55 @@ export const SupportRequestModal: React.FC<SupportRequestModalProps> = ({
     'Dear Support Team,\n\nI am contacting you to request guidance and assistance regarding a substance-related concern.\nI have prepared a confidential support summary containing the information I am comfortable sharing.\nI would appreciate guidance regarding the appropriate next steps and available support services.\n\nThank you.';
 
   const handleEmail = () => {
-    if (!shareConsent) return;
+    if (!canShare) return;
+    if (!emailAddress.trim()) {
+      window.alert('Enter the support recipient email address first.');
+      return;
+    }
     window.location.href = `mailto:${encodeURIComponent(emailAddress)}?subject=${encodeURIComponent('Confidential Request for Support – Beyond the Darkness')}&body=${encodeURIComponent(preparedMessage)}`;
   };
 
   const handleWhatsApp = () => {
-    if (!shareConsent) return;
+    if (!canShare) return;
     window.open(`https://wa.me/?text=${encodeURIComponent(preparedMessage)}`, '_blank', 'noopener,noreferrer');
   };
 
-  const handleNativeShare = async () => {
-    if (!shareConsent) return;
-    if (navigator.share) {
-      await navigator.share({ title: 'Confidential Support Summary', text: preparedMessage });
-    } else {
+  const handleMessenger = async () => {
+    if (!canShare) return;
+    try {
       await navigator.clipboard.writeText(preparedMessage);
-      window.alert('The support message was copied. It was not sent automatically.');
+    } catch {
+      window.alert('Copy the prepared message before continuing to Messenger.');
+    }
+    window.open('https://www.messenger.com/', '_blank', 'noopener,noreferrer');
+  };
+
+  const handleCopyReference = async () => {
+    if (!canShare) return;
+    try {
+      await navigator.clipboard.writeText(`Confidential support report reference: ${reference}`);
+      window.alert('The report reference was copied. No report was uploaded or sent.');
+    } catch {
+      window.alert(`Report reference: ${reference}`);
     }
   };
 
-  const canGenerate = accuracyConsent && summaryConsent && (!recipient || recipient !== 'another_organization' || shareConsent);
+  const handleNativeShare = async () => {
+    if (!canShare) return;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'Confidential Support Summary', text: preparedMessage });
+      } else {
+        await navigator.clipboard.writeText(preparedMessage);
+        window.alert('The support message was copied. It was not sent automatically.');
+      }
+    } catch {
+      window.alert('The share sheet could not be opened. The report was not sent.');
+    }
+  };
+
+  const canGenerate = accuracyConsent && summaryConsent;
+  const canShare = canGenerate && shareConsent && (reportSubject === 'myself' || permissionToShare);
 
   return (
     <Modal
@@ -146,6 +189,35 @@ export const SupportRequestModal: React.FC<SupportRequestModalProps> = ({
             <strong className="block text-sm text-ivory">Add a preferred name or initials</strong>
             <span className="mt-1 block text-xs text-ivory/60">Only provide what you choose to share</span>
           </button>
+        </fieldset>
+
+        <fieldset className="space-y-3 rounded-xl border border-charcoal-light p-4">
+          <legend className="px-2 text-xs font-bold text-gold">Whose support request is this?</legend>
+          <div className="flex flex-wrap gap-2">
+            {([{ value: 'myself', label: 'Myself' }, { value: 'someone_else', label: 'Someone else' }] as const).map((option) => (
+              <button key={option.value} type="button" aria-pressed={reportSubject === option.value} onClick={() => setReportSubject(option.value)} className={`min-h-11 rounded-xl border px-4 text-xs font-semibold ${reportSubject === option.value ? 'border-gold bg-gold/10 text-gold' : 'border-charcoal-light text-ivory/70'}`}>
+                {option.label}
+              </button>
+            ))}
+          </div>
+          {!anonymous && (
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="text-xs text-ivory/75">Age range (optional)
+                <select value={ageRange} onChange={(event) => setAgeRange(event.currentTarget.value)} className="mt-2 min-h-11 w-full rounded-xl border border-charcoal-light bg-midnight px-3 text-sm text-ivory">
+                  <option value="">Prefer not to say</option><option>Under 18</option><option>18–24</option><option>25–34</option><option>35–44</option><option>45–59</option><option>60 or over</option>
+                </select>
+              </label>
+              {reportSubject === 'someone_else' && <label className="text-xs text-ivory/75">Your relationship (optional)<input value={relationship} onChange={(event) => setRelationship(event.currentTarget.value.slice(0, 80))} className="mt-2 min-h-11 w-full rounded-xl border border-charcoal-light bg-midnight px-3 text-sm text-ivory" /></label>}
+              <label className="text-xs text-ivory/75">Contact number (optional)<input type="tel" value={contactNumber} onChange={(event) => setContactNumber(event.currentTarget.value.slice(0, 40))} className="mt-2 min-h-11 w-full rounded-xl border border-charcoal-light bg-midnight px-3 text-sm text-ivory" /></label>
+              <label className="text-xs text-ivory/75">Contact email (optional)<input type="email" value={contactEmail} onChange={(event) => setContactEmail(event.currentTarget.value.slice(0, 160))} className="mt-2 min-h-11 w-full rounded-xl border border-charcoal-light bg-midnight px-3 text-sm text-ivory" /></label>
+            </div>
+          )}
+          {reportSubject === 'someone_else' && (
+            <label className="flex items-start gap-3 text-xs leading-5 text-ivory/75">
+              <input type="checkbox" checked={permissionToShare} onChange={(event) => setPermissionToShare(event.currentTarget.checked)} />
+              <span>I have permission or another appropriate basis to include this person’s information in a report I choose to share.</span>
+            </label>
+          )}
         </fieldset>
 
         {!anonymous && (
@@ -209,14 +281,17 @@ export const SupportRequestModal: React.FC<SupportRequestModalProps> = ({
         {shareConsent && (
           <div className="space-y-3 rounded-xl border border-gold/20 p-4">
             <h3 className="text-sm font-bold text-ivory">Share my support report</h3>
+            {reportSubject === 'someone_else' && !permissionToShare && <p role="alert" className="text-xs text-amber-200">Before sharing another person’s information, confirm you have permission or an appropriate basis.</p>}
             <textarea value={shareMessage} onChange={(event) => setShareMessage(event.target.value)} placeholder="Review or edit the prepared message" rows={5} className="w-full rounded-xl border border-charcoal-light bg-midnight p-3 text-xs text-ivory" />
             <input type="email" value={emailAddress} onChange={(event) => setEmailAddress(event.target.value)} placeholder="Recipient email address" className="w-full rounded-xl border border-charcoal-light bg-midnight p-3 text-xs text-ivory" />
             <div className="flex flex-wrap gap-2">
-              <button type="button" onClick={handleEmail} className="btn-charcoal inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs"><Mail className="h-4 w-4" /> Email</button>
-              <button type="button" onClick={handleWhatsApp} className="btn-charcoal inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs"><MessageCircle className="h-4 w-4" /> WhatsApp</button>
-              <button type="button" onClick={handleNativeShare} className="btn-charcoal inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs"><Share2 className="h-4 w-4" /> Other sharing options</button>
+              <button type="button" disabled={!canShare} onClick={handleEmail} className="btn-charcoal inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs disabled:opacity-40"><Mail className="h-4 w-4" /> Email</button>
+              <button type="button" disabled={!canShare} onClick={handleWhatsApp} className="btn-charcoal inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs disabled:opacity-40"><MessageCircle className="h-4 w-4" /> WhatsApp</button>
+              <button type="button" disabled={!canShare} onClick={handleMessenger} className="btn-charcoal inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs disabled:opacity-40"><MessageCircle className="h-4 w-4" /> Copy message &amp; open Messenger</button>
+              <button type="button" disabled={!canShare} onClick={handleCopyReference} className="btn-charcoal inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs disabled:opacity-40"><Copy className="h-4 w-4" /> Copy report reference</button>
+              <button type="button" disabled={!canShare} onClick={handleNativeShare} className="btn-charcoal inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs disabled:opacity-40"><Share2 className="h-4 w-4" /> Other sharing options</button>
             </div>
-            <p className="text-[11px] text-ivory/50">PDF sharing requires downloading or printing the report, then attaching it manually where the chosen service supports attachments.</p>
+            <p className="text-[11px] text-ivory/50">Email opens your mail app; it does not attach or send the PDF. WhatsApp and Messenger do not receive the report file here. Print or save the report separately, then attach it yourself if you choose. These services process anything you share through them.</p>
           </div>
         )}
       </div>

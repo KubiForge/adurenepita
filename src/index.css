@@ -1250,6 +1250,40 @@
   }
 }
 
+/* Warm editorial treatment for the support journey, scoped to this modal. */
+.support-journey-modal {
+  border-color: #e7d9cb;
+  background: #fff9f4;
+}
+
+.support-journey-modal > div:first-child {
+  border-color: #e7d9cb;
+  background: #fff9f4;
+}
+
+.support-journey-modal [class*="text-ivory"] {
+  color: #252b35 !important;
+}
+
+.support-journey-modal [class*="text-gold"],
+.support-journey-modal [class*="text-champagne"] {
+  color: #8f1d2c !important;
+}
+
+.support-journey-modal [class*="bg-charcoal"],
+.support-journey-modal [class*="bg-midnight"] {
+  background-color: #f7eee7 !important;
+}
+
+.support-journey-modal [class*="border-charcoal-light"],
+.support-journey-modal [class*="border-gold/"] {
+  border-color: #e7d9cb !important;
+}
+
+.support-journey-modal [class*="text-ivory/"] {
+  color: #687386 !important;
+}
+
 #main-content {
   min-width: 0;
 }

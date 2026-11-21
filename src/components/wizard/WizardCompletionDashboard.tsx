@@ -6,6 +6,7 @@ import { Sparkles, MapPin, BookOpen, PhoneCall, ShieldCheck, ArrowRight, RotateC
 import { Button } from '../common/Button';
 import { Link } from 'react-router-dom';
 import { SupportRequestModal } from './SupportRequestModal';
+import { CONTACT_INFO } from '../../config/contactInfo';
 
 interface WizardCompletionDashboardProps {
   answers: WizardAnswers;
@@ -26,18 +27,25 @@ export const WizardCompletionDashboard: React.FC<WizardCompletionDashboardProps>
     (d) => answers.substances.includes(d.slug) || answers.substances.includes(d.id)
   );
 
-  // Matched centers by district or province
-  const matchedCenters = SUPPORT_CENTERS_DATA.filter((c) => {
-    if (answers.district && c.district.toLowerCase() === answers.district.toLowerCase()) {
-      return true;
-    }
-    if (answers.province && c.province.toLowerCase() === answers.province.toLowerCase()) {
-      return true;
-    }
-    return false;
-  });
-
-  const centersToDisplay = matchedCenters.length > 0 ? matchedCenters : SUPPORT_CENTERS_DATA.slice(0, 2);
+  const preferredService = answers.supportPreference === 'professional_counseling'
+    ? 'counseling'
+    : answers.supportPreference === 'healthcare_professional'
+      ? 'medical'
+      : answers.supportPreference === 'rehabilitation_info'
+        ? 'rehabilitation'
+        : undefined;
+  const centersToDisplay = SUPPORT_CENTERS_DATA
+    .filter((center) => center.verificationStatus === 'verified')
+    .map((center) => {
+      const districtMatch = Boolean(answers.district && center.district.toLowerCase() === answers.district.toLowerCase());
+      const provinceMatch = Boolean(answers.province && center.province.toLowerCase() === answers.province.toLowerCase());
+      const serviceMatch = Boolean(preferredService && center.serviceTypes.includes(preferredService));
+      return { center, score: (districtMatch ? 8 : 0) + (provinceMatch ? 4 : 0) + (serviceMatch ? 3 : 0) };
+    })
+    .filter(({ center, score }) => score > 0 || (!answers.district && !answers.province && !preferredService && center.serviceTypes.includes('rehabilitation')))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map(({ center }) => center);
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Header Banner */}
@@ -46,15 +54,37 @@ export const WizardCompletionDashboard: React.FC<WizardCompletionDashboardProps>
           <ShieldCheck className="w-6 h-6 text-gold" />
         </div>
         <span className="text-xs uppercase tracking-wider text-gold font-bold">
-          Navigation Pathway Ready
+          Your next steps
         </span>
         <h2 className="text-2xl sm:text-3xl font-bold font-heading text-ivory mt-1">
-          Your Personalized Support Plan
+          Your Personalized Path to Support
         </h2>
         <p className="text-xs text-ivory/70 mt-2 max-w-lg mx-auto leading-relaxed">
-          Based on your choices, here is a curated path connecting you with evidence-based resources, verified local care, and confidential support.
+          These options reflect what you chose to share. They are support suggestions, not a diagnosis or clinical assessment.
         </p>
       </div>
+
+      {answers.urgentSymptoms?.includes('immediate_emergency') && (
+        <div role="alert" className="rounded-2xl border border-red-300/50 bg-red-950/40 p-5 text-red-50">
+          <h3 className="font-bold">Emergency help comes first</h3>
+          <p className="mt-1 text-sm">Do not wait to complete a support request. Call Sri Lanka's Suwaseriya ambulance service at {CONTACT_INFO.emergency.ambulance.number} for immediate medical help.</p>
+          <a href={`tel:${CONTACT_INFO.emergency.ambulance.number}`} className="mt-3 inline-flex min-h-11 items-center rounded-xl bg-red-100 px-4 font-bold text-red-950">Call {CONTACT_INFO.emergency.ambulance.number}</a>
+        </div>
+      )}
+
+      <section className="rounded-2xl border border-gold/25 bg-midnight/60 p-5">
+        <h3 className="font-heading text-lg font-bold text-ivory">A few possible next steps</h3>
+        <ul className="mt-3 space-y-2 text-sm leading-6 text-ivory/75">
+          {answers.purpose === 'drug_info' || answers.purpose === 'prevention_info' ? (
+            <li>Explore the learning library for information related to your questions.</li>
+          ) : (
+            <li>Consider speaking with a qualified healthcare professional or counsellor about the concern.</li>
+          )}
+          {answers.currentState === 'possible_withdrawal' && <li>Ask a medical professional for guidance about possible withdrawal; alcohol and sedative withdrawal can be dangerous without medical care.</li>}
+          {answers.purpose === 'worried_about_someone' && <li>Consider seeking guidance for yourself as someone supporting another person. Share only information you are authorized to share.</li>}
+          <li>Contact a service directly to confirm its current availability, eligibility, and referral process.</li>
+        </ul>
+      </section>
 
       {/* Grid of Pathways */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -64,13 +94,13 @@ export const WizardCompletionDashboard: React.FC<WizardCompletionDashboardProps>
             <div className="flex items-center gap-2 mb-3">
               <MapPin className="w-5 h-5 text-gold" />
               <h3 className="font-heading font-bold text-lg text-ivory">
-                Verified Local Care Centers
+                Relevant Support Services
               </h3>
             </div>
             <p className="text-xs text-ivory/60 mb-4">
               {answers.district
-                ? `Certified support centers located near ${answers.district} District:`
-                : 'National certified centers across Sri Lanka:'}
+                ? `Verified listings in or relevant to ${answers.district}. Please contact each service to confirm current availability.`
+                : 'Verified listings that may fit your preferences. Please confirm services directly.'}
             </p>
 
             <div className="space-y-3">
@@ -83,10 +113,18 @@ export const WizardCompletionDashboard: React.FC<WizardCompletionDashboardProps>
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-sm text-ivory">{center.name}</span>
                       <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 font-semibold">
-                        Verified
+                        Verified listing
                       </span>
                     </div>
                     <p className="text-xs text-ivory/60 mt-1">{center.city} • {center.province}</p>
+                  </div>
+
+                  <div className="mt-2 text-xs text-ivory/60">
+                    <p>{center.address}</p>
+                    <p className="mt-1">Last verified {center.lastVerifiedDate} by {center.verifiedBy}</p>
+                    {center.email && <p className="mt-1">{center.email}</p>}
+                    {center.website && <a className="mt-1 inline-block text-gold underline" href={center.website} target="_blank" rel="noreferrer">Visit official website</a>}
+                    <a className="ml-3 inline-block text-gold underline" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(center.address)}`} target="_blank" rel="noreferrer">Directions</a>
                   </div>
 
                   <div className="mt-3 pt-2 border-t border-charcoal-light flex items-center justify-between">
@@ -102,6 +140,11 @@ export const WizardCompletionDashboard: React.FC<WizardCompletionDashboardProps>
                 </div>
               ))}
             </div>
+            {centersToDisplay.length === 0 && (
+              <p className="rounded-xl border border-charcoal-light bg-midnight/70 p-4 text-xs leading-5 text-ivory/65">
+                No verified listing matched the details selected. Browse the support directory or contact the NDDCB helpline on 1927 for guidance. Current service availability should be confirmed directly.
+              </p>
+            )}
           </div>
 
           <div className="mt-4 pt-3 border-t border-charcoal-light">
@@ -126,7 +169,7 @@ export const WizardCompletionDashboard: React.FC<WizardCompletionDashboardProps>
               </h3>
             </div>
             <p className="text-xs text-ivory/60 mb-4">
-              Verified pharmacological knowledge and safe cessation guidance:
+              Brief educational information to help you prepare questions for a qualified professional. Do not stop alcohol or sedative medicines suddenly without medical guidance.
             </p>
 
             {matchedDrugs.length > 0 ? (
@@ -189,7 +232,7 @@ export const WizardCompletionDashboard: React.FC<WizardCompletionDashboardProps>
               Continue Seamlessly with Beyond the Darkness AI
             </h4>
             <p className="text-xs text-ivory/70 mt-0.5">
-              Talk through your situation confidentially in English with our AI Assistant.
+              Continue without an account. No assessment answers are included automatically; share only what you are comfortable having processed by the AI service.
             </p>
           </div>
         </div>
@@ -210,10 +253,7 @@ export const WizardCompletionDashboard: React.FC<WizardCompletionDashboardProps>
           variant="gold"
           size="md"
           onClick={() => {
-            const prompt = `I completed the guided wizard with focus on ${answers.purpose?.replace(
-              /_/g,
-              ' '
-            )} and ${answers.substances.join(', ') || 'general substances'}. Can you advise me on my next steps?`;
+            const prompt = 'I would like general guidance about finding support and possible next steps. Please do not assume any personal or health details.';
             onContinueChat(prompt);
           }}
           rightIcon={<ArrowRight className="w-4 h-4" />}

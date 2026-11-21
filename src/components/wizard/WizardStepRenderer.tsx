@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { WizardAnswers, WizardPurpose, UserSituation, ConcernDuration, CurrentState, SupportPreference, PersonNeedingSupport, UseFrequency, PreviousSupport } from '../../types/wizard';
 import { PROVINCES_AND_DISTRICTS } from '../../data/sriLankaData';
 import { DRUGS_DATA } from '../../data/drugsData';
+import { CONTACT_INFO } from '../../config/contactInfo';
 import { Check, Search, AlertCircle, Info, Sparkles, MapPin } from 'lucide-react';
 
 interface WizardStepRendererProps {
   currentStep: number;
   answers: WizardAnswers;
   onChange: (updated: Partial<WizardAnswers>) => void;
-  onEmergencyTrigger: (reason: string) => void;
   onEditStep: (stepNumber: number) => void;
 }
 
@@ -16,7 +16,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
   currentStep,
   answers,
   onChange,
-  onEmergencyTrigger,
   onEditStep,
 }) => {
   const [substanceSearch, setSubstanceSearch] = useState('');
@@ -28,6 +27,11 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
         id: 'stop_using',
         title: 'I want to stop using substances',
         desc: 'Compassionate, non-judgmental guidance and safe medical withdrawal navigation.',
+      },
+      {
+        id: 'reduce_use',
+        title: 'I want to reduce my substance use',
+        desc: 'Explore support and speak with a qualified professional about safer next steps.',
       },
       {
         id: 'drug_info',
@@ -47,7 +51,17 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
       {
         id: 'professional_support',
         title: 'I need professional support',
-        desc: 'Connecting with certified Sri Lankan counseling and rehabilitation facilities.',
+        desc: 'Explore listed Sri Lankan counselling and rehabilitation services.',
+      },
+      {
+        id: 'rehabilitation_facilities',
+        title: 'I am looking for rehabilitation facilities',
+        desc: 'Compare listed services and confirm suitability directly with a qualified provider.',
+      },
+      {
+        id: 'exploring_options',
+        title: 'I am exploring options privately',
+        desc: 'Take your time. You can skip questions and view information without sharing your identity.',
       },
       {
         id: 'prevention_info',
@@ -94,10 +108,16 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
                   </div>
                   <p className="text-xs text-ivory/60 mt-1.5 leading-snug">{opt.desc}</p>
                 </div>
-              </button>
+          </button>
             );
           })}
         </div>
+        {answers.purpose === 'other' && (
+          <label className="mx-auto block max-w-xl text-xs font-semibold text-ivory/80">
+            What would you like support with? (Optional)
+            <input value={answers.purposeOther || ''} onChange={(event) => onChange({ purposeOther: event.currentTarget.value.slice(0, 240) })} maxLength={240} className="mt-2 min-h-11 w-full rounded-xl border border-charcoal-light bg-midnight px-3 text-sm" />
+          </label>
+        )}
       </div>
     );
   }
@@ -108,6 +128,8 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
       { id: 'myself', label: 'Myself' },
       { id: 'family_member', label: 'A family member' },
       { id: 'friend', label: 'A friend' },
+      { id: 'partner', label: 'My partner' },
+      { id: 'someone_under_care', label: 'Someone under my care' },
       { id: 'someone_else', label: 'Someone else' },
       { id: 'prefer_not_to_say', label: 'Prefer not to say' },
     ];
@@ -124,7 +146,7 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
       <div className="space-y-4">
         <div className="text-center mb-6">
           <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 02 of 10</span>
-          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Who needs support, and what is happening?</h2>
+          <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Who are you seeking support for?</h2>
         </div>
 
         <div className="space-y-2.5 max-w-xl mx-auto">
@@ -141,6 +163,12 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
               </button>
             ))}
           </div>
+          {answers.personNeedingSupport === 'someone_else' && (
+            <label className="block pt-2 text-xs text-ivory/75">
+              Optional description (no names needed)
+              <input value={answers.personDescription || ''} onChange={(event) => onChange({ personDescription: event.currentTarget.value.slice(0, 120) })} maxLength={120} className="mt-2 min-h-11 w-full rounded-xl border border-charcoal-light bg-midnight px-3 text-sm" />
+            </label>
+          )}
           <p className="text-xs font-semibold text-gold pt-2">Which best describes the current situation?</p>
           {situationOptions.map((opt) => {
             const isSelected = answers.situation === opt.id;
@@ -180,8 +208,12 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
       { id: 'alcohol', label: 'Alcohol (Arrack / Beer / Spirits)' },
       { id: 'cannabis', label: 'Cannabis (Ganja / KG / Weed)' },
       { id: 'prescription_drugs', label: 'Prescription Medication Misuse (Benzos, Tramadol, Pregabalin)' },
+      { id: 'benzodiazepines', label: 'Benzodiazepines (for example, diazepam)' },
+      { id: 'tramadol', label: 'Tramadol' },
+      { id: 'pregabalin', label: 'Pregabalin' },
       { id: 'tobacco', label: 'Tobacco & Nicotine (Cigarettes, Vapes)' },
       { id: 'cocaine', label: 'Cocaine & Crack' },
+      { id: 'multiple_substances', label: 'Multiple substances' },
       { id: 'other', label: 'Other synthetic or unknown substance' },
       { id: 'not_sure', label: "I'm not sure" },
       { id: 'prefer_not_to_say', label: 'Prefer not to say' },
@@ -253,6 +285,12 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
             );
           })}
         </div>
+        {answers.substances.includes('other') && (
+          <label className="mx-auto block max-w-xl text-xs font-semibold text-ivory/80">
+            Other substance (optional)
+            <input value={answers.substanceOther || ''} onChange={(event) => onChange({ substanceOther: event.currentTarget.value.slice(0, 120) })} maxLength={120} className="mt-2 min-h-11 w-full rounded-xl border border-charcoal-light bg-midnight px-3 text-sm" />
+          </label>
+        )}
       </div>
     );
   }
@@ -317,15 +355,14 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
       { id: 'unsure', label: 'Not sure' },
       { id: 'prefer_not_to_say', label: 'Prefer not to say' },
     ];
-    const stateOptions: { id: CurrentState; label: string; isUrgent?: boolean }[] = [
+    const stateOptions: { id: CurrentState; label: string }[] = [
       { id: 'using_regularly', label: 'Using regularly / daily' },
       { id: 'using_occasionally', label: 'Using occasionally / on weekends' },
       { id: 'recently_stopped', label: 'Recently stopped / in initial recovery' },
       { id: 'experiencing_cravings', label: 'Experiencing intense cravings or urge to reuse' },
       {
         id: 'possible_withdrawal',
-        label: 'Experiencing acute withdrawal symptoms (shakes, seizures, extreme confusion)',
-        isUrgent: true,
+        label: 'Experiencing possible withdrawal symptoms; I want medical guidance',
       },
       { id: 'not_currently_using', label: 'Not currently using (seeking info or helping someone)' },
       { id: 'prefer_not_to_say', label: 'Prefer not to say' },
@@ -346,16 +383,9 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
                 key={opt.id}
                 onClick={() => {
                   onChange({ currentState: opt.id });
-                  if (opt.isUrgent) {
-                    onEmergencyTrigger(
-                      'Potential severe withdrawal symptoms detected during guided intake. Immediate medical evaluation is required.'
-                    );
-                  }
                 }}
                 className={`w-full p-4 rounded-xl text-left border transition-all flex items-center justify-between ${
-                  opt.isUrgent
-                    ? 'border-red-500/40 bg-red-950/20 hover:bg-red-950/40'
-                    : isSelected
+                  isSelected
                     ? 'bg-charcoal border-gold shadow-gold-subtle'
                     : 'bg-midnight/70 border-charcoal-light hover:border-gold/30'
                 }`}
@@ -363,11 +393,6 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-sm text-ivory">{opt.label}</span>
-                    {opt.isUrgent && (
-                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30">
-                        Urgent Medical Attention
-                      </span>
-                    )}
                   </div>
                 </div>
                 <div
@@ -396,6 +421,21 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
             ))}
           </div>
         </fieldset>
+        <fieldset className="max-w-xl mx-auto rounded-2xl border border-red-300/40 bg-red-950/20 p-4">
+          <legend className="px-2 text-sm font-bold text-red-100">Are any severe symptoms happening now? (Optional)</legend>
+          <p className="mb-3 text-xs leading-5 text-red-100/75">Seizure, severe confusion, loss of consciousness, difficulty breathing, severe chest pain, suspected overdose, or immediate risk of harm.</p>
+          <label className="flex items-start gap-3 text-sm text-red-50">
+            <input type="checkbox" checked={(answers.urgentSymptoms || []).includes('immediate_emergency')} onChange={(event) => onChange({ urgentSymptoms: event.currentTarget.checked ? ['immediate_emergency'] : [] })} className="mt-1 h-4 w-4 accent-red-500" />
+            <span>This may be an emergency</span>
+          </label>
+          {(answers.urgentSymptoms || []).includes('immediate_emergency') && (
+            <div role="alert" className="mt-4 rounded-xl border border-red-300/50 bg-red-950/50 p-4 text-sm text-white">
+              <strong className="block">Please seek emergency medical help now.</strong>
+              <span className="mt-1 block text-xs text-red-100/80">Do not wait to finish this guide. In Sri Lanka, call Suwaseriya ambulance at {CONTACT_INFO.emergency.ambulance.number}.</span>
+              <a href={`tel:${CONTACT_INFO.emergency.ambulance.number}`} className="mt-3 inline-flex min-h-11 items-center rounded-xl bg-red-100 px-4 font-bold text-red-950">Call {CONTACT_INFO.emergency.ambulance.number}</a>
+            </div>
+          )}
+        </fieldset>
       </div>
     );
   }
@@ -411,6 +451,10 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
       { id: 'financial_strain', label: 'Financial debt or money problems' },
       { id: 'difficulty_stopping', label: 'Difficulty stopping once started' },
       { id: 'fear_of_withdrawal', label: 'Fear of withdrawal sickness' },
+      { id: 'social_isolation', label: 'Social isolation' },
+      { id: 'legal_concerns', label: 'Legal concerns' },
+      { id: 'safety_concerns', label: 'Safety concerns' },
+      { id: 'other', label: 'Something else' },
     ];
 
     const toggleConcern = (id: string) => {
@@ -455,6 +499,12 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
             );
           })}
         </div>
+        {answers.concerns.includes('other') && (
+          <label className="mx-auto block max-w-xl text-xs font-semibold text-ivory/80">
+            Optional context
+            <input value={answers.concernOther || ''} onChange={(event) => onChange({ concernOther: event.currentTarget.value.slice(0, 240) })} maxLength={240} className="mt-2 min-h-11 w-full rounded-xl border border-charcoal-light bg-midnight px-3 text-sm" />
+          </label>
+        )}
       </div>
     );
   }
@@ -675,7 +725,7 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
           <span className="text-xs uppercase tracking-wider text-gold font-semibold">Step 10 of 10</span>
           <h2 className="text-2xl font-bold font-heading text-ivory mt-1">Review your answers</h2>
           <p className="text-xs text-ivory/60 mt-1">
-            Check your choices. Nothing is sent to the support team unless you sign in and separately submit a request.
+            Check your choices. Nothing is sent to a support service. You can prepare a report locally and choose whether to share it.
           </p>
         </div>
 
@@ -757,7 +807,7 @@ export const WizardStepRenderer: React.FC<WizardStepRendererProps> = ({
               className="mt-1 h-4 w-4 rounded border-charcoal-light text-gold focus:ring-gold bg-midnight"
             />
             <span className="text-xs text-ivory/90 leading-relaxed">
-              I understand this tool provides educational navigation, not medical advice. My answers remain only in this browser session unless I separately sign in and consent to submit a support request.
+              I understand this guide provides support navigation, not medical advice. My answers are saved for this browser session and are not automatically sent to a support service.
             </span>
           </label>
         </div>

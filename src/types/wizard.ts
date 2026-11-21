@@ -1,9 +1,12 @@
 export type WizardPurpose =
   | 'stop_using'
+  | 'reduce_use'
   | 'drug_info'
   | 'worried_about_someone'
   | 'health_concern'
   | 'professional_support'
+  | 'rehabilitation_facilities'
+  | 'exploring_options'
   | 'prevention_info'
   | 'other';
 
@@ -32,6 +35,8 @@ export type CurrentState =
   | 'experiencing_cravings'
   | 'possible_withdrawal'
   | 'not_currently_using'
+  | 'helping_someone_else'
+  | 'considering_professional_support'
   | 'prefer_not_to_say';
 
 export type SupportPreference =
@@ -43,7 +48,7 @@ export type SupportPreference =
   | 'family_support'
   | 'not_sure';
 
-export type PersonNeedingSupport = 'myself' | 'family_member' | 'friend' | 'someone_else' | 'prefer_not_to_say';
+export type PersonNeedingSupport = 'myself' | 'family_member' | 'friend' | 'partner' | 'someone_under_care' | 'someone_else' | 'prefer_not_to_say';
 
 export type UseFrequency = 'daily' | 'several_times_week' | 'weekly_or_less' | 'unsure' | 'prefer_not_to_say';
 
@@ -56,6 +61,7 @@ export interface WizardAnswers {
 
   // Step 2
   personNeedingSupport?: PersonNeedingSupport;
+  personDescription?: string;
   situation?: UserSituation;
   situationOther?: string;
 
@@ -69,6 +75,7 @@ export interface WizardAnswers {
   // Step 5
   currentState?: CurrentState;
   useFrequency?: UseFrequency;
+  urgentSymptoms?: string[];
 
   // Step 6
   concerns: string[];
